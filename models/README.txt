@@ -1,0 +1,1 @@
+Bundled inference assets: CNN-Transformer, EEGNet, XGBoost, PSD StandardScaler, ensemble_config.json. Config uses validation-selected weights/threshold. This is a research prototype, not a clinical diagnostic tool.
