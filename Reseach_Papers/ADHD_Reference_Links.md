@@ -477,7 +477,44 @@ Direct PDF:
 The study develops a decision-support approach for ADHD diagnosis using EEG signals and signal-processing features. It is directly relevant to EEG-based ADHD classification and provides earlier methodological work for comparison with modern deep-learning approaches.
 
 
+### 24. Classification of ADHD and Healthy Children Using Multi-Band and Spatial Features of EEG
+
+Uses EEG spectral and spatial features with machine learning to classify children with ADHD and healthy children.
+
+[Read / Download Paper](https://arxiv.org/pdf/2504.04664)
 
 
+### 25 . An Explainable and Interpretable Model for ADHD in Children Using EEG Signals
 
+Uses EEG signal decomposition, statistical features, and explainable machine learning to detect ADHD and interpret the model's decisions.
+
+[Read / Download Paper](https://doi.org/10.1016/j.compbiomed.2023.106676)
+
+
+### 26 . Optimal Channels and Features Selection Based ADHD Detection From EEG Signal Using Statistical and Machine Learning Techniques
+
+Identifies the most useful EEG channels and features for ADHD detection using statistical analysis and machine-learning classifiers.
+
+[Read / Download Paper](https://doi.org/10.1109/ACCESS.2023.3264266)
+
+
+### 27 . Detection of ADHD From EEG Signals Using New Hybrid Decomposition and Deep Learning Techniques
+
+Combines EEG signal decomposition techniques with deep learning to improve ADHD detection from multi-channel EEG signals.
+
+[Read / Download Paper](https://doi.org/10.1088/1741-2552/acc902)
+
+
+### 28 . Diagnosis of Attention Deficit Hyperactivity Disorder Using Non-Linear Analysis of the EEG Signal
+
+Uses non-linear EEG features, including entropy, fractal dimension, and Lyapunov exponent, to distinguish ADHD from normal EEG patterns.
+
+[Read / Download Paper](https://doi.org/10.1049/iet-syb.2018.5130)
+
+
+### 29 . Detection of ADHD Cases Using CNN and Classical Classifiers of Raw EEG
+
+Applies a CNN directly to raw EEG signals and uses CNN-extracted features with classical machine-learning classifiers for ADHD detection.
+
+[Read / Download Paper](https://doi.org/10.1016/j.cmpbup.2022.100080)
 
