@@ -477,44 +477,45 @@ Direct PDF:
 The study develops a decision-support approach for ADHD diagnosis using EEG signals and signal-processing features. It is directly relevant to EEG-based ADHD classification and provides earlier methodological work for comparison with modern deep-learning approaches.
 
 
-### 24. Classification of ADHD and Healthy Children Using Multi-Band and Spatial Features of EEG
+# ADHD EEG Research Papers
 
-Uses EEG spectral and spatial features with machine learning to classify children with ADHD and healthy children.
+## 24 . Classification of ADHD and Healthy Children Using Multi-Band and Spatial Features of EEG
 
-[Read / Download Paper](https://arxiv.org/pdf/2504.04664)
+This paper presents an EEG-based machine learning approach for distinguishing children with ADHD from healthy children. The study uses EEG recordings from 19 channels and extracts Power Spectral Density (PSD) and Spectral Entropy features across five frequency bands. These features are combined into a 190-dimensional feature set and evaluated using different machine learning classifiers. The RBF-kernel SVM achieved a mean cross-validation accuracy of 99.2%, showing the effectiveness of multi-band EEG features for ADHD classification.
+
+[Read / Download PDF](https://arxiv.org/pdf/2504.04664)
 
 
-### 25 . An Explainable and Interpretable Model for ADHD in Children Using EEG Signals
+## 25 . An Explainable and Interpretable Model for Attention Deficit Hyperactivity Disorder in Children Using EEG Signals
 
-Uses EEG signal decomposition, statistical features, and explainable machine learning to detect ADHD and interpret the model's decisions.
+This study proposes an explainable machine learning framework for detecting ADHD using EEG signals. Variational Mode Decomposition (VMD) and the Hilbert Transform are used to process the EEG signals and extract meaningful components and statistical features. The study also uses explainability methods such as LIME, SHAP, Partial Dependence Plots, and Morris analysis to understand the features influencing the model's predictions. The approach focuses on achieving accurate ADHD detection while also making the model's decisions more interpretable.
 
 [Read / Download Paper](https://doi.org/10.1016/j.compbiomed.2023.106676)
 
 
-### 26 . Optimal Channels and Features Selection Based ADHD Detection From EEG Signal Using Statistical and Machine Learning Techniques
+## 26 . Optimal Channels and Features Selection Based ADHD Detection From EEG Signal Using Statistical and Machine Learning Techniques
 
-Identifies the most useful EEG channels and features for ADHD detection using statistical analysis and machine-learning classifiers.
+This paper investigates the selection of important EEG channels and features for ADHD detection. The study uses EEG data recorded from 19 channels and applies statistical and machine learning techniques to identify the most informative channels. LASSO is used for feature selection, and the selected features are evaluated using several classifiers, including Gaussian Process Classifier, Random Forest, k-NN, MLP, Decision Tree, and Logistic Regression. The study demonstrates how selecting relevant channels and features can reduce unnecessary information while maintaining strong classification performance.
 
 [Read / Download Paper](https://doi.org/10.1109/ACCESS.2023.3264266)
 
 
-### 27 . Detection of ADHD From EEG Signals Using New Hybrid Decomposition and Deep Learning Techniques
+## 27 . Detection of ADHD From EEG Signals Using New Hybrid Decomposition and Deep Learning Techniques
 
-Combines EEG signal decomposition techniques with deep learning to improve ADHD detection from multi-channel EEG signals.
+This research combines EEG signal decomposition techniques with deep learning for ADHD detection. Robust Local Mode Decomposition (RLMD) and Variational Mode Decomposition (VMD) are used to divide EEG signals into meaningful sub-band components. These decomposed signals are then provided to a deep learning model for classification. The study demonstrates how combining signal-processing techniques with deep learning can help extract useful patterns from EEG signals for distinguishing ADHD and healthy subjects.
 
 [Read / Download Paper](https://doi.org/10.1088/1741-2552/acc902)
 
 
-### 28 . Diagnosis of Attention Deficit Hyperactivity Disorder Using Non-Linear Analysis of the EEG Signal
+## 28 . Diagnosis of Attention Deficit Hyperactivity Disorder Using Non-Linear Analysis of the EEG Signal
 
-Uses non-linear EEG features, including entropy, fractal dimension, and Lyapunov exponent, to distinguish ADHD from normal EEG patterns.
+This paper investigates the use of non-linear EEG characteristics for ADHD diagnosis. The study extracts several non-linear features, including Lyapunov exponent, fractal dimensions, correlation dimension, and different entropy measures. EEG signals from frontal channels such as FP1, FP2, F3, F4, and Fz are analyzed to identify differences between ADHD and healthy children. The results show that non-linear EEG features can provide useful information for distinguishing ADHD from normal EEG patterns.
 
 [Read / Download Paper](https://doi.org/10.1049/iet-syb.2018.5130)
 
 
-### 29 . Detection of ADHD Cases Using CNN and Classical Classifiers of Raw EEG
+## 29 . Detection of ADHD Cases Using CNN and Classical Classifiers of Raw EEG
 
-Applies a CNN directly to raw EEG signals and uses CNN-extracted features with classical machine-learning classifiers for ADHD detection.
+This study proposes a CNN-based approach for ADHD detection using raw EEG signals. The CNN automatically learns spatial information between EEG channels and temporal patterns within the EEG signals, reducing the need for manually designed features. Features extracted from the CNN are also provided to classical machine learning classifiers to improve the separation between ADHD and control groups. The study demonstrates the potential of CNNs for automatically learning useful representations from EEG data for ADHD classification.
 
 [Read / Download Paper](https://doi.org/10.1016/j.cmpbup.2022.100080)
-
