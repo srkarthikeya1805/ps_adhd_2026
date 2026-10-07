@@ -478,39 +478,44 @@ The study develops a decision-support approach for ADHD diagnosis using EEG sign
 
 
 # ADHD EEG Research Papers
-24. Identification of Attention Deficit Hyperactivity Disorder with Deep Learning Model
 
-Ömer Kasim
+## 24. Identification of Attention Deficit Hyperactivity Disorder with Deep Learning Model
 
-"Identification of Attention Deficit Hyperactivity Disorder with Deep Learning Model."
+**Kasim, Ö.**
+
+"Identification of attention deficit hyperactivity disorder with deep learning model."
 
 Physical and Engineering Sciences in Medicine, Vol. 46, No. 3, pp. 1081–1090, 2023.
 
 DOI: 10.1007/s13246-023-01275-y
 
-Full Text: PubMed
+Full Text: [PubMed](https://pubmed.ncbi.nlm.nih.gov/37191853/)
 
-The study proposes a deep-learning approach for ADHD detection using EEG signals. Multitaper and Multivariate Variational Mode Decomposition (MVMD) are used for feature extraction, followed by Neighborhood Component Analysis for feature selection. A deep model combining convolution, pooling, bidirectional LSTM, and fully connected layers is used for classification. The reported accuracy is 95.54%.
+Direct PDF: [Direct PDF](https://link.springer.com/content/pdf/10.1007/s13246-023-01275-y.pdf)
 
-25. A Neural Approach to ADHD Detection in Children: Enhanced EEG Analysis with Wavelet-Transformer Synergy
+The study develops a deep-learning approach for ADHD detection using EEG signals. Multitaper and Multivariate Variational Mode Decomposition are used for feature extraction, followed by Neighborhood Component Analysis for feature selection. The deep-learning model combines convolution, pooling, bidirectional LSTM, and fully connected layers and achieves 95.54% accuracy.
 
-Raja Dhiabi, Rim Walha, and Fadoua Drira
+
+## 25. A Neural Approach to ADHD Detection in Children: Enhanced EEG Analysis with Wavelet-Transformer Synergy
+
+**Dhiabi, R., Walha, R., and Drira, F.**
 
 "A Neural Approach to ADHD Detection in Children: Enhanced EEG Analysis with Wavelet-Transformer Synergy."
 
-Proceedings of the 18th International Conference on Agents and Artificial Intelligence (ICAART), Vol. 3, pp. 2899–2906, 2026.
+Proceedings of the 18th International Conference on Agents and Artificial Intelligence (ICAART 2026), Vol. 3, pp. 2899–2906, 2026.
 
 DOI: 10.5220/0014334800004052
 
-Full Text: SCITEPRESS
+Full Text: [SCITEPRESS](https://www.scitepress.org/publishedPapers/2026/143348/pdf/index.html)
 
-Direct PDF: PDF
+Direct PDF: [Direct PDF](https://www.scitepress.org/Papers/2026/143348/143348.pdf)
 
-The study proposes an EEG-based ADHD detection approach combining Wavelet Transform with a Transformer-based predictive model. Wavelet processing is used to represent important EEG characteristics, while the Transformer learns relationships within the EEG representation for ADHD classification.
+The study proposes an EEG-based ADHD detection system that combines Wavelet Transform with a Transformer-based predictive model. Wavelet processing is used to represent important EEG characteristics, while the Transformer learns relationships in the EEG data for ADHD classification.
 
-26. A Unified Framework for Detection of ADHD Using EEG Signals and Coherent Models
 
-Sunil Kumar Prabhakar and Dong-Ok Won
+## 26. A Unified Framework for Detection of ADHD Using EEG Signals and Coherent Models
+
+**Prabhakar, S. K., and Won, D.-O.**
 
 "A Unified Framework for Detection of ADHD Using EEG Signals and Coherent Models."
 
@@ -518,15 +523,16 @@ Mathematics, Vol. 14, No. 5, Article 871, 2026.
 
 DOI: 10.3390/math14050871
 
-Full Text: MDPI
+Full Text: [MDPI](https://www.mdpi.com/2227-7390/14/5/871)
 
-Direct PDF: PDF
+Direct PDF: [Direct PDF](https://www.mdpi.com/2227-7390/14/5/871/pdf)
 
-The study proposes a unified EEG-based ADHD detection framework involving normalization, dimensionality reduction, clustering, Improved Wavelet Transform, feature selection, and multiple classification algorithms. Several feature-selection methods and classifiers are compared. The best reported configuration achieves 98.12% accuracy.
+The study proposes a unified EEG-based ADHD detection framework involving EEG normalization, dimensionality reduction, clustering, Improved Wavelet Transform, feature selection, and multiple machine-learning classifiers. The best reported configuration achieves 98.12% accuracy.
 
-27. Artificial Intelligence Methods for Identification of ADHD in Children Based on EEG Signals
 
-Noor Abdulmuttaleb Jaafar, Rana Jassim Mohammed, Shaymaa Taha Ahmed, Qusay Kanaan Kadhim, and Rasha Mahdi Abdulkader
+## 27. Artificial Intelligence Methods for Identification of ADHD in Children Based on EEG Signals
+
+**Jaafar, N. A., Mohammed, R. J., Ahmed, S. T., Kadhim, Q. K., and Abdulkader, R. M.**
 
 "Artificial Intelligence Methods for Identification of ADHD in Children Based on EEG Signals."
 
@@ -534,15 +540,16 @@ Review of Computer Engineering Research, Vol. 12, No. 2, pp. 80–93, 2025.
 
 DOI: 10.18488/76.v12i2.4217
 
-Full Text: Publisher
+Full Text: [Publisher](https://archive.conscientiabeam.com/index.php/76/article/view/4217)
 
-Direct PDF: PDF
+Direct PDF: [Direct PDF](https://archive.conscientiabeam.com/index.php/76/article/download/4217/8565)
 
-The study uses Continuous Wavelet Transform (CWT) and Variational Mode Decomposition (VMD) for EEG preprocessing and decomposition. The processed EEG features are classified using a CNN-BiLSTM deep-learning model. The reported classification accuracy is 98.69%.
+The study investigates artificial-intelligence methods for ADHD identification using EEG signals. Continuous Wavelet Transform and Variational Mode Decomposition are used for EEG processing, followed by deep-learning techniques including CNN-BiLSTM for ADHD classification.
 
-28. Detection of ADHD from EEG Signals Using New Hybrid Decomposition and Deep Learning Techniques
 
-Mustafa Yasin Esas and Fatma Latifoğlu
+## 28. Detection of ADHD From EEG Signals Using New Hybrid Decomposition and Deep Learning Techniques
+
+**Esas, M. Y., and Latifoğlu, F.**
 
 "Detection of ADHD from EEG signals using new hybrid decomposition and deep learning techniques."
 
@@ -550,31 +557,35 @@ Journal of Neural Engineering, Vol. 20, No. 3, Article 036028, 2023.
 
 DOI: 10.1088/1741-2552/acc902
 
-Full Text: IOP Publishing
+Full Text: [IOP Publishing](https://doi.org/10.1088/1741-2552/acc902)
 
-Direct PDF: PDF
+Direct PDF: [Direct PDF](https://iopscience.iop.org/article/10.1088/1741-2552/acc902/pdf)
 
-The study uses 19-channel EEG signals and combines Robust Local Mode Decomposition (RLMD), Variational Mode Decomposition (VMD), and deep-learning techniques for ADHD detection. The decomposition methods are used to obtain EEG components that are subsequently used for classification.
+The study develops an EEG-based ADHD detection method using 19-channel EEG signals. Robust Local Mode Decomposition and Variational Mode Decomposition are used to decompose EEG signals into sub-bands, which are then processed using a deep-learning algorithm. The proposed approach achieves over 87% classification accuracy.
 
-29. Identifying Selective Predictors of ADHD, Oppositional Defiant and Conduct Disorder Onset in Early Adolescence with Optimized Deep Learning
 
-Nina de Lacy and Michael J. Ramshaw
+## 29. Identifying Selective Predictors of ADHD, Oppositional Defiant and Conduct Disorder Onset in Early Adolescence with Optimized Deep Learning
 
-"Identifying Selective Predictors of ADHD, Oppositional Defiant and Conduct Disorder Onset in Early Adolescence with Optimized Deep Learning."
+**de Lacy, N., and Ramshaw, M. J.**
+
+"Identifying selective predictors of ADHD, Oppositional Defiant and Conduct Disorder onset in early adolescence with optimized deep learning."
 
 medRxiv, 2023.
 
 DOI: 10.1101/2023.08.19.23294322
 
-Full Text: medRxiv
+Full Text: [medRxiv](https://www.medrxiv.org/content/10.1101/2023.08.19.23294322v1.full)
 
-The study uses optimized deep learning to identify predictors of ADHD, Oppositional Defiant Disorder, and Conduct Disorder in early adolescence. It analyzes thousands of multimodal predictors, including demographic, behavioral, physiological, environmental, and brain-imaging variables. The study also evaluates neural-only MRI models.
+Direct PDF: [Direct PDF](https://www.medrxiv.org/content/10.1101/2023.08.19.23294322v1.full.pdf)
 
-Note: This is a multimodal/MRI study rather than an EEG-only ADHD study.
+The study uses optimized deep learning to identify predictors of ADHD, Oppositional Defiant Disorder, and Conduct Disorder in early adolescence. It analyzes multimodal predictors including demographic, behavioral, physiological, environmental, and brain-imaging variables.
 
-30. Deep Learning Convolutional Neural Networks Discriminate Adult ADHD From Healthy Individuals on the Basis of Event-Related Spectral EEG
+Note: This paper is a multimodal/MRI study rather than an EEG-only ADHD study.
 
-Laura Dubreuil-Vall, Giulio Ruffini, and Joan A. Camprodon
+
+## 30. Deep Learning Convolutional Neural Networks Discriminate Adult ADHD From Healthy Individuals on the Basis of Event-Related Spectral EEG
+
+**Dubreuil-Vall, L., Ruffini, G., and Camprodon, J. A.**
 
 "Deep Learning Convolutional Neural Networks Discriminate Adult ADHD From Healthy Individuals on the Basis of Event-Related Spectral EEG."
 
@@ -582,15 +593,16 @@ Frontiers in Neuroscience, Vol. 14, Article 251, 2020.
 
 DOI: 10.3389/fnins.2020.00251
 
-Full Text: Frontiers
+Full Text: [Frontiers](https://www.frontiersin.org/journals/neuroscience/articles/10.3389/fnins.2020.00251/full)
 
-Direct PDF: PDF
+Direct PDF: [Direct PDF](https://www.frontiersin.org/journals/neuroscience/articles/10.3389/fnins.2020.00251/pdf)
 
-The study uses a four-layer CNN to distinguish adults with ADHD from healthy individuals using event-related spectral EEG data. EEG signals are transformed into time-frequency representations and spectrogram-like inputs before being processed by the CNN. The study demonstrates the potential of deep learning for EEG-based adult ADHD classification.
+The study uses a four-layer CNN to distinguish adults with ADHD from healthy individuals using event-related spectral EEG. Multi-channel EEG time-frequency decompositions and spectrograms are used as inputs to the CNN for classification.
 
-31. Temporal Attention and Convolutional Tokenization for Interpretable EEG-Based ADHD Identification in Children
 
-Julián David Pastrana-Cortés, Alejandra Gomez-Rivera, Andrés Marino Álvarez-Meza, Julian Gil-Gonzalez, and David Cárdenas-Peña
+## 31. Temporal Attention and Convolutional Tokenization for Interpretable EEG-Based ADHD Identification in Children
+
+**Pastrana-Cortés, J. D., Gomez-Rivera, A., Álvarez-Meza, A. M., Gil-Gonzalez, J., and Cárdenas-Peña, D.**
 
 "Temporal Attention and Convolutional Tokenization for Interpretable EEG-Based ADHD Identification in Children."
 
@@ -598,134 +610,161 @@ Technologies, Vol. 14, No. 7, Article 392, 2026.
 
 DOI: 10.3390/technologies14070392
 
-Full Text: MDPI
+Full Text: [MDPI](https://www.mdpi.com/2227-7080/14/7/392)
 
-Direct PDF: PDF
+Direct PDF: [Direct PDF](https://www.mdpi.com/2227-7080/14/7/392/pdf)
 
-The study proposes EEG-TACT, an EEG-based ADHD identification model combining convolutional embedding with a Transformer encoder and attention-based pooling. The approach is designed to capture both local EEG patterns and longer-range temporal relationships. Subject-independent evaluation is used to reduce data leakage. The reported subject-level accuracy is 87.5%.
+The study proposes EEG-TACT, a compact deep-learning architecture combining convolutional embedding, a Transformer encoder, and attention-based pooling. The model captures local spatiotemporal EEG patterns and longer-range temporal dependencies. Subject-independent group partitions are used to prevent data leakage between subjects.
 
-32. MRS-SHAP: Multi-objective Explainable EEG Feature Selection Framework for ADHD Detection
 
-MRS-SHAP: Multi-objective Explainable EEG Feature Selection Framework for ADHD Detection
+## 32. MRS-SHAP: Multi-objective Explainable EEG Feature Selection Framework for ADHD Detection
 
-Discover Applied Sciences, 2026.
+**Mohammed Atheef G. A., Shyam Pranav G., and Omkar S. Powar**
+
+"MRS-SHAP: Multi-objective explainable EEG feature selection framework for ADHD detection."
+
+Discover Applied Sciences, Vol. 8, Article 764, 2026.
 
 DOI: 10.1007/s42452-026-08788-7
 
-Full Text: Springer Nature
+Full Text: [Springer Nature](https://link.springer.com/article/10.1007/s42452-026-08788-7)
 
-The study proposes an explainable EEG feature-selection framework for ADHD detection. EEG data from 121 children, including 61 ADHD and 60 control subjects, is analyzed. The study extracts 998 features from spectral, temporal, statistical, and connectivity domains. SMOTE-ENN is used for class balancing, while SHAP and Dynamic Time Warping (DTW) are used for feature selection and explainability.
+Direct PDF: [Direct PDF](https://link.springer.com/content/pdf/10.1007/s42452-026-08788-7.pdf)
 
-33. ADHD/CD-NET: Automated EEG-Based Characterization of ADHD and CD Using Explainable Deep Neural Network Technique
+The study proposes MRS-SHAP, an explainable EEG feature-selection framework for ADHD detection. EEG data from 121 children, including 61 ADHD and 60 control subjects, is analyzed. The framework uses multiple EEG features together with explainability and feature-selection techniques to identify informative EEG characteristics for ADHD classification.
 
-Hui Wen Loh, Chui Ping Ooi, Shu Lih Oh, Prabal Datta Barua, Yi Ren Tan, U. Rajendra Acharya, and Daniel Shuen Sheng Fung
 
-"ADHD/CD-NET: Automated EEG-Based Characterization of ADHD and CD Using Explainable Deep Neural Network Technique."
+## 33. ADHD/CD-NET: Automated EEG-Based Characterization of ADHD and CD Using Explainable Deep Neural Network Technique
 
-Cognitive Neurodynamics, Vol. 18, Issue 4, pp. 1609–1625, 2024.
+**Loh, H. W., Ooi, C. P., Oh, S. L., Barua, P. D., Tan, Y. R., Acharya, U. R., and Fung, D. S. S.**
+
+"ADHD/CD-NET: automated EEG-based characterization of ADHD and CD using explainable deep neural network technique."
+
+Cognitive Neurodynamics, Vol. 18, pp. 1609–1625, 2024.
 
 DOI: 10.1007/s11571-023-10028-2
 
-Full Text: Springer Nature
+Full Text: [Springer Nature](https://doi.org/10.1007/s11571-023-10028-2)
 
-The study proposes ADHD/CD-NET for classifying ADHD, ADHD with Conduct Disorder (CD), and CD using EEG signals. EEG signals are transformed using Continuous Wavelet Transform (CWT) and correlation matrices. These representations are given to a CNN model, while Grad-CAM is used to explain the model's predictions and identify important EEG channels.
+Direct PDF: [Direct PDF](https://link.springer.com/content/pdf/10.1007/s11571-023-10028-2.pdf)
 
-34. A Fused Power Spectrum Based Feature Selection to Identify Schizophrenia from EEG Signals Using Deep Learning Models
+The study proposes ADHD/CD-NET for distinguishing ADHD, ADHD with Conduct Disorder, and Conduct Disorder using EEG signals. Twelve-channel EEG signals are converted into channel-wise Continuous Wavelet Transform correlation matrices and classified using a CNN. Grad-CAM is used to explain the model's predictions.
 
-Saikat Bandopadhyay, Surya Majumder, Sujay Saha, and Anupam Ghosh
 
-"A Fused Power Spectrum Based Feature Selection to Identify Schizophrenia from EEG Signals Using Deep Learning Models."
+## 34. A Fused Power Spectrum Based Feature Selection to Identify Schizophrenia from EEG Signals Using Deep Learning Models: An Experimental Study
 
-Discover Applied Sciences, 2025.
+**Bandopadhyay, S., Majumder, S., Saha, S., and Ghosh, A.**
+
+"A fused power spectrum based feature selection to identify schizophrenia from EEG signals using deep learning models: an experimental study."
+
+Discover Applied Sciences, Vol. 7, Article 1048, 2025.
 
 DOI: 10.1007/s42452-025-06887-5
 
-Full Text: Springer Nature
+Full Text: [Springer Nature](https://link.springer.com/article/10.1007/s42452-025-06887-5)
 
-The study focuses on schizophrenia rather than ADHD, but its EEG processing methodology is relevant to HDL-ADHD. EEG signals are separated into different frequency bands, and frequency-domain processing is used to create power-spectrum and image-like representations. These representations are classified using different CNN architectures.
+Direct PDF: [Direct PDF](https://link.springer.com/content/pdf/10.1007/s42452-025-06887-5.pdf)
 
-Note: This paper is about schizophrenia, not ADHD. It is mainly useful for EEG preprocessing, frequency-band analysis, spectrogram generation, and CNN-based EEG classification.
+The study focuses on schizophrenia rather than ADHD, but its EEG processing methodology is relevant to HDL-ADHD. The study uses power-spectrum-based EEG processing and image representations followed by different CNN architectures for classification.
 
-35. A Hybrid Approach to ADHD Detection Leveraging Transformer and XGBoost Models Using XSparseFormerNet
+Note: This paper is about schizophrenia, not ADHD. It is mainly useful for EEG preprocessing, frequency-band analysis, power-spectrum representation, and CNN-based EEG classification.
 
-Sharon Rose Sarker, Saowmi Mehjabin, Meherin Majid Piper, Rafeed Rahman, Fahim Ul Islam, and Md. Golam Rabiul Alam
 
-"A Hybrid Approach to ADHD Detection Leveraging Transformer and XGBoost Models Using XSparseFormerNet."
+## 35. A Hybrid Approach to Attention Deficit Hyperactivity Disorder Detection Leveraging Transformer and XGBoost Models Using XSparseFormerNet
 
-Scientific Reports, 2025.
+**Sarker, S. R., Mehjabin, S., Piper, M. M., Rahman, R., Islam, F. U., and Alam, M. G. R.**
+
+"A Hybrid Approach to Attention Deficit Hyperactivity Disorder Detection Leveraging Transformer and XGBoost Models Using XSparseFormerNet."
+
+Scientific Reports, Vol. 15, Article 41039, 2025.
 
 DOI: 10.1038/s41598-025-24919-3
 
-Full Text: Nature Scientific Reports
+Full Text: [Nature Scientific Reports](https://www.nature.com/articles/s41598-025-24919-3)
 
-The study proposes XSparseFormerNet for ADHD detection using EEG signals. The architecture combines Transformer, XGBoost, sparse attention, CBAM, and Firefly Algorithm-based feature selection. The Transformer captures relationships in EEG signals, while XGBoost processes structured features. Their predictions are combined using a hybrid ensemble approach. The proposed method reports an accuracy of 85%.
+Direct PDF: [Direct PDF](https://www.nature.com/articles/s41598-025-24919-3.pdf)
 
-36. Classification of ADHD and Healthy Children Using Multi-Band and Spatial Features of EEG
+The study proposes XSparseFormerNet, a hybrid ADHD detection model combining a customized Transformer with XGBoost. The approach uses Sparse Attention, CBAM, and the Firefly Algorithm for feature selection. Transformer and XGBoost predictions are combined using an ensemble approach. The proposed model reports 85% accuracy.
 
-Hossain, M. B., Himel, M. A. I., Rahim, M. A., Mahmood, S., Miah, A. S., and Shin, J.
 
-"Classification of ADHD and Healthy Children Using Multi-Band and Spatial Features of EEG."
+## 36. Classification of ADHD and Healthy Children Using EEG Based Multi-Band Spatial Features Enhancement
+
+**Hossain, M. B., Himel, M. A. I., Rahim, M. A., Mahmood, S., Miah, A. S. M., and Shin, J.**
+
+"Classification of ADHD and Healthy Children Using EEG Based Multi-Band Spatial Features Enhancement."
 
 arXiv, 2025.
 
-Full Text: arXiv
+Full Text: [arXiv](https://arxiv.org/abs/2504.04664)
 
-Direct PDF: PDF
+Direct PDF: [Direct PDF](https://arxiv.org/pdf/2504.04664)
 
-The study uses 19-channel EEG signals and extracts Power Spectral Density (PSD) and Spectral Entropy features from five frequency bands. These multi-band and spatial features are used for ADHD classification. SVM and XGBoost classifiers are evaluated, with RBF-SVM achieving 99.2% mean cross-validation accuracy.
+The study uses 19-channel EEG signals from children with ADHD and healthy controls. Power Spectral Density and Spectral Entropy features are extracted from five frequency bands, producing a 190-dimensional feature set. An RBF-kernel SVM achieves a mean cross-validation accuracy of 99.2%.
 
-37. An Explainable and Interpretable Model for Attention Deficit Hyperactivity Disorder in Children Using EEG Signals
 
-S. K. Khare and U. Rajendra Acharya
+## 37. An Explainable and Interpretable Model for Attention Deficit Hyperactivity Disorder in Children Using EEG Signals
 
-"An Explainable and Interpretable Model for Attention Deficit Hyperactivity Disorder in Children Using EEG Signals."
+**Khare, S. K., and Acharya, U. R.**
+
+"An explainable and interpretable model for attention deficit hyperactivity disorder in children using EEG signals."
 
 Computers in Biology and Medicine, Vol. 155, Article 106676, 2023.
 
 DOI: 10.1016/j.compbiomed.2023.106676
 
-Full Text: ScienceDirect
+Full Text: [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0010482523001415)
 
-The study proposes an explainable EEG-based ADHD detection model using Variational Mode Decomposition (VMD), Hilbert Transform, and statistical features. Explainability techniques including LIME, SHAP, Partial Dependence Plots (PDP), and Morris analysis are used to interpret the model's predictions.
+Direct PDF: [Direct PDF](https://pure.au.dk/portal/files/406742816/1-s2.0-S0010482523001415-main.pdf)
 
-38. Optimal Channels and Features Selection Based ADHD Detection From EEG Signal Using Statistical and Machine Learning Techniques
+The study proposes an explainable EEG-based ADHD detection model using Variational Mode Decomposition and Hilbert Transform. Forty-one statistical features are extracted and classified using an Explainable Boosting Machine. LIME, SHAP, Partial Dependence Plots, and Morris sensitivity analysis are used to interpret the model. The model reports 99.81% accuracy using ten-fold cross-validation.
 
-Md. Maniruzzaman, Md. Al Mehedi Hasan, Nobuyoshi Asai, and Jungpil Shin
+
+## 38. Optimal Channels and Features Selection Based ADHD Detection From EEG Signal Using Statistical and Machine Learning Techniques
+
+**Maniruzzaman, M., Hasan, M. A. M., Asai, N., and Shin, J.**
 
 "Optimal Channels and Features Selection Based ADHD Detection From EEG Signal Using Statistical and Machine Learning Techniques."
 
-IEEE Access, Vol. 11, 2023.
+IEEE Access, Vol. 11, pp. 33570–33583, 2023.
 
 DOI: 10.1109/ACCESS.2023.3264266
 
-Full Text: IEEE Xplore
+Full Text: [IEEE Xplore](https://doi.org/10.1109/ACCESS.2023.3264266)
 
-The study focuses on selecting optimal EEG channels and features for ADHD detection using statistical and machine-learning techniques. The approach reduces the EEG information from 19 channels to six important channels and evaluates multiple classifiers for ADHD classification. The study demonstrates that selecting informative channels can reduce data complexity while maintaining useful classification information.
+Direct PDF: [Direct PDF](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=10092983)
 
-39. Detection of ADHD From EEG Signals Using New Hybrid Decomposition and Deep Learning Techniques
+The study focuses on selecting optimal EEG channels and features for ADHD detection. From 19 EEG channels, six important overlapping channels are selected using SVM and t-test-based approaches. LASSO is then used to select 28 important features. A Gaussian Process classifier achieves 97.53% accuracy and an AUC of 0.999.
 
-Mustafa Yasin Esas and Fatma Latifoğlu
 
-"Detection of ADHD From EEG Signals Using New Hybrid Decomposition and Deep Learning Techniques."
+## 39. Detection of ADHD Cases Using CNN and Classical Classifiers of Raw EEG
 
-Journal of Neural Engineering, Vol. 20, No. 3, Article 036028, 2023.
+**TaghiBeyglou, B., Shahbazi, A., Bagheri, F., Akbarian, S., and Jahed, M.**
 
-DOI: 10.1088/1741-2552/acc902
+"Detection of ADHD cases using CNN and classical classifiers of raw EEG."
 
-Direct PDF: PDF
+Computer Methods and Programs in Biomedicine Update, Vol. 2, Article 100080, 2022.
 
-The study combines Robust Local Mode Decomposition (RLMD), Variational Mode Decomposition (VMD), and deep learning for ADHD detection using 19-channel EEG signals. The decomposed EEG sub-bands are used to provide informative representations for deep-learning-based classification.
+DOI: 10.1016/j.cmpbup.2022.100080
 
-40. Diagnosis of Attention Deficit Hyperactivity Disorder Using Non-Linear Analysis of the EEG Signal
+Full Text: [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S2666990022000313)
 
-Y. K. Boroujeni, A. A. Rastegari, and H. Khodadadi
+Direct PDF: [Direct PDF](https://pdf.sciencedirectassets.com/778412/1-s2.0-S2666990021X00031/1-s2.0-S2666990022000313/main.pdf)
 
-"Diagnosis of Attention Deficit Hyperactivity Disorder Using Non-Linear Analysis of the EEG Signal."
+The study proposes a CNN-based ADHD detection method using raw EEG signals. CNN feature maps are extracted from different layers and then provided to classical classifiers including SVM, logistic regression, and random forest. The initial CNN achieves 86.33% accuracy, while the hybrid CNN and logistic-regression approach achieves 95.83% accuracy on unseen epochs.
+
+
+## 40. Diagnosis of Attention Deficit Hyperactivity Disorder Using Non-Linear Analysis of the EEG Signal
+
+**Boroujeni, Y. K., Rastegari, A. A., and Khodadadi, H.**
+
+"Diagnosis of attention deficit hyperactivity disorder using non-linear analysis of the EEG signal."
 
 IET Systems Biology, Vol. 13, Issue 5, pp. 260–266, 2019.
 
 DOI: 10.1049/iet-syb.2018.5130
 
-Full Text: PubMed Central
+Full Text: [PubMed Central](https://pmc.ncbi.nlm.nih.gov/articles/PMC8687398/)
 
-The study uses nonlinear EEG features including Lyapunov exponent, fractal dimension, correlation dimension, and entropy measures for ADHD diagnosis. EEG signals from frontal channels are analyzed to distinguish ADHD and healthy subjects. The work demonstrates the usefulness of nonlinear EEG characteristics for ADHD classification.
+Direct PDF: [Direct PDF](https://pmc.ncbi.nlm.nih.gov/articles/PMC8687398/bin/)
+
+The study uses nonlinear EEG characteristics for ADHD diagnosis. Features including Lyapunov exponent, fractal dimension, correlation dimension, and entropy measures are extracted from EEG signals. Frontal EEG channels are analyzed to distinguish ADHD and healthy subjects.
