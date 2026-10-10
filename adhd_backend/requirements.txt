@@ -1,0 +1,14 @@
+fastapi
+python-multipart
+uvicorn
+tensorflow
+numpy
+pandas
+scipy
+scikit-learn
+joblib
+h5py
+mne
+edfio
+
+xgboost

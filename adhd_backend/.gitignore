@@ -1,0 +1,22 @@
+# Datasets (large benchmark archives)
+Datasets/
+
+# Python caches
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.venv/
+venv/
+env/
+
+# System / IDE
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Ensure trained neural network weights and test fixtures are tracked
+!models/
+!models/**
+!tests/fixtures/**
