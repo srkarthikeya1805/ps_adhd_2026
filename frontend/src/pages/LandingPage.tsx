@@ -40,9 +40,13 @@ import { BRAIN_REGIONS, STANDARD_19_CHANNELS, FREQUENCY_BANDS, BENCHMARK_DATASET
 import { validateEEG, predictEEG } from '../services/api';
 import { saveLatestBatch, addToHistory, saveSelectedFileResult } from '../services/storage';
 import { neuroAudio } from '../utils/audio';
+import { CinematicIntroExperience } from '../components/intro/CinematicIntroExperience';
 
 export const LandingPage: React.FC = () => {
   const navigate = useNavigate();
+
+  // Cinematic 3D Video Reference Intro State
+  const [showCinematicIntro, setShowCinematicIntro] = useState<boolean>(true);
 
   // Scroll Progress State (0.0 to 1.0)
   const [scrollProgress, setScrollProgress] = useState<number>(0);
@@ -184,6 +188,16 @@ export const LandingPage: React.FC = () => {
     }
   };
 
+  // If Cinematic Intro is active, display the video reference opening & disassembly experience
+  if (showCinematicIntro) {
+    return (
+      <CinematicIntroExperience
+        onEnterApp={() => setShowCinematicIntro(false)}
+        onSkip={() => setShowCinematicIntro(false)}
+      />
+    );
+  }
+
   return (
     <div className="relative min-h-screen bg-[#030712] text-slate-100 flex flex-col overflow-x-hidden selection:bg-cyan-500/30 selection:text-cyan-200">
       
@@ -205,8 +219,12 @@ export const LandingPage: React.FC = () => {
       <div className="fixed inset-0 pointer-events-none z-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(0,229,255,0.08),rgba(3,7,18,0.95))]" />
       <div className="fixed inset-0 pointer-events-none neural-grid opacity-20 z-0" />
 
-      {/* Floating Sci-Fi HUD Navigation Pill */}
-      <Navbar activeSection={activeSection} onNavigateSection={scrollToSection} />
+      {/* Floating Sci-Fi HUD Navigation Pill with Replay Intro Support */}
+      <Navbar
+        activeSection={activeSection}
+        onNavigateSection={scrollToSection}
+        onReplayIntro={() => setShowCinematicIntro(true)}
+      />
 
       {/* ========================================================================= */}
       {/* SCENE 01: THE AWAKENING — CINEMATIC BRAIN HERO                             */}
@@ -286,6 +304,14 @@ export const LandingPage: React.FC = () => {
               >
                 <Play className="w-3.5 h-3.5 fill-current text-cyan-400" />
                 <span>Explore 10-20 Montage</span>
+              </button>
+
+              <button
+                onClick={() => setShowCinematicIntro(true)}
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-full font-mono text-xs font-medium text-cyan-300 bg-cyan-500/10 border border-cyan-400/50 hover:bg-cyan-500/20 hover:border-cyan-300 transition-all backdrop-blur-xl shadow-[0_0_15px_rgba(0,240,255,0.25)]"
+              >
+                <RotateCcw className="w-3.5 h-3.5 text-cyan-400" />
+                <span>Replay 3D Brain Intro</span>
               </button>
             </div>
 

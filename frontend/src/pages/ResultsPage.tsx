@@ -35,6 +35,14 @@ import { ModelProcessSlideshow } from '../components/results/ModelProcessSlidesh
 import { PredictionCausesExplainer } from '../components/results/PredictionCausesExplainer';
 import { TopographicScalpHeatmap } from '../components/charts/TopographicScalpHeatmap';
 
+// Video Reference Upgrade Interactive Components
+import { Interactive3DBrainViewer } from '../components/results/Interactive3DBrainViewer';
+import { EegChannelMappingExplorer } from '../components/results/EegChannelMappingExplorer';
+import { AnimatedFrequencyExplorer } from '../components/results/AnimatedFrequencyExplorer';
+import { BrainActivityHeatmap3D } from '../components/results/BrainActivityHeatmap3D';
+import { ThetaBetaComparisonCard } from '../components/results/ThetaBetaComparisonCard';
+import { AiEnsemblePipelineVisualizer } from '../components/results/AiEnsemblePipelineVisualizer';
+
 // Default Benchmark Datasets for Instant Fast Demo Loading
 const DEFAULT_ADHD_RESULT: FilePredictionResult = {
   filename: 'Subject_01_ADHD_Clinical_Benchmark.csv',
@@ -414,6 +422,35 @@ export const ResultsPage: React.FC = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* ========================================================================= */}
+      {/* INTERACTIVE NEUROIMAGING & ELECTROPHYSIOLOGICAL SUITE                      */}
+      {/* Enhanced Video Reference Visualizations                                    */}
+      {/* ========================================================================= */}
+      <div className="space-y-8">
+        <div className="flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 w-fit text-xs font-mono font-bold tracking-wider uppercase shadow-[0_0_20px_rgba(0,229,255,0.15)]">
+          <Sparkles className="w-4 h-4 text-cyan-400 animate-pulse" />
+          <span>Interactive 3D Neuroimaging & Dynamic Electrophysiology Suite</span>
+        </div>
+
+        {/* 1. Interactive 3D Brain: 360-degree rotatable brain with clickable 10-20 electrodes */}
+        <Interactive3DBrainViewer isADHD={isADHD} />
+
+        {/* 2. EEG Channel Mapping: 19 channel selector, live waveform, brain region, frequency power */}
+        <EegChannelMappingExplorer result={result} isADHD={isADHD} />
+
+        {/* 3. Brain Activity Heatmap: 3D rotating brain with frequency-power mapping & band switcher */}
+        <BrainActivityHeatmap3D isADHD={isADHD} />
+
+        {/* 4. Theta/Beta Comparison: animated dual waveforms, actual calculated powers, TBR gauge */}
+        <ThetaBetaComparisonCard result={result} isADHD={isADHD} />
+
+        {/* 5. Animated Frequency Explorer: 2D & 3D waveforms, Delta purple, Theta electric blue, Alpha cyan, Beta neon pink, Gamma golden yellow */}
+        <AnimatedFrequencyExplorer isADHD={isADHD} />
+
+        {/* 6. AI Ensemble Visualization: animated visual pipeline with the 3 existing models */}
+        <AiEnsemblePipelineVisualizer result={result} />
       </div>
 
       {/* SECTION 2: Newly Added Component — Spectral Band & Ensemble Donut Charts */}

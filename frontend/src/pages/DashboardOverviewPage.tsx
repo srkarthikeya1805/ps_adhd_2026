@@ -111,6 +111,11 @@ export const DashboardOverviewPage: React.FC = () => {
                   3-Model Ensemble
                 </Button>
               </Link>
+              <Link to="/">
+                <Button size="md" variant="secondary" leftIcon={<Sparkles className="w-4 h-4 text-cyan-400" />}>
+                  Cinematic 3D Intro
+                </Button>
+              </Link>
             </div>
           </div>
 

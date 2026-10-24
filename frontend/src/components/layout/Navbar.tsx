@@ -11,6 +11,7 @@ import {
   Sparkles,
   Database,
   Sliders,
+  RotateCcw,
 } from 'lucide-react';
 import { getHealth } from '../../services/api';
 import { HealthResponse } from '../../types';
@@ -19,9 +20,10 @@ import { neuroAudio } from '../../utils/audio';
 interface NavbarProps {
   activeSection?: string;
   onNavigateSection?: (sectionId: string) => void;
+  onReplayIntro?: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ activeSection = 'hero', onNavigateSection }) => {
+export const Navbar: React.FC<NavbarProps> = ({ activeSection = 'hero', onNavigateSection, onReplayIntro }) => {
   const [health, setHealth] = useState<HealthResponse | null>(null);
   const [isChecking, setIsChecking] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
@@ -165,6 +167,18 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection = 'hero', onNaviga
           >
             {!isMuted ? <Volume2 className="w-4 h-4 animate-pulse" /> : <VolumeX className="w-4 h-4" />}
           </button>
+
+          {/* Replay 3D Brain Intro Button */}
+          {onReplayIntro && (
+            <button
+              onClick={onReplayIntro}
+              title="Replay 3D Brain Intro"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-400/40 text-cyan-300 hover:bg-cyan-500/20 hover:border-cyan-300 text-xs font-mono font-medium transition-all shadow-[0_0_15px_rgba(0,240,255,0.2)]"
+            >
+              <RotateCcw className="w-3.5 h-3.5 text-cyan-400" />
+              <span className="hidden sm:inline">3D Intro</span>
+            </button>
+          )}
 
           {/* Backend API Health Status Indicator */}
           <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-950/80 border border-slate-800/80 text-[11px] font-mono backdrop-blur-2xl shadow-lg">
