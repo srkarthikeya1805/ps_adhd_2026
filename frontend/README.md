@@ -8,13 +8,14 @@ NeuroScan AI pairs directly with the [Universal EEG ADHD Detection Backend](file
 
 ## 🌟 Key Application Features
 
-### 1. Procedural 3D Interactive Brain (`src/components/BrainCanvas.tsx`)
+### 1. Direct-to-Workspace Scientific Landing Page & 3D Interactive Brain (`src/pages/LandingPage.tsx`, `src/components/BrainCanvas.tsx`)
+* **Instant UI Presentation**: Bypasses preliminary intro animation sequences to render the comprehensive clinical interface immediately on root load (`http://localhost:5173/`).
 * **Dynamic Geometry**: Custom procedural dual-hemisphere 3D mesh with gyri-like surface displacement, glowing vertex shaders (cyan, electric blue, violet, magenta), and atmospheric point lights.
 * **Synaptic Filaments & Electrical Pulses**: Travelling particle nodes propagate along synaptic curves across cortical lobes.
-* **Hemispheric Fissure Separation**: Dual-hemisphere separation and reconnection animation revealing internal neural structures.
+* **Live 10-20 Microvolt Streams**: Floating HUD telemetry displaying real-time waveforms across 8 representative channels (Fp1, Fp2, Fz, C3, Cz, Pz, O1, O2).
 * **Interactive Cortical Lobes**: Real-time hover and click inspection for Frontal, Parietal, Temporal, and Occipital lobes with anatomical descriptions and ADHD neuro-developmental correlations.
 * **Resilient Architecture**: Automated WebGL context-loss recovery and seamless 2D canvas fallback (`BrainFallback.tsx`) for low-end hardware or virtualized environments.
-* **Accessible Motion**: Instant **Skip Intro** control and built-in `prefers-reduced-motion` detection.
+* **Accessible Motion**: Built-in `prefers-reduced-motion` detection and GPU acceleration.
 
 ### 2. Multi-Tier Bio-Signal Validation & Rejection Alerts (`src/pages/BatchResultsPage.tsx`, `UploadPage.tsx`)
 * **Strict Biological Signal Gating**: When non-signal metadata (`trial_sequence.zip`), non-ADHD motor imagery paradigms (`BCICIV_1_mat.zip`), or incompatible sparse montages lacking standard 10-20 channels (`MENDELY_ADHD.zip`) are uploaded, the UI halts prediction and displays prominent clinical rejection banners.

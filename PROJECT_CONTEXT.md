@@ -132,3 +132,19 @@ Hot-reloading is supported: editing `models/ensemble_config.json` updates infere
 * **`POST /api/validate`**: Validates file integrity, bio-signal authenticity, channel availability, and sampling rate without running inference.
 * **`GET /api/model/info`**: Returns model architecture, input/output tensor shapes, parameter counts, and active weights.
 * **`GET /health` / `GET /api/health`**: Health check reporting model loading status and computation device (CPU/GPU).
+
+---
+
+## 6. Frontend Architecture & Direct UI Access
+
+The frontend is a clinical-grade neuroscience interface built with **React 19**, **Vite**, **TypeScript**, **Three.js / React Three Fiber**, and **Tailwind CSS v4**.
+
+* **Direct UI Presentation (`LandingPage.tsx`)**:
+  - The preliminary multi-stage cinematic intro sequence (idle landing, exploded anatomical layer disassembly, and 3D head cap resolution) has been bypassed.
+  - When accessing the application URL (`http://localhost:5173/`), the complete scientific interface is rendered immediately.
+* **Integrated 4-Phase Landing Workflow**:
+  1. **Fixed 3D Cortical Stage (`scene-hero`)**: Interactive Three.js cortical mesh with real-time lobe spotlighting (Frontal, Parietal, Temporal, Occipital) and 8-channel live 10-20 waveform microvolt stream telemetry.
+  2. **10-20 Montage Explorer (`scene-montage`)**: Complete 19-channel electrode array visualization, frequency band selector (Delta, Theta, Alpha, Beta, Gamma), and ADHD TBR biomarker context.
+  3. **Ensemble Architecture Deep Dive (`scene-pipeline`)**: Interactive 3D tilt cards detailing CNN-Transformer, Welch PSD + XGBoost, and EEGNet with mathematical fusion equations.
+  4. **Neural Lab Diagnostic Workspace (`scene-lab`)**: Polymorphic drag-and-drop file upload, 7-tier pre-validation modal, 1-click clinical benchmark loaders, and instant batch/single file prediction telemetry.
+

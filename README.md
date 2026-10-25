@@ -332,10 +332,10 @@ A state-of-the-art, cinematic neuroscience web application built with **React 19
 
 ### 🌟 Key Frontend Features
 
-1. **Cinematic 3D Animated Brain (`BrainCanvas.tsx`)**:
+1. **Direct Scientific Landing & 3D Interactive Brain (`LandingPage.tsx`, `BrainCanvas.tsx`)**:
+   - Direct-to-workspace landing experience immediately presenting the complete scientific interface on root load without introductory scene delays.
    - Built with procedural Three.js dual-hemisphere geometry, gyri-like surface bumps, glowing vertex colors (cyan, electric blue, violet, magenta), and atmospheric point lights.
-   - Dual-hemisphere separation and reconnection animation cycle revealing internal neural structures.
-   - Travelling electrical pulse nodes propagating across synaptic filaments.
+   - Floating real-time HUD telemetry rendering live 10-20 microvolt stream traces (Fp1, Fp2, Fz, C3, Cz, Pz, O1, O2).
    - Interactive lobe highlighting (Frontal, Parietal, Temporal, Occipital) with anatomical descriptions and educational ADHD correlation context.
    - Robust WebGL fallback (`BrainFallback.tsx`) ensuring 100% availability on low-end hardware.
 
