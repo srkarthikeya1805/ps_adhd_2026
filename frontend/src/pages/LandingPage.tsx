@@ -121,7 +121,7 @@ export const LandingPage: React.FC = () => {
   const handleJumpToRotation = () => {
     if (fullscreenVideoRef.current) {
       fullscreenVideoRef.current.currentTime = 20.0;
-      fullscreenVideoRef.current.playbackRate = 2.02;
+      fullscreenVideoRef.current.playbackRate = 2.30;
       setIntroPhase('rotating_center');
       fullscreenVideoRef.current.play().catch(() => {});
     }
@@ -131,7 +131,7 @@ export const LandingPage: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setIntroPhase('init');
     if (fullscreenVideoRef.current) {
-      fullscreenVideoRef.current.playbackRate = 2.02;
+      fullscreenVideoRef.current.playbackRate = 2.30;
       fullscreenVideoRef.current.currentTime = 0;
       fullscreenVideoRef.current.play().catch(() => {});
     }
@@ -140,18 +140,18 @@ export const LandingPage: React.FC = () => {
   useEffect(() => {
     setIntroPhase('init');
     if (fullscreenVideoRef.current) {
-      fullscreenVideoRef.current.playbackRate = 2.02;
+      fullscreenVideoRef.current.playbackRate = 2.30;
       fullscreenVideoRef.current.currentTime = 0;
       fullscreenVideoRef.current.play().catch(() => {});
     }
 
-    // Safety fallback: ensure video completes in 15s and never gets stuck
+    // Safety fallback: ensure video completes in 12-15s (~13.1s) and never gets stuck
     const timer: ReturnType<typeof setTimeout> = setTimeout(() => {
       setIntroPhase('settled');
       if (heroVideoRef.current) {
         heroVideoRef.current.play().catch(() => {});
       }
-    }, 15200);
+    }, 13500);
 
     return () => clearTimeout(timer);
   }, [introTrigger]);
@@ -330,17 +330,17 @@ export const LandingPage: React.FC = () => {
               preload="auto"
               onLoadedMetadata={(e) => {
                 const v = e.currentTarget;
-                v.playbackRate = 2.02; // Compressed to ~15.0s flat
+                v.playbackRate = 2.30; // Compressed to ~13.1s (12-15s range)
                 setVideoDuration(v.duration || 30.2);
                 v.play().catch(() => {});
               }}
               onCanPlay={(e) => {
                 const v = e.currentTarget;
-                v.playbackRate = 2.02;
+                v.playbackRate = 2.30;
                 v.play().catch(() => {});
               }}
               onPlay={(e) => {
-                e.currentTarget.playbackRate = 2.02;
+                e.currentTarget.playbackRate = 2.30;
               }}
               onTimeUpdate={handleTimeUpdate}
               onEnded={handleVideoEnded}

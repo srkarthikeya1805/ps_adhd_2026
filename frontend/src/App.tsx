@@ -10,6 +10,7 @@ import { ResultsPage } from './pages/ResultsPage';
 import { BatchResultsPage } from './pages/BatchResultsPage';
 import { ModelEnsemblePage } from './pages/ModelEnsemblePage';
 import { SignalExplorerPage } from './pages/SignalExplorerPage';
+import { BrainRecoveryPage } from './pages/BrainRecoveryPage';
 import { HistoryPage } from './pages/HistoryPage';
 import { SettingsPage } from './pages/SettingsPage';
 
@@ -48,6 +49,7 @@ export function App() {
             <Route index element={<DashboardOverviewPage />} />
             <Route path="upload" element={<UploadPage />} />
             <Route path="results" element={<ResultsPage />} />
+            <Route path="neuro-care" element={<BrainRecoveryPage />} />
             <Route path="batch" element={<BatchResultsPage />} />
             <Route path="models" element={<ModelEnsemblePage />} />
             <Route path="signal-explorer" element={<SignalExplorerPage />} />

@@ -117,9 +117,9 @@ export const NeuralBackground: React.FC = () => {
           backgroundSize: 'cover',
           backgroundPosition: 'center center',
           backgroundRepeat: 'no-repeat',
-          opacity: 0.45,
+          opacity: 0.28,
           mixBlendMode: 'screen',
-          filter: 'brightness(1.0) contrast(1.15) saturate(1.15)',
+          filter: 'brightness(0.85) contrast(1.10) saturate(1.05)',
         }}
       />
 
@@ -128,7 +128,7 @@ export const NeuralBackground: React.FC = () => {
         className="absolute inset-0"
         style={{
           background:
-            'radial-gradient(circle at 50% 50%, rgba(0, 4, 30, 0.35) 0%, rgba(0, 4, 25, 0.65) 55%, rgba(0, 2, 20, 0.90) 100%)',
+            'radial-gradient(circle at 50% 50%, rgba(0, 4, 30, 0.45) 0%, rgba(0, 4, 25, 0.72) 55%, rgba(0, 2, 20, 0.94) 100%)',
         }}
       />
 

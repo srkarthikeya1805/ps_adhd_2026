@@ -14,6 +14,7 @@ import {
   LogOut,
   Brain,
   Sparkles,
+  HeartPulse,
 } from 'lucide-react';
 import { clearSession, getSession } from '../../services/storage';
 
@@ -30,6 +31,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggleCollapse 
     { label: 'Overview', to: '/dashboard', icon: LayoutDashboard, tag: 'LAB', exact: true },
     { label: 'New EEG Analysis', to: '/dashboard/upload', icon: UploadCloud, tag: 'IN' },
     { label: 'Analysis Results', to: '/dashboard/results', icon: Activity, tag: 'ML' },
+    { label: 'Brain Recovery & Care', to: '/dashboard/neuro-care', icon: HeartPulse, tag: 'CARE' },
     { label: 'Model Ensemble', to: '/dashboard/models', icon: Cpu, tag: '3X' },
     { label: 'Signal Explorer', to: '/dashboard/signal-explorer', icon: Layers, tag: '19CH' },
     { label: 'Batch Analysis', to: '/dashboard/batch', icon: FileStack, tag: 'SET' },

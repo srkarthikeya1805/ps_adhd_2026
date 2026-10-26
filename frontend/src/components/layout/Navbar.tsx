@@ -149,6 +149,12 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection = 'hero', onNaviga
             <Link to="/dashboard/results" className="px-3 py-1 rounded-full hover:text-[#20BFE8] transition-colors">
               Results
             </Link>
+            <Link to="/dashboard/neuro-care" className="px-3 py-1 rounded-full hover:text-[#20BFE8] text-[#79DFFF] font-bold transition-colors">
+              Brain Care
+            </Link>
+            <Link to="/dashboard/signal-explorer" className="px-3 py-1 rounded-full hover:text-[#20BFE8] transition-colors">
+              Signals
+            </Link>
             <Link to="/dashboard/models" className="px-3 py-1 rounded-full hover:text-[#20BFE8] transition-colors">
               Models
             </Link>
