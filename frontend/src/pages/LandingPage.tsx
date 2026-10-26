@@ -87,15 +87,15 @@ export const LandingPage: React.FC = () => {
   const isFullscreen =
     introPhase === 'init' || introPhase === 'synapse' || introPhase === 'rotating_center';
 
-  // Timeupdate handler syncing phases with combined_final_video.mp4 (compressed to 15s flat at 2.02x speed)
+  // Timeupdate handler syncing phases with combined_final_video.mp4 (compressed to 10s flat at 3.03x speed)
   const handleTimeUpdate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
     const current = e.currentTarget.currentTime;
-    const dur = e.currentTarget.duration || 30.2;
+    const dur = e.currentTarget.duration || 30.29;
     setVideoCurrentTime(current);
     setVideoProgress(dur > 0 ? (current / dur) * 100 : 0);
 
-    // At 2.02x speed, 26.5s in video occurs at ~13.1s real time
-    if (current >= 26.5 && current < dur - 0.2) {
+    // At 3.03x speed, 25.5s in video occurs at ~8.4s real time (giving 1.6s for rotation to right hero before 10.0s end)
+    if (current >= 25.5 && current < dur - 0.2) {
       if (introPhase !== 'transitioning_right') setIntroPhase('transitioning_right');
     }
   };
@@ -121,7 +121,7 @@ export const LandingPage: React.FC = () => {
   const handleJumpToRotation = () => {
     if (fullscreenVideoRef.current) {
       fullscreenVideoRef.current.currentTime = 20.0;
-      fullscreenVideoRef.current.playbackRate = 2.30;
+      fullscreenVideoRef.current.playbackRate = 3.03;
       setIntroPhase('rotating_center');
       fullscreenVideoRef.current.play().catch(() => {});
     }
@@ -131,7 +131,7 @@ export const LandingPage: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setIntroPhase('init');
     if (fullscreenVideoRef.current) {
-      fullscreenVideoRef.current.playbackRate = 2.30;
+      fullscreenVideoRef.current.playbackRate = 3.03;
       fullscreenVideoRef.current.currentTime = 0;
       fullscreenVideoRef.current.play().catch(() => {});
     }
@@ -140,18 +140,18 @@ export const LandingPage: React.FC = () => {
   useEffect(() => {
     setIntroPhase('init');
     if (fullscreenVideoRef.current) {
-      fullscreenVideoRef.current.playbackRate = 2.30;
+      fullscreenVideoRef.current.playbackRate = 3.03;
       fullscreenVideoRef.current.currentTime = 0;
       fullscreenVideoRef.current.play().catch(() => {});
     }
 
-    // Safety fallback: ensure video completes in 12-15s (~13.1s) and never gets stuck
+    // Safety fallback: ensure video completes in ~10s and never gets stuck
     const timer: ReturnType<typeof setTimeout> = setTimeout(() => {
       setIntroPhase('settled');
       if (heroVideoRef.current) {
         heroVideoRef.current.play().catch(() => {});
       }
-    }, 13500);
+    }, 10200);
 
     return () => clearTimeout(timer);
   }, [introTrigger]);
@@ -330,17 +330,25 @@ export const LandingPage: React.FC = () => {
               preload="auto"
               onLoadedMetadata={(e) => {
                 const v = e.currentTarget;
-                v.playbackRate = 2.30; // Compressed to ~13.1s (12-15s range)
-                setVideoDuration(v.duration || 30.2);
+                v.playbackRate = 3.03; // Compressed to ~10.0s flat
+                setVideoDuration(v.duration || 30.29);
                 v.play().catch(() => {});
               }}
               onCanPlay={(e) => {
                 const v = e.currentTarget;
-                v.playbackRate = 2.30;
+                v.playbackRate = 3.03;
                 v.play().catch(() => {});
               }}
               onPlay={(e) => {
-                e.currentTarget.playbackRate = 2.30;
+                e.currentTarget.playbackRate = 3.03;
+              }}
+              onWaiting={(e) => {
+                // Ensure uninterrupted fluid playback
+                e.currentTarget.play().catch(() => {});
+              }}
+              onError={() => {
+                // Settle immediately on any decode error so screen never freezes
+                setIntroPhase('settled');
               }}
               onTimeUpdate={handleTimeUpdate}
               onEnded={handleVideoEnded}
@@ -478,33 +486,44 @@ export const LandingPage: React.FC = () => {
               />
             </motion.div>
 
-            {/* Item 4: Action Buttons (Slide in & scale up) */}
-            <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.95 }}
-              animate={{
-                opacity: introPhase === 'transitioning_right' || introPhase === 'settled' ? 1 : 0,
-                y: introPhase === 'transitioning_right' || introPhase === 'settled' ? 0 : 20,
-                scale: introPhase === 'transitioning_right' || introPhase === 'settled' ? 1 : 0.95,
-              }}
-              transition={{ duration: 0.8, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-wrap items-center gap-4 pt-2"
-            >
-              <button
-                onClick={() => navigate('/login')}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-heading text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-[#0087FF] to-[#20BFE8] text-white shadow-[0_0_30px_rgba(0,135,255,0.4)] hover:shadow-[0_0_40px_rgba(0,135,255,0.6)] hover:scale-105 transition-all cursor-pointer"
+            {/* Item 4: Action Buttons (Slide in & scale up one after the other) */}
+            <div className="flex flex-wrap items-center gap-4 pt-2">
+              <motion.div
+                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                animate={{
+                  opacity: introPhase === 'transitioning_right' || introPhase === 'settled' ? 1 : 0,
+                  y: introPhase === 'transitioning_right' || introPhase === 'settled' ? 0 : 20,
+                  scale: introPhase === 'transitioning_right' || introPhase === 'settled' ? 1 : 0.95,
+                }}
+                transition={{ duration: 0.7, delay: 0.65, ease: [0.16, 1, 0.3, 1] }}
               >
-                <span>Enter Neural Lab</span>
-                <ArrowRight className="w-4 h-4 stroke-[2.5]" />
-              </button>
+                <button
+                  onClick={() => navigate('/login')}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-heading text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-[#0087FF] to-[#20BFE8] text-white shadow-[0_0_30px_rgba(0,135,255,0.4)] hover:shadow-[0_0_40px_rgba(0,135,255,0.6)] hover:scale-105 transition-all cursor-pointer"
+                >
+                  <span>Enter Neural Lab</span>
+                  <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+                </button>
+              </motion.div>
 
-              <button
-                onClick={() => scrollToSection('scene-montage')}
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-full font-heading text-xs font-bold text-slate-200 bg-[#061426]/90 border border-slate-700/80 hover:border-[#20BFE8] hover:text-white transition-all backdrop-blur-xl cursor-pointer"
+              <motion.div
+                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                animate={{
+                  opacity: introPhase === 'transitioning_right' || introPhase === 'settled' ? 1 : 0,
+                  y: introPhase === 'transitioning_right' || introPhase === 'settled' ? 0 : 20,
+                  scale: introPhase === 'transitioning_right' || introPhase === 'settled' ? 1 : 0.95,
+                }}
+                transition={{ duration: 0.7, delay: 0.80, ease: [0.16, 1, 0.3, 1] }}
               >
-                <Play className="w-3.5 h-3.5 fill-current text-[#20BFE8]" />
-                <span>Explore 10-20 Montage</span>
-              </button>
-            </motion.div>
+                <button
+                  onClick={() => scrollToSection('scene-montage')}
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-full font-heading text-xs font-bold text-slate-200 bg-[#061426]/90 border border-slate-700/80 hover:border-[#20BFE8] hover:text-white transition-all backdrop-blur-xl cursor-pointer"
+                >
+                  <Play className="w-3.5 h-3.5 fill-current text-[#20BFE8]" />
+                  <span>Explore 10-20 Montage</span>
+                </button>
+              </motion.div>
+            </div>
 
             {/* Item 5: 4 Interactive Lobe Highlight Pills (One by one cascade with 3D Hover Tilt & Floating) */}
             <motion.div
@@ -660,9 +679,13 @@ export const LandingPage: React.FC = () => {
                 Clinical EEG Frequency Bands:
               </span>
               <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-                {FREQUENCY_BANDS.map((band) => (
-                  <button
+                {FREQUENCY_BANDS.map((band, idx) => (
+                  <motion.button
                     key={band.name}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={{ duration: 0.5, delay: idx * 0.12, ease: [0.16, 1, 0.3, 1] }}
                     onClick={() => {
                       setSelectedFreqBand(band.name);
                       neuroAudio.playSynapseBlip(band.name === 'Theta' ? 520 : 640);
@@ -678,16 +701,22 @@ export const LandingPage: React.FC = () => {
                       <span className="w-2 h-2 rounded-full" style={{ backgroundColor: band.color }} />
                     </div>
                     <span className="text-[10px] font-mono text-cyan-300 block mt-1">{band.range}</span>
-                  </button>
+                  </motion.button>
                 ))}
               </div>
             </div>
 
-            {/* Active Frequency Band Clinical Explanation */}
+            {/* Active Frequency Band Clinical Explanation (Reveals after bands) */}
             {(() => {
               const band = FREQUENCY_BANDS.find((b) => b.name === selectedFreqBand) || FREQUENCY_BANDS[1];
               return (
-                <div className="p-4 rounded-2xl glass-panel border border-slate-800 space-y-2">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.6, delay: 0.65, ease: [0.16, 1, 0.3, 1] }}
+                  className="p-4 rounded-2xl glass-panel border border-slate-800 space-y-2"
+                >
                   <div className="flex items-center gap-2">
                     <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: band.color }} />
                     <h4 className="text-sm font-bold font-heading text-white">
@@ -698,7 +727,7 @@ export const LandingPage: React.FC = () => {
                   <p className="text-[11px] font-mono text-cyan-300 border-t border-slate-800 pt-2">
                     Clinical Correlation: Frontal Theta/Beta Ratio (TBR) {band.name === 'Theta' ? 'exceeds 3.0 in ADHD cohorts during resting and continuous performance tasks.' : 'acts as a primary biomarker extracted by our Welch PSD and CNN-Transformer branches.'}
                   </p>
-                </div>
+                </motion.div>
               );
             })()}
           </div>
@@ -716,11 +745,15 @@ export const LandingPage: React.FC = () => {
                 <span className="text-[10px] font-mono text-violet-300">19 Channels Active</span>
               </div>
 
-              {/* Scalp Channels Grid */}
+              {/* Scalp Channels Grid (One by one staggered reveal) */}
               <div className="grid grid-cols-4 sm:grid-cols-5 gap-2">
-                {STANDARD_19_CHANNELS.map((ch) => (
-                  <button
+                {STANDARD_19_CHANNELS.map((ch, idx) => (
+                  <motion.button
                     key={ch}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={{ duration: 0.35, delay: 0.25 + idx * 0.025, ease: [0.16, 1, 0.3, 1] }}
                     onClick={() => {
                       setActiveElectrode(activeElectrode === ch ? null : ch);
                       neuroAudio.playSynapseBlip(680);
@@ -732,7 +765,7 @@ export const LandingPage: React.FC = () => {
                     }`}
                   >
                     {ch}
-                  </button>
+                  </motion.button>
                 ))}
               </div>
 
@@ -822,9 +855,13 @@ export const LandingPage: React.FC = () => {
                 desc: 'Compact spatial-temporal representation across scalp electrodes.',
                 color: 'border-teal-500/40 text-teal-400',
               },
-            ].map((stg) => (
-              <div
+            ].map((stg, idx) => (
+              <motion.div
                 key={stg.step}
+                initial={{ opacity: 0, y: 35 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.55, delay: idx * 0.16, ease: [0.16, 1, 0.3, 1] }}
                 className="p-5 rounded-2xl glass-panel border border-slate-800 hover:border-cyan-400/60 transition-all space-y-2 group"
               >
                 <div className="flex items-center justify-between">
@@ -834,12 +871,18 @@ export const LandingPage: React.FC = () => {
                 <h4 className="text-sm font-heading font-bold text-white leading-tight">{stg.title}</h4>
                 <span className="text-[10px] font-mono text-cyan-300 block">{stg.tech}</span>
                 <p className="text-xs text-slate-400 leading-snug">{stg.desc}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
 
-          {/* Mathematical Fusion Formula Banner */}
-          <div className="p-6 rounded-3xl bg-slate-950/80 border border-slate-800 text-center space-y-2 shadow-xl">
+          {/* Mathematical Fusion Formula Banner (Reveals after steps) */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.65, delay: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            className="p-6 rounded-3xl bg-slate-950/80 border border-slate-800 text-center space-y-2 shadow-xl"
+          >
             <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest block">
               Calibrated Ensemble Decision Equation:
             </span>
@@ -852,16 +895,22 @@ export const LandingPage: React.FC = () => {
             <p className="text-[11px] font-mono text-slate-400">
               Score &lt; 0.49 classifies as Control. Hot-reloaded live on disk via models/ensemble_config.json.
             </p>
-          </div>
+          </motion.div>
 
           {/* The 3 AI Model Interactive Cards with 3D Tilt & Canvases */}
-          <div className="space-y-4">
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="space-y-4"
+          >
             <h3 className="text-lg font-heading font-bold text-white flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-cyan-400" />
               <span>Interactive Model Cards (Hover to Tilt)</span>
             </h3>
             <EnsembleCard weights={{ cnn_transformer: 0.6, eegnet: 0.1, psd_xgboost: 0.3 }} threshold={0.49} />
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -897,18 +946,32 @@ export const LandingPage: React.FC = () => {
               />
             </div>
 
-            {/* Quick Links to Full Workspace Dashboard */}
+            {/* Quick Links to Full Workspace Dashboard (Cascading entrance) */}
             <div className="flex items-center gap-2">
-              <Link to="/dashboard">
-                <Button size="sm" variant="secondary" leftIcon={<BarChart2 className="w-3.5 h-3.5" />}>
-                  Dashboard
-                </Button>
-              </Link>
-              <Link to="/dashboard/results">
-                <Button size="sm" variant="secondary" leftIcon={<FileText className="w-3.5 h-3.5" />}>
-                  Results
-                </Button>
-              </Link>
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <Link to="/dashboard">
+                  <Button size="sm" variant="secondary" leftIcon={<BarChart2 className="w-3.5 h-3.5" />}>
+                    Dashboard
+                  </Button>
+                </Link>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <Link to="/dashboard/results">
+                  <Button size="sm" variant="secondary" leftIcon={<FileText className="w-3.5 h-3.5" />}>
+                    Results
+                  </Button>
+                </Link>
+              </motion.div>
             </div>
           </div>
 
@@ -927,7 +990,13 @@ export const LandingPage: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
             {/* Left 7 Columns: Dropzone & File Management */}
-            <div className="lg:col-span-7 space-y-6">
+            <motion.div
+              initial={{ opacity: 0, y: 35 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="lg:col-span-7 space-y-6"
+            >
               {/* Dropzone with 1-Click Sample Generators */}
               <UploadDropzone
                 onFilesSelected={(newFiles) => {
@@ -1011,10 +1080,16 @@ export const LandingPage: React.FC = () => {
                   </div>
                 </div>
               )}
-            </div>
+            </motion.div>
 
             {/* Right 5 Columns: Inline Prediction Results Card or Telemetry Monitor */}
-            <div className="lg:col-span-5 space-y-6">
+            <motion.div
+              initial={{ opacity: 0, y: 35 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.7, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              className="lg:col-span-5 space-y-6"
+            >
               {inlinePredictionResult ? (
                 <div className="p-6 rounded-3xl glass-panel border border-emerald-500/40 backdrop-blur-2xl shadow-2xl space-y-6">
                   <div className="flex items-center justify-between pb-3 border-b border-slate-800">
@@ -1184,7 +1259,7 @@ export const LandingPage: React.FC = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
           </div>
         </div>

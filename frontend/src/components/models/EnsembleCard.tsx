@@ -1,5 +1,7 @@
 import React, { useState, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { Cpu, Zap, Layers, Sparkles, HelpCircle, Activity, ZoomIn, CheckCircle2, ShieldCheck } from 'lucide-react';
+import { AuraTiltCard } from '../common/AuraTiltCard';
 
 import cnnImg from '../../assets/spectrogram_cnn_input.jpg';
 import eegnetImg from '../../assets/eegnet_visual.jpg';
@@ -109,107 +111,132 @@ export const EnsembleCard: React.FC<EnsembleCardProps> = ({
 
   return (
     <div className="space-y-8">
-      {/* Three Model Cards with High-Resolution Explanatory Images */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Three Model Cards with 3D Tilt & Sequential Stagger Alignment (One After the Other) */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
         {models.map((model, idx) => {
           const Icon = model.icon;
           const floatClass = idx === 0 ? 'animate-aura-float' : idx === 1 ? 'animate-aura-float-slow' : 'animate-aura-float-reverse';
           return (
-            <div
+            <motion.div
               key={model.id}
-              className={`relative p-6 rounded-3xl glass-panel border ${model.borderColor} ${model.glow} ${floatClass} flex flex-col justify-between overflow-hidden group transition-all duration-300 hover:border-cyan-400/60`}
+              initial={{ opacity: 0, y: 50, scale: 0.94 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{
+                duration: 0.65,
+                delay: idx * 0.35, // Model 1: 0.0s, Model 2: 0.35s (after Model 1 completes), Model 3: 0.70s (after Model 2 completes)
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              className="h-full flex flex-col"
             >
-              <div className="space-y-4 relative z-10">
-                {/* Header */}
-                <div className="flex items-start justify-between">
-                  <div className="w-12 h-12 rounded-2xl bg-slate-900 border border-slate-700 flex items-center justify-center shadow-lg">
-                    <Icon className={`w-6 h-6 ${model.color}`} />
+              <AuraTiltCard
+                maxTilt={12}
+                scale={1.03}
+                glare={true}
+                floatClass={floatClass}
+                className={`relative p-6 rounded-3xl glass-panel border ${model.borderColor} ${model.glow} flex flex-col justify-between overflow-hidden group transition-all duration-300 hover:border-cyan-400/60 h-full cursor-pointer`}
+              >
+                <div className="space-y-4 relative z-10">
+                  {/* Header */}
+                  <div className="flex items-start justify-between">
+                    <div className="w-12 h-12 rounded-2xl bg-slate-900 border border-slate-700 flex items-center justify-center shadow-lg">
+                      <Icon className={`w-6 h-6 ${model.color}`} />
+                    </div>
+
+                    <div className="text-right font-mono">
+                      <span className="text-[10px] text-slate-400 font-bold block uppercase tracking-wider">
+                        Voting Weight
+                      </span>
+                      <span className={`text-2xl font-bold font-heading ${model.color}`}>
+                        {model.weight}
+                      </span>
+                    </div>
                   </div>
 
-                  <div className="text-right font-mono">
-                    <span className="text-[10px] text-slate-400 font-bold block uppercase tracking-wider">
-                      Voting Weight
+                  <div>
+                    <h3 className="text-lg md:text-xl font-bold text-white font-heading">
+                      {model.name}
+                    </h3>
+                    <span className="text-xs text-cyan-300 font-mono font-semibold block mt-0.5">
+                      {model.subtitle}
                     </span>
-                    <span className={`text-2xl font-bold font-heading ${model.color}`}>
-                      {model.weight}
-                    </span>
+                  </div>
+
+                  {/* Engaging High-Tech Model Architecture Image */}
+                  <div
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setModalImage({ src: model.image, title: model.name });
+                    }}
+                    className="relative group cursor-pointer overflow-hidden rounded-2xl border border-slate-700/80 hover:border-cyan-400 transition-all duration-300 shadow-xl"
+                  >
+                    <img
+                      src={model.image}
+                      alt={model.name}
+                      className="w-full h-44 object-cover filter brightness-95 group-hover:brightness-105 group-hover:scale-102 transition-all duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent flex items-end justify-between p-2.5">
+                      <span className="text-[10px] font-mono font-bold text-cyan-300 flex items-center gap-1 bg-slate-900/90 px-2 py-0.5 rounded-md border border-slate-700">
+                        <ZoomIn className="w-3 h-3" /> Click to Inspect
+                      </span>
+                      <span className="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold border bg-slate-900/90 text-emerald-400 border-emerald-500/40">
+                        Active
+                      </span>
+                    </div>
+                  </div>
+
+                  <p className="text-[11px] font-mono text-slate-400 leading-tight text-center">
+                    {model.imageCaption}
+                  </p>
+
+                  {/* Description */}
+                  <p className="text-xs text-slate-300 font-sans leading-relaxed pt-1">
+                    {model.description}
+                  </p>
+
+                  {/* 3 Bold Key Metric Chips */}
+                  <div className="grid grid-cols-3 gap-2 pt-1 font-mono text-center">
+                    {model.keyMetrics.map((km, i) => (
+                      <div key={i} className="p-2 rounded-xl bg-slate-950/80 border border-slate-800">
+                        <span className="text-[9px] text-slate-500 font-bold block uppercase">{km.label}</span>
+                        <span className="text-[11px] text-white font-bold block truncate">{km.value}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Internal Pipeline Detail */}
+                  <div className="p-3 rounded-xl bg-slate-950/90 border border-slate-800 text-[11px] font-mono text-slate-300 space-y-1">
+                    <div className="text-cyan-400 text-[10px] font-bold uppercase tracking-wider">
+                      Internal Pipeline Flow:
+                    </div>
+                    <div className="text-slate-300 leading-tight font-semibold">
+                      {model.architectureDetails}
+                    </div>
                   </div>
                 </div>
 
-                <div>
-                  <h3 className="text-lg md:text-xl font-bold text-white font-heading">
-                    {model.name}
-                  </h3>
-                  <span className="text-xs text-cyan-300 font-mono font-semibold block mt-0.5">
-                    {model.subtitle}
+                {/* Card Footer */}
+                <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs font-mono font-bold relative z-10 mt-3">
+                  <span className="text-slate-400">{model.inputs}</span>
+                  <span className="flex items-center gap-1.5 text-emerald-400 font-bold">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span>Verified Weights</span>
                   </span>
                 </div>
-
-                {/* Engaging High-Tech Model Architecture Image */}
-                <div
-                  onClick={() => setModalImage({ src: model.image, title: model.name })}
-                  className="relative group cursor-pointer overflow-hidden rounded-2xl border border-slate-700/80 hover:border-cyan-400 transition-all duration-300 shadow-xl"
-                >
-                  <img
-                    src={model.image}
-                    alt={model.name}
-                    className="w-full h-44 object-cover filter brightness-95 group-hover:brightness-105 group-hover:scale-102 transition-all duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent flex items-end justify-between p-2.5">
-                    <span className="text-[10px] font-mono font-bold text-cyan-300 flex items-center gap-1 bg-slate-900/90 px-2 py-0.5 rounded-md border border-slate-700">
-                      <ZoomIn className="w-3 h-3" /> Click to Inspect
-                    </span>
-                    <span className="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold border bg-slate-900/90 text-emerald-400 border-emerald-500/40">
-                      Active
-                    </span>
-                  </div>
-                </div>
-
-                <p className="text-[11px] font-mono text-slate-400 leading-tight text-center">
-                  {model.imageCaption}
-                </p>
-
-                {/* Description */}
-                <p className="text-xs text-slate-300 font-sans leading-relaxed pt-1">
-                  {model.description}
-                </p>
-
-                {/* 3 Bold Key Metric Chips */}
-                <div className="grid grid-cols-3 gap-2 pt-1 font-mono text-center">
-                  {model.keyMetrics.map((km, i) => (
-                    <div key={i} className="p-2 rounded-xl bg-slate-950/80 border border-slate-800">
-                      <span className="text-[9px] text-slate-500 font-bold block uppercase">{km.label}</span>
-                      <span className="text-[11px] text-white font-bold block truncate">{km.value}</span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Internal Pipeline Detail */}
-                <div className="p-3 rounded-xl bg-slate-950/90 border border-slate-800 text-[11px] font-mono text-slate-300 space-y-1">
-                  <div className="text-cyan-400 text-[10px] font-bold uppercase tracking-wider">
-                    Internal Pipeline Flow:
-                  </div>
-                  <div className="text-slate-300 leading-tight font-semibold">
-                    {model.architectureDetails}
-                  </div>
-                </div>
-              </div>
-
-              {/* Card Footer */}
-              <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs font-mono font-bold relative z-10 mt-3">
-                <span className="text-slate-400">{model.inputs}</span>
-                <span className="flex items-center gap-1.5 text-emerald-400 font-bold">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span>Verified Weights</span>
-                </span>
-              </div>
-            </div>
+              </AuraTiltCard>
+            </motion.div>
           );
         })}
       </div>
 
-      {/* Ensemble Mathematical Consensus Banner */}
-      <div className="p-6 md:p-8 rounded-3xl glass-panel border border-slate-800 space-y-4 font-mono text-xs shadow-xl">
+      {/* Ensemble Mathematical Consensus Banner (Cascades in after the 3rd model card completes) */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.7, delay: 1.05, ease: [0.16, 1, 0.3, 1] }}
+        className="p-6 md:p-8 rounded-3xl glass-panel border border-slate-800 space-y-4 font-mono text-xs shadow-xl"
+      >
         <div className="flex items-center gap-2 text-cyan-400 font-heading text-sm font-bold">
           <Sparkles className="w-4 h-4" />
           <span>Configured Ensemble Decision Formulation (Bayesian Soft Voting)</span>
@@ -227,7 +254,7 @@ export const EnsembleCard: React.FC<EnsembleCardProps> = ({
             <strong className="text-white font-bold">Consensus Rule:</strong> If P_ensemble ≥ {threshold.toFixed(2)}, the recording is assigned an ADHD-Class prediction. The 50% CNN weighting captures time-frequency spectrogram visual dynamics, while EEGNet and XGBoost ensure spatio-temporal and statistical frequency corroboration, maximizing clinical specificity.
           </p>
         </div>
-      </div>
+      </motion.div>
 
       {/* Image Lightbox Modal */}
       {modalImage && (
