@@ -16,6 +16,7 @@ import { BackendRootInfo, ModelInfoResponse } from '../types';
 import { EnsembleCard } from '../components/models/EnsembleCard';
 import { PipelineDiagram } from '../components/models/PipelineDiagram';
 import { Button } from '../components/ui/Button';
+import { AuraBounceHeading, AuraBounceBox } from '../components/common/AuraScrollText';
 
 export const ModelEnsemblePage: React.FC = () => {
   const [modelInfo, setModelInfo] = useState<ModelInfoResponse | null>(null);
@@ -47,9 +48,9 @@ export const ModelEnsemblePage: React.FC = () => {
             <Cpu className="w-3.5 h-3.5" />
             <span>Architecture & Telemetry</span>
           </div>
-          <h2 className="text-2xl md:text-3xl font-bold font-heading text-white mt-1">
+          <AuraBounceHeading as="h2" className="text-2xl md:text-3xl font-bold font-heading text-white mt-1">
             Three-Model Ensemble Architecture
-          </h2>
+          </AuraBounceHeading>
           <p className="text-xs md:text-sm text-slate-400 font-mono">
             Calibrated weighted voting framework combining deep spatio-temporal attention, compact EEGNet convolutions, and Welch spectral density.
           </p>
@@ -67,7 +68,7 @@ export const ModelEnsemblePage: React.FC = () => {
       </div>
 
       {/* Live Model Metadata Chips Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 font-mono text-xs">
+      <AuraBounceBox className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 font-mono text-xs">
         <div className="p-3.5 rounded-2xl glass-panel border border-slate-800 space-y-1">
           <span className="text-slate-500 block text-[10px]">WEIGHTS LOADED</span>
           <span className="flex items-center gap-1.5 text-emerald-400 font-bold">
@@ -110,18 +111,20 @@ export const ModelEnsemblePage: React.FC = () => {
             {modelInfo?.total_params ? modelInfo.total_params.toLocaleString() : '142,880'}
           </span>
         </div>
-      </div>
+      </AuraBounceBox>
 
       {/* Model Ensemble Cards Section */}
-      <EnsembleCard
-        weights={modelInfo?.weights || { cnn_transformer: 0.5, eegnet: 0.25, xgboost: 0.25 }}
-        threshold={modelInfo?.threshold ?? 0.5}
-      />
+      <AuraBounceBox>
+        <EnsembleCard
+          weights={modelInfo?.weights || { cnn_transformer: 0.5, eegnet: 0.25, xgboost: 0.25 }}
+          threshold={modelInfo?.threshold ?? 0.5}
+        />
+      </AuraBounceBox>
 
       {/* Full Signal Pipeline Architecture Diagram */}
-      <div className="p-8 rounded-3xl glass-panel border border-slate-800 space-y-6">
+      <AuraBounceBox className="p-8 rounded-3xl glass-panel border border-slate-800 space-y-6">
         <PipelineDiagram />
-      </div>
+      </AuraBounceBox>
     </div>
   );
 };

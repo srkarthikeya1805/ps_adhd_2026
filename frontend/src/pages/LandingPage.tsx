@@ -39,6 +39,13 @@ import { BRAIN_REGIONS, STANDARD_19_CHANNELS, FREQUENCY_BANDS, BENCHMARK_DATASET
 import { validateEEG, predictEEG } from '../services/api';
 import { saveLatestBatch, addToHistory, saveSelectedFileResult } from '../services/storage';
 import { neuroAudio } from '../utils/audio';
+import { useIntro } from '../App';
+import {
+  AuraBounceHeading,
+  AuraScrollParagraph,
+  AuraBounceBox,
+} from '../components/common/AuraScrollText';
+import { AuraTiltCard } from '../components/common/AuraTiltCard';
 
 export const LandingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -46,6 +53,108 @@ export const LandingPage: React.FC = () => {
   // Scroll Progress State (0.0 to 1.0)
   const [scrollProgress, setScrollProgress] = useState<number>(0);
   const [activeSection, setActiveSection] = useState<string>('hero');
+
+  // Cinematic 360° Brain Intro Sequence States using combined_final_video.mp4
+  type IntroPhase = 'init' | 'synapse' | 'rotating_center' | 'transitioning_right' | 'settled';
+  const [introPhase, setIntroPhase] = useState<IntroPhase>('init');
+  const [videoProgress, setVideoProgress] = useState<number>(0);
+  const [videoCurrentTime, setVideoCurrentTime] = useState<number>(0);
+  const [videoDuration, setVideoDuration] = useState<number>(30.2);
+  const fullscreenVideoRef = useRef<HTMLVideoElement>(null);
+  const heroVideoRef = useRef<HTMLVideoElement>(null);
+  const { introTrigger } = useIntro();
+  const [isDesktop, setIsDesktop] = useState<boolean>(
+    typeof window !== 'undefined' ? window.innerWidth >= 1024 : true
+  );
+
+  const [viewportDim, setViewportDim] = useState({
+    w: typeof window !== 'undefined' ? window.innerWidth : 1440,
+    h: typeof window !== 'undefined' ? window.innerHeight : 900,
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+      setViewportDim({
+        w: window.innerWidth,
+        h: window.innerHeight,
+      });
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const isFullscreen =
+    introPhase === 'init' || introPhase === 'synapse' || introPhase === 'rotating_center';
+
+  // Timeupdate handler syncing phases with combined_final_video.mp4 (compressed to 15s flat at 2.02x speed)
+  const handleTimeUpdate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
+    const current = e.currentTarget.currentTime;
+    const dur = e.currentTarget.duration || 30.2;
+    setVideoCurrentTime(current);
+    setVideoProgress(dur > 0 ? (current / dur) * 100 : 0);
+
+    // At 2.02x speed, 26.5s in video occurs at ~13.1s real time
+    if (current >= 26.5 && current < dur - 0.2) {
+      if (introPhase !== 'transitioning_right') setIntroPhase('transitioning_right');
+    }
+  };
+
+  const handleVideoEnded = () => {
+    setIntroPhase('settled');
+    if (heroVideoRef.current) {
+      heroVideoRef.current.play().catch(() => {});
+    }
+  };
+
+  const handleSkipIntro = () => {
+    setIntroPhase('settled');
+    if (fullscreenVideoRef.current) {
+      fullscreenVideoRef.current.pause();
+    }
+    if (heroVideoRef.current) {
+      heroVideoRef.current.currentTime = 0;
+      heroVideoRef.current.play().catch(() => {});
+    }
+  };
+
+  const handleJumpToRotation = () => {
+    if (fullscreenVideoRef.current) {
+      fullscreenVideoRef.current.currentTime = 20.0;
+      fullscreenVideoRef.current.playbackRate = 2.02;
+      setIntroPhase('rotating_center');
+      fullscreenVideoRef.current.play().catch(() => {});
+    }
+  };
+
+  const handleReplayIntro = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setIntroPhase('init');
+    if (fullscreenVideoRef.current) {
+      fullscreenVideoRef.current.playbackRate = 2.02;
+      fullscreenVideoRef.current.currentTime = 0;
+      fullscreenVideoRef.current.play().catch(() => {});
+    }
+  };
+
+  useEffect(() => {
+    setIntroPhase('init');
+    if (fullscreenVideoRef.current) {
+      fullscreenVideoRef.current.playbackRate = 2.02;
+      fullscreenVideoRef.current.currentTime = 0;
+      fullscreenVideoRef.current.play().catch(() => {});
+    }
+
+    // Safety fallback: ensure video completes in 15s and never gets stuck
+    const timer: ReturnType<typeof setTimeout> = setTimeout(() => {
+      setIntroPhase('settled');
+      if (heroVideoRef.current) {
+        heroVideoRef.current.play().catch(() => {});
+      }
+    }, 15200);
+
+    return () => clearTimeout(timer);
+  }, [introTrigger]);
 
   // Interactive 3D Brain States
   const [activeLobe, setActiveLobe] = useState<BrainRegionKey | null>(null);
@@ -66,6 +175,10 @@ export const LandingPage: React.FC = () => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
+      if (scrollY > 60 && introPhase !== 'settled') {
+        handleSkipIntro();
+      }
+
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const progress = docHeight > 0 ? Math.min(Math.max(scrollY / docHeight, 0), 1) : 0;
       setScrollProgress(progress);
@@ -85,7 +198,7 @@ export const LandingPage: React.FC = () => {
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [introPhase]);
 
   const scrollToSection = (sectionId: string) => {
     const el = document.getElementById(sectionId);
@@ -184,220 +297,327 @@ export const LandingPage: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#030712] text-slate-100 flex flex-col overflow-x-hidden selection:bg-cyan-500/30 selection:text-cyan-200">
+    <div className="relative min-h-screen bg-transparent text-slate-100 flex flex-col overflow-x-hidden selection:bg-cyan-500/30 selection:text-cyan-200">
       
+      {/* Ambient Radial Vignette Overlay for High Readability */}
+      <div className="fixed inset-0 pointer-events-none z-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(0,135,255,0.08),rgba(0,4,37,0.85))]" />
+
       {/* ========================================================================= */}
-      {/* 1. FIXED 3D REAL BRAIN WEBGL CANVAS STAGE (Persistent Across Scroll)       */}
+      {/* CINEMATIC FULLSCREEN VIDEO INTRO                                          */}
+      {/* Unobstructed, edge-to-edge pure video covering 100% of the screen         */}
       {/* ========================================================================= */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <BrainCanvas
-          mode="cinematic_stage"
-          scrollProgress={scrollProgress}
-          activeRegion={activeLobe}
-          activeElectrode={activeElectrode}
-          interactive={true}
-          className="w-full h-full pointer-events-auto"
+      <AnimatePresence>
+        {isFullscreen && (
+          <motion.div
+            key="fullscreen-cinema"
+            initial={{ opacity: 1 }}
+            exit={{
+              opacity: 0,
+              scale: 0.5,
+              x: isDesktop ? '28vw' : '0vw',
+              y: isDesktop ? '-4vh' : '-8vh',
+              transition: { duration: 1.4, ease: [0.16, 1, 0.3, 1] },
+            }}
+            className="fixed inset-0 z-50 w-screen h-screen overflow-hidden bg-[#000214]"
+          >
+            {/* The Cinematic Video (Edge-to-edge covering whole area without boxes) */}
+            <video
+              ref={fullscreenVideoRef}
+              src="/videos/combined_final_video.mp4"
+              autoPlay
+              playsInline
+              muted
+              preload="auto"
+              onLoadedMetadata={(e) => {
+                const v = e.currentTarget;
+                v.playbackRate = 2.02; // Compressed to ~15.0s flat
+                setVideoDuration(v.duration || 30.2);
+                v.play().catch(() => {});
+              }}
+              onCanPlay={(e) => {
+                const v = e.currentTarget;
+                v.playbackRate = 2.02;
+                v.play().catch(() => {});
+              }}
+              onPlay={(e) => {
+                e.currentTarget.playbackRate = 2.02;
+              }}
+              onTimeUpdate={handleTimeUpdate}
+              onEnded={handleVideoEnded}
+              className="w-full h-full w-screen h-screen object-cover pointer-events-none"
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Floating Sci-Fi HUD Navigation Pill (hidden during fullscreen, smoothly reveals for dashboards) */}
+      <motion.div
+        animate={{ opacity: isFullscreen ? 0 : 1, y: isFullscreen ? -20 : 0 }}
+        transition={{ duration: 1.0, delay: isFullscreen ? 0 : 0.3 }}
+        className="relative z-30"
+      >
+        <Navbar
+          activeSection={activeSection}
+          onNavigateSection={scrollToSection}
+          onReplayIntro={handleReplayIntro}
         />
-      </div>
-
-      {/* Ambient Neural Grids & Radial Vignettes */}
-      <div className="fixed inset-0 pointer-events-none z-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(0,229,255,0.08),rgba(3,7,18,0.95))]" />
-      <div className="fixed inset-0 pointer-events-none neural-grid opacity-20 z-0" />
-
-      {/* Floating Sci-Fi HUD Navigation Pill */}
-      <Navbar
-        activeSection={activeSection}
-        onNavigateSection={scrollToSection}
-      />
+      </motion.div>
 
       {/* ========================================================================= */}
       {/* SCENE 01: THE AWAKENING — CINEMATIC BRAIN HERO                             */}
-      {/* Matches Reference: 01 — Cinematic brain landing page                      */}
+      {/* Matches Reference: 01 — Continuous 360° rotation to right-side hero        */}
       {/* ========================================================================= */}
       <section
         id="scene-hero"
-        className="relative min-h-screen flex flex-col justify-between pt-28 pb-12 px-4 sm:px-8 z-10 max-w-7xl mx-auto w-full"
+        className="relative min-h-screen flex flex-col justify-between pt-28 pb-12 px-4 sm:px-8 z-10 max-w-7xl mx-auto w-full overflow-hidden"
       >
+        {/* Ambient Cyan Halo */}
+        <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-cyan-500/10 rounded-full filter blur-3xl pointer-events-none -z-0" />
+
         {/* Top Telemetry & Neuroscience Badge */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-mono tracking-widest uppercase shadow-[0_0_20px_rgba(0,240,255,0.25)] backdrop-blur-xl w-fit"
+            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#0087FF]/20 border border-[#71BBFD]/40 text-[#71BBFD] text-xs font-heading font-semibold tracking-widest uppercase shadow-[0_0_20px_rgba(0,135,255,0.25)] backdrop-blur-xl w-fit"
           >
-            <Activity className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+            <Activity className="w-3.5 h-3.5 text-[#20BFE8] animate-pulse" />
             <span>NEUROSCIENCE × ARTIFICIAL INTELLIGENCE</span>
           </motion.div>
 
           {/* Quick HUD Telemetry Strip */}
-          <div className="flex items-center gap-3 text-[11px] font-mono text-slate-400">
-            <span className="hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/80 border border-slate-800">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+          <div className="flex items-center gap-3 text-[11px] font-mono text-[#A5B8CC]">
+            <span className="hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#030720]/90 border border-slate-800 text-[#F3F8FF] font-medium">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#20BFE8]" />
               19-Channel 10-20 Standard
             </span>
-            <span className="hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/80 border border-slate-800">
-              <span className="w-1.5 h-1.5 rounded-full bg-violet-400" />
+            <span className="hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#030720]/90 border border-slate-800 text-[#F3F8FF] font-medium">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#0087FF]" />
               128 Hz Resampling
             </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/80 border border-slate-800 text-cyan-300">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#030720]/90 border border-[#20BFE8]/30 text-[#71BBFD] font-medium">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-              Real 3D GLB Cortical Mesh
+              3D Rotating Brain Stream
             </span>
           </div>
         </div>
 
-        {/* Hero Central HUD Overlays (Left Typography + Right EEG Waveforms) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center my-auto pointer-events-none">
-          {/* Left Column: Title, Subtitle, and Direct Actions */}
+        {/* Hero Central HUD Overlays (Left Typography + Right Rotating 3D Brain) */}
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center my-auto pointer-events-none">
+          {/* Left Column: Title, Subtitle, and Direct Actions with Staggered Cascade Entrance */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1.0, delay: 0.2 }}
-            className="lg:col-span-6 space-y-6 pointer-events-auto"
+            initial={false}
+            animate={{
+              opacity: introPhase === 'transitioning_right' || introPhase === 'settled' ? 1 : 0,
+              x: introPhase === 'transitioning_right' || introPhase === 'settled' ? 0 : -50,
+            }}
+            transition={{
+              duration: 1.2,
+              ease: [0.16, 1, 0.3, 1],
+              delay: introPhase === 'transitioning_right' ? 0.2 : 0,
+            }}
+            className={`lg:col-span-6 space-y-6 ${
+              introPhase === 'transitioning_right' || introPhase === 'settled'
+                ? 'pointer-events-auto'
+                : 'pointer-events-none'
+            }`}
           >
             <div className="space-y-3">
-              <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold font-heading text-white tracking-tight leading-[1.05]">
-                NEUROSCAN{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-violet-400 text-glow-cyan">
-                  AI
-                </span>
-              </h1>
-              <p className="text-base sm:text-xl font-heading font-semibold text-slate-200 leading-snug">
-                Hybrid Deep Learning Model for Identification of ADHD Using EEG
-              </p>
+              {/* Item 1: Main Title NEUROSCAN AI (Slide up with spring curve) */}
+              <motion.div
+                initial={{ opacity: 0, y: 35 }}
+                animate={{
+                  opacity: introPhase === 'transitioning_right' || introPhase === 'settled' ? 1 : 0,
+                  y: introPhase === 'transitioning_right' || introPhase === 'settled' ? 0 : 35,
+                }}
+                transition={{ duration: 0.9, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <AuraBounceHeading
+                  as="h1"
+                  className="text-4xl sm:text-6xl md:text-7xl font-bold font-heading text-white tracking-tight leading-[1.08]"
+                >
+                  NEUROSCAN{' '}
+                  <span className="aura-gradient-title text-glow-cyan">
+                    AI
+                  </span>
+                </AuraBounceHeading>
+              </motion.div>
+
+              {/* Item 2: Subtitle (Slide in following title) */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{
+                  opacity: introPhase === 'transitioning_right' || introPhase === 'settled' ? 1 : 0,
+                  y: introPhase === 'transitioning_right' || introPhase === 'settled' ? 0 : 30,
+                }}
+                transition={{ duration: 0.9, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <AuraBounceHeading
+                  as="p"
+                  className="text-base sm:text-xl font-heading font-semibold text-[#C9E5FF] leading-snug"
+                >
+                  Hybrid Deep Learning Model for Identification of ADHD Using EEG
+                </AuraBounceHeading>
+              </motion.div>
             </div>
 
-            <p className="text-xs sm:text-sm text-slate-400 font-sans leading-relaxed max-w-xl">
-              An immersive, clinical-grade neuroscience interface analyzing 19-channel 10-20 EEG signals through our calibrated 3-model deep learning ensemble (CNN-Transformer, Welch PSD + XGBoost, and EEGNet).
-            </p>
+            {/* Item 3: Clinical Description Paragraph (Slide in) */}
+            <motion.div
+              initial={{ opacity: 0, y: 25 }}
+              animate={{
+                opacity: introPhase === 'transitioning_right' || introPhase === 'settled' ? 1 : 0,
+                y: introPhase === 'transitioning_right' || introPhase === 'settled' ? 0 : 25,
+              }}
+              transition={{ duration: 0.9, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <AuraScrollParagraph
+                text="An immersive, clinical-grade neuroscience interface analyzing 19-channel 10-20 EEG signals through our calibrated 3-model deep learning ensemble (CNN-Transformer, Welch PSD + XGBoost, and EEGNet)."
+                className="text-xs sm:text-sm text-slate-300 font-sans font-normal leading-relaxed max-w-xl"
+                delay={0.15}
+              />
+            </motion.div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-wrap items-center gap-4 pt-2">
+            {/* Item 4: Action Buttons (Slide in & scale up) */}
+            <motion.div
+              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              animate={{
+                opacity: introPhase === 'transitioning_right' || introPhase === 'settled' ? 1 : 0,
+                y: introPhase === 'transitioning_right' || introPhase === 'settled' ? 0 : 20,
+                scale: introPhase === 'transitioning_right' || introPhase === 'settled' ? 1 : 0.95,
+              }}
+              transition={{ duration: 0.8, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-wrap items-center gap-4 pt-2"
+            >
               <button
-                onClick={() => scrollToSection('scene-lab')}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-mono text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-[0_0_30px_rgba(0,240,255,0.4)] hover:shadow-[0_0_40px_rgba(0,240,255,0.6)] hover:scale-105 transition-all"
+                onClick={() => navigate('/login')}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-heading text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-[#0087FF] to-[#20BFE8] text-white shadow-[0_0_30px_rgba(0,135,255,0.4)] hover:shadow-[0_0_40px_rgba(0,135,255,0.6)] hover:scale-105 transition-all cursor-pointer"
               >
                 <span>Enter Neural Lab</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 stroke-[2.5]" />
               </button>
 
               <button
                 onClick={() => scrollToSection('scene-montage')}
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-full font-mono text-xs font-medium text-slate-300 bg-slate-900/80 border border-slate-700/80 hover:border-cyan-400/80 hover:text-white transition-all backdrop-blur-xl"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-full font-heading text-xs font-bold text-slate-200 bg-[#061426]/90 border border-slate-700/80 hover:border-[#20BFE8] hover:text-white transition-all backdrop-blur-xl cursor-pointer"
               >
-                <Play className="w-3.5 h-3.5 fill-current text-cyan-400" />
+                <Play className="w-3.5 h-3.5 fill-current text-[#20BFE8]" />
                 <span>Explore 10-20 Montage</span>
               </button>
+            </motion.div>
 
-            </div>
-
-            {/* 4 Interactive Lobe Highlight Pills */}
-            <div className="pt-4 border-t border-slate-800/80 space-y-2">
-              <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest block">
+            {/* Item 5: 4 Interactive Lobe Highlight Pills (One by one cascade with 3D Hover Tilt & Floating) */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{
+                opacity: introPhase === 'transitioning_right' || introPhase === 'settled' ? 1 : 0,
+                y: introPhase === 'transitioning_right' || introPhase === 'settled' ? 0 : 20,
+              }}
+              transition={{ duration: 0.8, delay: 0.85, ease: [0.16, 1, 0.3, 1] }}
+              className="pt-4 border-t border-slate-800/80 space-y-2.5"
+            >
+              <span className="text-[10px] font-heading font-extrabold text-[#A5B8CC] uppercase tracking-widest block">
                 Interactive Cortical Lobe Spotlight:
               </span>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2.5">
                 {[
-                  { key: 'frontal' as BrainRegionKey, label: 'Frontal Lobe', role: 'Executive & Attention', color: 'border-cyan-500/40 text-cyan-300' },
-                  { key: 'parietal' as BrainRegionKey, label: 'Parietal Lobe', role: 'Sensory Integration', color: 'border-violet-500/40 text-violet-300' },
-                  { key: 'temporal' as BrainRegionKey, label: 'Temporal Lobe', role: 'Auditory & Memory', color: 'border-pink-500/40 text-pink-300' },
-                  { key: 'occipital' as BrainRegionKey, label: 'Occipital Lobe', role: 'Visual & Alpha Gating', color: 'border-teal-500/40 text-teal-300' },
+                  { key: 'frontal' as BrainRegionKey, label: 'Frontal Lobe', role: 'Executive & Attention', color: 'border-[#20BFE8]/40 text-[#20BFE8]', float: 'animate-aura-float', delay: 0.95 },
+                  { key: 'parietal' as BrainRegionKey, label: 'Parietal Lobe', role: 'Sensory Integration', color: 'border-[#087CFF]/40 text-[#79DFFF]', float: 'animate-aura-float-slow', delay: 1.05 },
+                  { key: 'temporal' as BrainRegionKey, label: 'Temporal Lobe', role: 'Auditory & Memory', color: 'border-[#45CFFF]/40 text-[#45CFFF]', float: 'animate-aura-float-delicate', delay: 1.15 },
+                  { key: 'occipital' as BrainRegionKey, label: 'Occipital Lobe', role: 'Visual & Alpha Gating', color: 'border-[#20BFE8]/40 text-[#20BFE8]', float: 'animate-aura-float-reverse', delay: 1.25 },
                 ].map((lobe) => (
-                  <button
+                  <motion.div
                     key={lobe.key}
-                    onClick={() => {
-                      setActiveLobe(activeLobe === lobe.key ? null : lobe.key);
-                      neuroAudio.playSynapseBlip(activeLobe === lobe.key ? 450 : 650);
+                    initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                    animate={{
+                      opacity: introPhase === 'transitioning_right' || introPhase === 'settled' ? 1 : 0,
+                      y: introPhase === 'transitioning_right' || introPhase === 'settled' ? 0 : 20,
+                      scale: introPhase === 'transitioning_right' || introPhase === 'settled' ? 1 : 0.9,
                     }}
-                    className={`px-3 py-1.5 rounded-xl border text-[11px] font-mono transition-all backdrop-blur-xl flex items-center gap-2 ${
-                      activeLobe === lobe.key
-                        ? 'bg-slate-900 border-cyan-400 text-white shadow-[0_0_20px_rgba(0,240,255,0.4)] scale-105'
-                        : `bg-slate-950/60 ${lobe.color} hover:border-cyan-400 hover:text-white`
-                    }`}
+                    transition={{ duration: 0.5, delay: lobe.delay, ease: [0.16, 1, 0.3, 1] }}
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-                    <span className="font-bold">{lobe.label}</span>
-                    <span className="text-[9px] text-slate-400 hidden sm:inline">({lobe.role})</span>
-                  </button>
+                    <AuraTiltCard
+                      maxTilt={12}
+                      scale={1.05}
+                      glare={true}
+                      floatClass={lobe.float}
+                      className="rounded-xl overflow-hidden"
+                    >
+                      <button
+                        onClick={() => {
+                          setActiveLobe(activeLobe === lobe.key ? null : lobe.key);
+                          neuroAudio.playSynapseBlip(activeLobe === lobe.key ? 450 : 650);
+                        }}
+                        className={`px-3.5 py-1.5 rounded-xl border text-[11px] font-heading font-bold transition-all backdrop-blur-xl flex items-center gap-2 cursor-pointer w-full ${
+                          activeLobe === lobe.key
+                            ? 'bg-[#061426] border-[#20BFE8] text-white shadow-[0_0_20px_rgba(32,191,232,0.4)] scale-105'
+                            : `bg-[#030914]/80 ${lobe.color} hover:border-[#20BFE8] hover:text-white`
+                        }`}
+                      >
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#20BFE8] animate-pulse" />
+                        <span className="font-extrabold">{lobe.label}</span>
+                        <span className="text-[9px] text-[#A5B8CC] hidden sm:inline">({lobe.role})</span>
+                      </button>
+                    </AuraTiltCard>
+                  </motion.div>
                 ))}
               </div>
-            </div>
+            </motion.div>
           </motion.div>
 
-          {/* Right Column: Floating Real-time EEG Waves HUD */}
+          {/* Right Column: Seamless 360° Rotating Brain with 3D Hover Tilt & Floating Animation */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1.0, delay: 0.4 }}
-            className="lg:col-span-6 flex justify-end pointer-events-auto"
+            initial={false}
+            animate={{
+              opacity: isFullscreen ? 0 : 1,
+              scale: isFullscreen ? 0.8 : 1.0,
+              x: isFullscreen ? -30 : 0,
+            }}
+            transition={{
+              duration: 1.5,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+            className="lg:col-span-6 flex flex-col items-center justify-center relative pointer-events-auto z-10"
           >
-            <div className="p-4 rounded-3xl glass-panel border border-cyan-500/30 backdrop-blur-2xl shadow-2xl space-y-3 w-full max-w-[280px]">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-                <div className="flex items-center gap-2">
-                  <Activity className="w-4 h-4 text-cyan-400 animate-pulse" />
-                  <span className="text-xs font-mono font-bold text-white uppercase tracking-wider">
-                    Live 10-20 Signals
-                  </span>
-                </div>
-                <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-300">
-                  128 Hz
-                </span>
-              </div>
+            <AuraTiltCard
+              maxTilt={14}
+              scale={1.04}
+              glare={true}
+              floatClass="animate-aura-float-slow"
+              className="relative w-full max-w-[580px] h-[460px] md:h-[520px] flex items-center justify-center cursor-pointer rounded-3xl"
+            >
+              {/* Glowing Radial Halo behind the rotating brain */}
+              <div className="absolute w-72 h-72 rounded-full bg-cyan-400/20 filter blur-3xl pointer-events-none animate-pulse" />
 
-              {/* 8 Prominent Channel Waveform Traces */}
-              {[
-                { ch: 'Fp1', col: '#00F0FF', hz: '4.2 Hz (Theta)' },
-                { ch: 'Fp2', col: '#00F0FF', hz: '4.5 Hz (Theta)' },
-                { ch: 'Fz',  col: '#287BFF', hz: '6.0 Hz (Frontal Midline)' },
-                { ch: 'C3',  col: '#8B5CF6', hz: '14.0 Hz (Sensorimotor)' },
-                { ch: 'Cz',  col: '#8B5CF6', hz: '12.8 Hz (Central)' },
-                { ch: 'Pz',  col: '#F02BD5', hz: '10.2 Hz (Alpha)' },
-                { ch: 'O1',  col: '#35F5C8', hz: '9.8 Hz (Occipital Alpha)' },
-                { ch: 'O2',  col: '#35F5C8', hz: '10.0 Hz (Occipital Alpha)' },
-              ].map((sig, idx) => (
-                <div
-                  key={idx}
-                  onClick={() => {
-                    setActiveElectrode(activeElectrode === sig.ch ? null : sig.ch);
-                    neuroAudio.playSynapseBlip(700 + idx * 30);
-                  }}
-                  className={`flex items-center justify-between p-1.5 rounded-lg border transition-all cursor-pointer ${
-                    activeElectrode === sig.ch
-                      ? 'bg-cyan-500/15 border-cyan-400'
-                      : 'border-transparent hover:border-slate-800 hover:bg-slate-900/50'
-                  }`}
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-mono font-bold text-slate-300 w-6">{sig.ch}</span>
-                    <svg viewBox="0 0 60 10" className="w-20 h-2.5" preserveAspectRatio="none">
-                      <path
-                        d="M0,5 Q7,1 15,5 T30,5 T45,5 T60,5"
-                        fill="none"
-                        stroke={sig.col}
-                        strokeWidth="1.6"
-                      />
-                    </svg>
-                  </div>
-                  <span className="text-[9px] font-mono text-slate-400">{sig.hz}</span>
-                </div>
-              ))}
-
-              <div className="pt-2 text-[10px] font-mono text-slate-400 border-t border-slate-800 flex items-center justify-between">
-                <span>Cursor Parallax Active</span>
-                <span className="text-cyan-300 font-bold">60 FPS</span>
-              </div>
-            </div>
+              {/* Frameless Holographic Brain Video with clean seamless loop */}
+              <video
+                ref={heroVideoRef}
+                src="/videos/brain_rotating_clean.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                style={{
+                  maskImage: 'radial-gradient(circle at 50% 50%, black 44%, rgba(0,0,0,0.7) 56%, transparent 68%)',
+                  WebkitMaskImage: 'radial-gradient(circle at 50% 50%, black 44%, rgba(0,0,0,0.7) 56%, transparent 68%)',
+                }}
+                className="w-full h-full object-contain mix-blend-screen filter brightness-115 contrast-125 drop-shadow-[0_0_40px_rgba(32,191,232,0.9)] transition-all duration-700"
+              />
+            </AuraTiltCard>
           </motion.div>
         </div>
 
         {/* Bottom Scroll Prompt */}
-        <div className="flex flex-col items-center justify-center gap-1.5 text-center text-slate-400 font-mono text-xs pointer-events-none">
+        <motion.div
+          animate={{ opacity: introPhase === 'settled' ? 1 : 0.4 }}
+          transition={{ duration: 1 }}
+          className="flex flex-col items-center justify-center gap-1.5 text-center text-slate-400 font-mono text-xs pointer-events-none"
+        >
           <span className="tracking-widest uppercase text-[10px] text-cyan-300 font-bold">
             Scroll to Dive into the Brain
           </span>
           <ChevronDown className="w-4 h-4 text-cyan-400 animate-bounce" />
-        </div>
+        </motion.div>
       </section>
 
       {/* ========================================================================= */}
@@ -418,15 +638,20 @@ export const LandingPage: React.FC = () => {
             </div>
 
             <div className="space-y-3">
-              <h2 className="text-3xl sm:text-5xl font-extrabold font-heading text-white tracking-tight">
+              <AuraBounceHeading
+                as="h2"
+                className="text-3xl sm:text-5xl font-bold font-heading text-white tracking-tight leading-tight"
+              >
                 Anatomy of Attention &{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-cyan-400">
+                <span className="aura-gradient-title">
                   Neural Gating
                 </span>
-              </h2>
-              <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-sans">
-                The international 10-20 electrode system records cortical microvolt fluctuations conducted across skull and scalp tissues. In ADHD, neuroimaging reveals prominent fronto-striatal dopaminergic hypoarousal and altered frequency band synchronization.
-              </p>
+              </AuraBounceHeading>
+              
+              <AuraScrollParagraph
+                text="The international 10-20 electrode system records cortical microvolt fluctuations conducted across skull and scalp tissues. In ADHD, neuroimaging reveals prominent fronto-striatal dopaminergic hypoarousal and altered frequency band synchronization."
+                className="text-sm sm:text-base text-slate-300 leading-relaxed font-sans font-normal"
+              />
             </div>
 
             {/* Clinical Frequency Bands Selector */}
@@ -543,15 +768,20 @@ export const LandingPage: React.FC = () => {
               <Cpu className="w-3.5 h-3.5 text-pink-400" />
               <span>03 — INSIDE THE HYBRID AI MODEL PIPELINE</span>
             </div>
-            <h2 className="text-3xl sm:text-5xl font-extrabold font-heading text-white tracking-tight">
+            <AuraBounceHeading
+              as="h2"
+              className="text-3xl sm:text-5xl font-bold font-heading text-white tracking-tight leading-tight"
+            >
               Calibrated Heterogeneous{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-violet-400 to-cyan-400">
+              <span className="aura-gradient-title">
                 Ensemble Architecture
               </span>
-            </h2>
-            <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-sans">
-              Continuous 10-second temporal windows (1280 samples at 128 Hz) are ingested across 3 heterogeneous classifiers and fused via calibrated decision boundary.
-            </p>
+            </AuraBounceHeading>
+            
+            <AuraScrollParagraph
+              text="Continuous 10-second temporal windows (1280 samples at 128 Hz) are ingested across 3 heterogeneous classifiers and fused via calibrated decision boundary."
+              className="text-sm sm:text-base text-slate-300 leading-relaxed font-sans font-normal justify-center"
+            />
           </div>
 
           {/* Interactive Signal Flow Stages */}
@@ -651,15 +881,20 @@ export const LandingPage: React.FC = () => {
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
                 <span>04 — NEURAL LAB: INTERACTIVE EEG ANALYSIS STUDIO</span>
               </div>
-              <h2 className="text-3xl sm:text-5xl font-extrabold font-heading text-white tracking-tight">
+              <AuraBounceHeading
+                as="h2"
+                className="text-3xl sm:text-5xl font-bold font-heading text-white tracking-tight leading-tight"
+              >
                 Live Recording Diagnostic{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">
+                <span className="aura-gradient-title">
                   Workspace
                 </span>
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-300 font-mono">
-                Upload real scientific EEG recordings or select benchmark samples for pre-validation and live ensemble classification.
-              </p>
+              </AuraBounceHeading>
+              
+              <AuraScrollParagraph
+                text="Upload real scientific EEG recordings or select benchmark samples for pre-validation and live ensemble classification."
+                className="text-xs sm:text-sm text-slate-300 font-sans font-normal"
+              />
             </div>
 
             {/* Quick Links to Full Workspace Dashboard */}

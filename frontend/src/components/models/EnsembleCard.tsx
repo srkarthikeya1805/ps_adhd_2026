@@ -111,12 +111,13 @@ export const EnsembleCard: React.FC<EnsembleCardProps> = ({
     <div className="space-y-8">
       {/* Three Model Cards with High-Resolution Explanatory Images */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {models.map((model) => {
+        {models.map((model, idx) => {
           const Icon = model.icon;
+          const floatClass = idx === 0 ? 'animate-aura-float' : idx === 1 ? 'animate-aura-float-slow' : 'animate-aura-float-reverse';
           return (
             <div
               key={model.id}
-              className={`relative p-6 rounded-3xl glass-panel border ${model.borderColor} ${model.glow} flex flex-col justify-between overflow-hidden group transition-all duration-300 hover:border-cyan-400/60`}
+              className={`relative p-6 rounded-3xl glass-panel border ${model.borderColor} ${model.glow} ${floatClass} flex flex-col justify-between overflow-hidden group transition-all duration-300 hover:border-cyan-400/60`}
             >
               <div className="space-y-4 relative z-10">
                 {/* Header */}

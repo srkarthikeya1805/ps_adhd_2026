@@ -27,19 +27,16 @@ import { WindowProbabilityChart } from '../components/charts/WindowProbabilityCh
 import { ModelProbabilityBarChart } from '../components/charts/ModelProbabilityBarChart';
 import { NeuralTimeline } from '../components/timeline/NeuralTimeline';
 import { Button } from '../components/ui/Button';
+import { AuraBounceHeading, AuraBounceBox } from '../components/common/AuraScrollText';
 
-// Imported Newly Built Rich Visual Components
+// Imported Rich Visual Components
 import { SpectralPowerPieChart } from '../components/charts/SpectralPowerPieChart';
-import { ChildrenAgeAdhdSection } from '../components/results/ChildrenAgeAdhdSection';
-import { ModelProcessSlideshow } from '../components/results/ModelProcessSlideshow';
 import { PredictionCausesExplainer } from '../components/results/PredictionCausesExplainer';
 import { TopographicScalpHeatmap } from '../components/charts/TopographicScalpHeatmap';
+import { ChildrenAgeAdhdSection } from '../components/results/ChildrenAgeAdhdSection';
 
-// Video Reference Upgrade Interactive Components
-import { Interactive3DBrainViewer } from '../components/results/Interactive3DBrainViewer';
+// Quantitative Diagnostic Components
 import { EegChannelMappingExplorer } from '../components/results/EegChannelMappingExplorer';
-import { AnimatedFrequencyExplorer } from '../components/results/AnimatedFrequencyExplorer';
-import { BrainActivityHeatmap3D } from '../components/results/BrainActivityHeatmap3D';
 import { ThetaBetaComparisonCard } from '../components/results/ThetaBetaComparisonCard';
 import { AiEnsemblePipelineVisualizer } from '../components/results/AiEnsemblePipelineVisualizer';
 
@@ -202,9 +199,9 @@ export const ResultsPage: React.FC = () => {
             <Sparkles className="w-3.5 h-3.5" />
             <span>Universal Three-Model Inference & Diagnostic Report</span>
           </div>
-          <h2 className="text-2xl md:text-4xl font-bold font-heading text-white mt-1">
+          <AuraBounceHeading as="h2" className="text-2xl md:text-4xl font-bold font-heading text-white mt-1">
             Clinical EEG Analysis Results
-          </h2>
+          </AuraBounceHeading>
           <span className="text-xs font-mono text-slate-400">
             Active Recording: <strong className="text-cyan-300">{result.filename}</strong>
           </span>
@@ -329,226 +326,232 @@ export const ResultsPage: React.FC = () => {
       </div>
 
       {/* SECTION 1: Primary Result Gauge & Confidence Banner */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center p-8 rounded-3xl glass-panel border border-slate-800 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
-        {/* Left: Circular Probability Gauge */}
-        <div className="lg:col-span-5 flex flex-col items-center justify-center p-2">
-          <CircularGauge
-            probability={adhdProb}
-            threshold={threshold}
-            prediction={result.prediction || undefined}
-            size={240}
-          />
+      <AuraBounceBox>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center p-8 rounded-3xl glass-panel border border-slate-800 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+          {/* Left: Circular Probability Gauge */}
+          <div className="lg:col-span-5 flex flex-col items-center justify-center p-2">
+            <CircularGauge
+              probability={adhdProb}
+              threshold={threshold}
+              prediction={result.prediction || undefined}
+              size={240}
+            />
 
-          <div className="flex items-center gap-6 text-xs font-mono font-bold text-slate-400 mt-6">
-            <div>
-              <span className="block text-[10px] text-slate-500 font-bold">DECISION THRESHOLD</span>
-              <span className="text-white font-bold">{(threshold * 100).toFixed(0)}%</span>
-            </div>
-            <div>
-              <span className="block text-[10px] text-slate-500 font-bold">COMPLEMENT SCORE</span>
-              <span className="text-slate-300 font-bold">{formatProbability(1 - adhdProb)}</span>
+            <div className="flex items-center gap-6 text-xs font-mono font-bold text-slate-400 mt-6">
+              <div>
+                <span className="block text-[10px] text-slate-500 font-bold">DECISION THRESHOLD</span>
+                <span className="text-white font-bold">{(threshold * 100).toFixed(0)}%</span>
+              </div>
+              <div>
+                <span className="block text-[10px] text-slate-500 font-bold">COMPLEMENT SCORE</span>
+                <span className="text-slate-300 font-bold">{formatProbability(1 - adhdProb)}</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Right: Primary Classification Breakdown */}
-        <div className="lg:col-span-7 space-y-6">
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <span
-                className={`px-3 py-1 rounded-full text-xs font-bold font-mono tracking-wider uppercase border ${
-                  isInvalid
-                    ? 'bg-rose-500/20 text-rose-300 border-rose-500/40 shadow-[0_0_15px_rgba(244,63,94,0.25)]'
+          {/* Right: Primary Classification Breakdown */}
+          <div className="lg:col-span-7 space-y-6">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <span
+                  className={`px-3 py-1 rounded-full text-xs font-bold font-mono tracking-wider uppercase border ${
+                    isInvalid
+                      ? 'bg-rose-500/20 text-rose-300 border-rose-500/40 shadow-[0_0_15px_rgba(244,63,94,0.25)]'
+                      : isADHD
+                      ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-[0_0_15px_rgba(245,158,11,0.25)]'
+                      : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 shadow-[0_0_15px_rgba(16,185,129,0.25)]'
+                  }`}
+                >
+                  {isInvalid
+                    ? 'Non-EEG Input (Prediction Withheld)'
                     : isADHD
-                    ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-[0_0_15px_rgba(245,158,11,0.25)]'
-                    : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 shadow-[0_0_15px_rgba(16,185,129,0.25)]'
-                }`}
-              >
+                    ? 'ADHD-Class Prediction (Positive)'
+                    : 'Control-Class Prediction (Neurotypical)'}
+                </span>
+              </div>
+
+              <h3 className="text-3xl font-bold font-heading text-white">
                 {isInvalid
-                  ? 'Non-EEG Input (Prediction Withheld)'
+                  ? 'Prediction Withheld: Non-EEG Input'
                   : isADHD
-                  ? 'ADHD-Class Prediction (Positive)'
-                  : 'Control-Class Prediction (Neurotypical)'}
-              </span>
+                  ? 'ADHD-Associated Neural Patterns Detected'
+                  : 'Control-Consistent Neural Activity Classified'}
+              </h3>
+
+              <p className="text-xs md:text-sm text-slate-300 font-bold font-sans leading-relaxed">
+                {isInvalid
+                  ? (result.error || result.rejection_reason || 'Predictions were safely halted because the uploaded recording does not represent continuous electrophysiological scalp brainwave signals.')
+                  : isADHD
+                  ? `The multi-model ensemble (CNN-Transformer, EEGNet, XGBoost) classified this recording with an ADHD probability of ${formatProbability(adhdProb)} (confidence: ${formatProbability(confidence)}), surpassing the clinical decision threshold of ${(threshold * 100).toFixed(0)}%.`
+                  : `The multi-model ensemble classified this recording as Control with an ADHD probability score of ${formatProbability(adhdProb)} (confidence: ${formatProbability(confidence)}), safely below the decision threshold.`}
+              </p>
             </div>
 
-            <h3 className="text-3xl font-bold font-heading text-white">
-              {isInvalid
-                ? 'Prediction Withheld: Non-EEG Input'
-                : isADHD
-                ? 'ADHD-Associated Neural Patterns Detected'
-                : 'Control-Consistent Neural Activity Classified'}
-            </h3>
+            {/* Quick Metrics Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono font-bold">
+              <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                <span className="text-slate-400 block text-[10px] font-bold">TOTAL WINDOWS</span>
+                <span className="text-white font-bold text-sm">
+                  {result.total_windows ?? windows.length}
+                </span>
+              </div>
 
-            <p className="text-xs md:text-sm text-slate-300 font-bold font-sans leading-relaxed">
-              {isInvalid
-                ? (result.error || result.rejection_reason || 'Predictions were safely halted because the uploaded recording does not represent continuous electrophysiological scalp brainwave signals.')
-                : isADHD
-                ? `The multi-model ensemble (CNN-Transformer, EEGNet, XGBoost) classified this recording with an ADHD probability of ${formatProbability(adhdProb)} (confidence: ${formatProbability(confidence)}), surpassing the clinical decision threshold of ${(threshold * 100).toFixed(0)}%.`
-                : `The multi-model ensemble classified this recording as Control with an ADHD probability score of ${formatProbability(adhdProb)} (confidence: ${formatProbability(confidence)}), safely below the decision threshold.`}
-            </p>
-          </div>
+              <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                <span className="text-slate-400 block text-[10px] font-bold">CONFIDENCE</span>
+                <span className="text-cyan-400 font-bold text-sm">
+                  {formatProbability(confidence)}
+                </span>
+              </div>
 
-          {/* Quick Metrics Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono font-bold">
-            <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
-              <span className="text-slate-400 block text-[10px] font-bold">TOTAL WINDOWS</span>
-              <span className="text-white font-bold text-sm">
-                {result.total_windows ?? windows.length}
-              </span>
-            </div>
+              <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                <span className="text-slate-400 block text-[10px] font-bold">MEDIAN PROB</span>
+                <span className="text-white font-bold text-sm">
+                  {result.median_adhd_probability !== null && result.median_adhd_probability !== undefined
+                    ? formatProbability(result.median_adhd_probability)
+                    : formatProbability(adhdProb)}
+                </span>
+              </div>
 
-            <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
-              <span className="text-slate-400 block text-[10px] font-bold">CONFIDENCE</span>
-              <span className="text-cyan-400 font-bold text-sm">
-                {formatProbability(confidence)}
-              </span>
-            </div>
-
-            <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
-              <span className="text-slate-400 block text-[10px] font-bold">MEDIAN PROB</span>
-              <span className="text-white font-bold text-sm">
-                {result.median_adhd_probability !== null && result.median_adhd_probability !== undefined
-                  ? formatProbability(result.median_adhd_probability)
-                  : formatProbability(adhdProb)}
-              </span>
-            </div>
-
-            <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
-              <span className="text-slate-400 block text-[10px] font-bold">DURATION</span>
-              <span className="text-white font-bold text-sm">
-                {details?.duration_seconds ? `${details.duration_seconds}s` : '120s'}
-              </span>
+              <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                <span className="text-slate-400 block text-[10px] font-bold">DURATION</span>
+                <span className="text-white font-bold text-sm">
+                  {details?.duration_seconds ? `${details.duration_seconds}s` : '120s'}
+                </span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </AuraBounceBox>
 
       {/* ========================================================================= */}
       {/* INTERACTIVE NEUROIMAGING & ELECTROPHYSIOLOGICAL SUITE                      */}
-      {/* Enhanced Video Reference Visualizations                                    */}
       {/* ========================================================================= */}
-      <div className="space-y-8">
+      {/* QUANTITATIVE NEUROPHYSIOLOGICAL & AI ENSEMBLE SUITE                       */}
+      {/* ========================================================================= */}
+      <AuraBounceBox className="space-y-8">
         <div className="flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 w-fit text-xs font-mono font-bold tracking-wider uppercase shadow-[0_0_20px_rgba(0,229,255,0.15)]">
           <Sparkles className="w-4 h-4 text-cyan-400 animate-pulse" />
-          <span>Interactive 3D Neuroimaging & Dynamic Electrophysiology Suite</span>
+          <span>Quantitative Electrophysiological & AI Ensemble Diagnostic Suite</span>
         </div>
 
-        {/* 1. Interactive 3D Brain: 360-degree rotatable brain with clickable 10-20 electrodes */}
-        <Interactive3DBrainViewer isADHD={isADHD} />
-
-        {/* 2. EEG Channel Mapping: 19 channel selector, live waveform, brain region, frequency power */}
+        {/* 1. EEG Channel Mapping: 19 channel selector, live waveform, brain region, frequency power */}
         <EegChannelMappingExplorer result={result} isADHD={isADHD} />
 
-        {/* 3. Brain Activity Heatmap: 3D rotating brain with frequency-power mapping & band switcher */}
-        <BrainActivityHeatmap3D isADHD={isADHD} />
-
-        {/* 4. Theta/Beta Comparison: animated dual waveforms, actual calculated powers, TBR gauge */}
+        {/* 2. Theta/Beta Comparison: animated dual waveforms, actual calculated powers, TBR gauge */}
         <ThetaBetaComparisonCard result={result} isADHD={isADHD} />
 
-        {/* 5. Animated Frequency Explorer: 2D & 3D waveforms, Delta purple, Theta electric blue, Alpha cyan, Beta neon pink, Gamma golden yellow */}
-        <AnimatedFrequencyExplorer isADHD={isADHD} />
-
-        {/* 6. AI Ensemble Visualization: animated visual pipeline with the 3 existing models */}
+        {/* 3. AI Ensemble Visualization: animated visual pipeline with the 3 existing models */}
         <AiEnsemblePipelineVisualizer result={result} />
-      </div>
+      </AuraBounceBox>
 
-      {/* SECTION 2: Newly Added Component — Spectral Band & Ensemble Donut Charts */}
-      <SpectralPowerPieChart
-        isADHD={isADHD}
-        adhdProbability={adhdProb}
-        modelProbabilities={result.model_probabilities}
-        ensembleWeights={result.ensemble_weights}
-      />
+      {/* SECTION 2: Spectral Band & Ensemble Donut Charts */}
+      <AuraBounceBox>
+        <SpectralPowerPieChart
+          isADHD={isADHD}
+          adhdProbability={adhdProb}
+          modelProbabilities={result.model_probabilities}
+          ensembleWeights={result.ensemble_weights}
+        />
+      </AuraBounceBox>
 
       {/* SECTION 3: Dynamic 2D Scalp Topography & Regional Power Heatmap */}
-      <TopographicScalpHeatmap isADHD={isADHD} result={result} />
+      <AuraBounceBox>
+        <TopographicScalpHeatmap isADHD={isADHD} result={result} />
+      </AuraBounceBox>
 
       {/* SECTION 4: Children's Age Milestones & Pediatric Neurodevelopment */}
-      <ChildrenAgeAdhdSection
-        isADHD={isADHD}
-        patientCalculatedTbr={isADHD ? Number((3.2 + 2.4 * adhdProb).toFixed(2)) : Number((1.1 + 0.9 * adhdProb).toFixed(2))}
-      />
+      <AuraBounceBox>
+        <ChildrenAgeAdhdSection
+          isADHD={isADHD}
+          patientCalculatedTbr={isADHD ? Number((3.2 + 2.4 * adhdProb).toFixed(2)) : Number((1.1 + 0.9 * adhdProb).toFixed(2))}
+        />
+      </AuraBounceBox>
 
-      {/* SECTION 5: Multi-Model Interactive Pipeline & Animated Slideshow */}
-      <ModelProcessSlideshow />
 
       {/* SECTION 6: Transparent Causality & Biological Etiology Explainer */}
-      <PredictionCausesExplainer result={result} />
+      <AuraBounceBox>
+        <PredictionCausesExplainer result={result} />
+      </AuraBounceBox>
 
       {/* SECTION 7: Window-Level Neural Activity Timeline */}
-      <NeuralTimeline
-        windows={windows}
-        selectedWindow={selectedWindow}
-        onSelectWindow={setSelectedWindow}
-        adhdWindowPercentage={result.adhd_window_percentage}
-        threshold={threshold}
-      />
-
-      {/* SECTION 8: Window-Level Probability Trend Chart */}
-      <div className="p-6 rounded-2xl glass-panel border border-slate-800 space-y-4">
-        <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-          <div>
-            <h3 className="text-base font-bold font-heading text-white">
-              Window-Level EEG Prediction Trajectory
-            </h3>
-            <p className="text-xs text-slate-400 font-mono">
-              Temporal progression of ADHD probability across consecutive 10-second segments
-            </p>
-          </div>
-          {selectedWindow && (
-            <span className="px-2.5 py-1 rounded-md bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-mono">
-              Focused Window: #{selectedWindow}
-            </span>
-          )}
-        </div>
-
-        <WindowProbabilityChart
+      <AuraBounceBox>
+        <NeuralTimeline
           windows={windows}
-          threshold={threshold}
           selectedWindow={selectedWindow}
           onSelectWindow={setSelectedWindow}
+          adhdWindowPercentage={result.adhd_window_percentage}
+          threshold={threshold}
         />
-      </div>
+      </AuraBounceBox>
+
+      {/* SECTION 8: Window-Level Probability Trend Chart */}
+      <AuraBounceBox>
+        <div className="p-6 rounded-2xl glass-panel border border-slate-800 space-y-4">
+          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+            <div>
+              <h3 className="text-base font-bold font-heading text-white">
+                Window-Level EEG Prediction Trajectory
+              </h3>
+              <p className="text-xs text-slate-400 font-mono">
+                Temporal progression of ADHD probability across consecutive 10-second segments
+              </p>
+            </div>
+            {selectedWindow && (
+              <span className="px-2.5 py-1 rounded-md bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-mono">
+                Focused Window: #{selectedWindow}
+              </span>
+            )}
+          </div>
+
+          <WindowProbabilityChart
+            windows={windows}
+            threshold={threshold}
+            selectedWindow={selectedWindow}
+            onSelectWindow={setSelectedWindow}
+          />
+        </div>
+      </AuraBounceBox>
 
       {/* SECTION 9: Preprocessing Telemetry Details */}
       {details && (
-        <div className="p-6 rounded-2xl glass-panel border border-slate-800 space-y-4">
-          <h3 className="text-base font-bold font-heading text-white">
-            Signal Ingestion & Preprocessing Telemetry
-          </h3>
+        <AuraBounceBox>
+          <div className="p-6 rounded-2xl glass-panel border border-slate-800 space-y-4">
+            <h3 className="text-base font-bold font-heading text-white">
+              Signal Ingestion & Preprocessing Telemetry
+            </h3>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs font-mono">
-            <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
-              <span className="text-slate-500 block text-[10px]">SOURCE FORMAT</span>
-              <span className="text-cyan-400 font-bold uppercase">
-                {details.format} ({details.source})
-              </span>
-            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs font-mono">
+              <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                <span className="text-slate-500 block text-[10px]">SOURCE FORMAT</span>
+                <span className="text-cyan-400 font-bold uppercase">
+                  {details.format} ({details.source})
+                </span>
+              </div>
 
-            <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
-              <span className="text-slate-500 block text-[10px]">SAMPLING RATE</span>
-              <span className="text-white font-bold">
-                {details.sampling_rate_original ? `${details.sampling_rate_original} Hz → ` : ''}
-                {details.sampling_rate_used} Hz
-              </span>
-            </div>
+              <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                <span className="text-slate-500 block text-[10px]">SAMPLING RATE</span>
+                <span className="text-white font-bold">
+                  {details.sampling_rate_original ? `${details.sampling_rate_original} Hz → ` : ''}
+                  {details.sampling_rate_used} Hz
+                </span>
+              </div>
 
-            <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
-              <span className="text-slate-500 block text-[10px]">CHANNELS (ORIGINAL / USED)</span>
-              <span className="text-white font-bold">
-                {details.channels_original} / {details.channels_used}
-              </span>
-            </div>
+              <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                <span className="text-slate-500 block text-[10px]">CHANNELS (ORIGINAL / USED)</span>
+                <span className="text-white font-bold">
+                  {details.channels_original} / {details.channels_used}
+                </span>
+              </div>
 
-            <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
-              <span className="text-slate-500 block text-[10px]">TENSOR SHAPE</span>
-              <span className="text-white font-bold">
-                [{details.windows}, {details.window_samples}, {details.channels_used}]
-              </span>
+              <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                <span className="text-slate-500 block text-[10px]">TENSOR SHAPE</span>
+                <span className="text-white font-bold">
+                  [{details.windows}, {details.window_samples}, {details.channels_used}]
+                </span>
+              </div>
             </div>
           </div>
-        </div>
+        </AuraBounceBox>
       )}
     </div>
   );

@@ -11,13 +11,15 @@ import {
   CheckCircle2,
   Info,
   Activity,
+  ArrowRight,
 } from 'lucide-react';
 import { saveSession } from '../services/storage';
 import { Button } from '../components/ui/Button';
 import { Navbar } from '../components/layout/Navbar';
+import { AuraBounceHeading, AuraBounceBox } from '../components/common/AuraScrollText';
 
 // ---------------------------------------------------------------------------
-// Animated Left Panel Neural Waveform & Particles
+// Animated Left Panel Neural Waveform & Particles (Pure Cyan & Deep Blue)
 // ---------------------------------------------------------------------------
 const LoginNeuralArt: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -37,16 +39,18 @@ const LoginNeuralArt: React.FC = () => {
       const h = (canvas.height = 140);
       ctx.clearRect(0, 0, w, h);
 
-      // Multi-layer sine waveform
+      // Multi-layer sine waveform in pure cyan and neuroscience blue
       const layers = [
-        { color: '#00E5FF', freq: 0.04, speed: 2.2, amp: 18, y: 70 },
-        { color: '#8B5CF6', freq: 0.06, speed: -1.8, amp: 14, y: 70 },
-        { color: '#F472D0', freq: 0.09, speed: 2.8, amp: 8, y: 70 },
+        { color: '#20BFE8', freq: 0.038, speed: 2.0, amp: 18, y: 70, width: 2.0 },
+        { color: '#087CFF', freq: 0.055, speed: -1.6, amp: 14, y: 70, width: 1.6 },
+        { color: '#79DFFF', freq: 0.085, speed: 2.4, amp: 10, y: 70, width: 1.4 },
       ];
 
       layers.forEach((l) => {
         ctx.strokeStyle = l.color;
-        ctx.lineWidth = 1.6;
+        ctx.lineWidth = l.width;
+        ctx.shadowColor = l.color;
+        ctx.shadowBlur = 8;
         ctx.beginPath();
         for (let x = 0; x < w; x++) {
           const y = l.y + Math.sin(x * l.freq + t * l.speed) * l.amp;
@@ -54,17 +58,18 @@ const LoginNeuralArt: React.FC = () => {
           else ctx.lineTo(x, y);
         }
         ctx.stroke();
+        ctx.shadowBlur = 0;
       });
 
-      // Floating sparks
-      for (let i = 0; i < 8; i++) {
-        const sx = ((t * 40 + i * 50) % w);
-        const sy = 70 + Math.sin(sx * 0.05 + t) * 20;
-        ctx.fillStyle = '#00E5FF';
-        ctx.shadowColor = '#00E5FF';
-        ctx.shadowBlur = 6;
+      // Floating bio-luminescent sparks
+      for (let i = 0; i < 9; i++) {
+        const sx = (t * 35 + i * 42) % w;
+        const sy = 70 + Math.sin(sx * 0.045 + t) * 22;
+        ctx.fillStyle = i % 2 === 0 ? '#79DFFF' : '#20BFE8';
+        ctx.shadowColor = '#20BFE8';
+        ctx.shadowBlur = 8;
         ctx.beginPath();
-        ctx.arc(sx, sy, 2.5, 0, Math.PI * 2);
+        ctx.arc(sx, sy, 2.2, 0, Math.PI * 2);
         ctx.fill();
         ctx.shadowBlur = 0;
       }
@@ -76,7 +81,12 @@ const LoginNeuralArt: React.FC = () => {
     return () => cancelAnimationFrame(animId);
   }, []);
 
-  return <canvas ref={canvasRef} className="w-full h-[140px] rounded-2xl bg-slate-950/70 border border-cyan-500/20" />;
+  return (
+    <canvas
+      ref={canvasRef}
+      className="w-full h-[140px] rounded-2xl bg-[#030914]/80 border border-[#20BFE8]/25 shadow-inner"
+    />
+  );
 };
 
 export const LoginPage: React.FC = () => {
@@ -93,7 +103,7 @@ export const LoginPage: React.FC = () => {
     setErrorMsg('');
 
     if (!email || !password) {
-      setErrorMsg('Please enter both email and password, or use Guest Demo Mode.');
+      setErrorMsg('Please enter both email and password, or proceed via Research Demo Mode.');
       return;
     }
 
@@ -108,7 +118,7 @@ export const LoginPage: React.FC = () => {
       });
       setIsSubmitting(false);
       navigate('/dashboard');
-    }, 600);
+    }, 500);
   };
 
   // One-click Guest Demo access handler
@@ -124,70 +134,70 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#050816] text-slate-100 flex flex-col relative z-10">
+    <div className="min-h-screen text-[#F3F8FF] flex flex-col relative z-10 selection:bg-[#20BFE8]/30 selection:text-[#79DFFF]">
       <Navbar />
 
       <div className="flex-1 pt-24 pb-12 px-4 md:px-8 flex items-center justify-center">
-        <div className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-12 rounded-3xl overflow-hidden glass-panel border border-slate-800 shadow-[0_0_60px_rgba(0,0,0,0.6)]">
+        <AuraBounceBox className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-12 rounded-3xl overflow-hidden glass-panel border border-[#20BFE8]/25 shadow-[0_0_60px_rgba(0,0,0,0.7)]">
           {/* Left Column: Atmospheric Neural Lab Art (Desktop) */}
-          <div className="hidden lg:flex lg:col-span-5 relative p-10 bg-gradient-to-br from-[#080B1B] via-[#10152B] to-[#050816] flex-col justify-between overflow-hidden border-r border-slate-800">
+          <div className="hidden lg:flex lg:col-span-5 relative p-10 bg-gradient-to-br from-[#061426] via-[#071426] to-[#030914] flex-col justify-between overflow-hidden border-r border-[#20BFE8]/20">
             {/* Ambient Lighting */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full filter blur-3xl pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-violet-600/10 rounded-full filter blur-3xl pointer-events-none" />
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#087CFF]/15 rounded-full filter blur-3xl pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#20BFE8]/10 rounded-full filter blur-3xl pointer-events-none" />
 
             <div className="relative z-10 space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shadow-[0_0_20px_rgba(0,229,255,0.25)]">
+              <div className="w-12 h-12 rounded-2xl bg-[#087CFF]/15 border border-[#20BFE8]/40 flex items-center justify-center text-[#20BFE8] shadow-[0_0_20px_rgba(32,191,232,0.3)]">
                 <Brain className="w-6 h-6" />
               </div>
-              <h3 className="text-2xl font-bold font-heading text-white">
+              <AuraBounceHeading as="h3" className="text-2xl font-bold font-heading text-[#F3F8FF] tracking-tight">
                 Universal EEG ADHD Analysis
-              </h3>
-              <p className="text-xs text-slate-400 leading-relaxed font-sans">
+              </AuraBounceHeading>
+              <p className="text-xs text-[#A5B8CC] leading-relaxed font-sans">
                 Access calibrated models, window-level probability trends, and 19-channel signal spectrograms in a unified clinical AI analytics suite.
               </p>
             </div>
 
             {/* Animated Waveform Visualizer on Left */}
             <div className="relative z-10 my-4 space-y-1.5">
-              <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-wider block">
+              <span className="text-[10px] font-mono text-[#20BFE8] uppercase tracking-wider block font-semibold">
                 Synchronized Scalp Conduction:
               </span>
               <LoginNeuralArt />
             </div>
 
             {/* Neural Features List */}
-            <div className="relative z-10 space-y-2.5 font-mono text-xs text-slate-300">
+            <div className="relative z-10 space-y-2.5 font-mono text-xs text-[#A5B8CC]">
               <div className="flex items-center gap-2.5">
-                <CheckCircle2 className="w-4 h-4 text-cyan-400" />
-                <span>CNN + Transformer Attention (50%)</span>
+                <CheckCircle2 className="w-4 h-4 text-[#20BFE8]" />
+                <span className="text-[#F3F8FF] font-medium">CNN + Transformer Attention (50%)</span>
               </div>
               <div className="flex items-center gap-2.5">
-                <CheckCircle2 className="w-4 h-4 text-violet-400" />
-                <span>EEGNet Spatio-Temporal Conv (25%)</span>
+                <CheckCircle2 className="w-4 h-4 text-[#087CFF]" />
+                <span className="text-[#F3F8FF] font-medium">EEGNet Spatio-Temporal Conv (25%)</span>
               </div>
               <div className="flex items-center gap-2.5">
-                <CheckCircle2 className="w-4 h-4 text-pink-400" />
-                <span>PSD + XGBoost Decision Trees (25%)</span>
+                <CheckCircle2 className="w-4 h-4 text-[#79DFFF]" />
+                <span className="text-[#F3F8FF] font-medium">PSD + XGBoost Decision Trees (25%)</span>
               </div>
             </div>
 
             {/* Honest Demo Notice */}
-            <div className="relative z-10 p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 text-[11px] text-slate-400 leading-relaxed font-mono mt-4">
-              <Info className="w-3.5 h-3.5 text-cyan-400 inline mr-1.5" />
+            <div className="relative z-10 p-3.5 rounded-xl bg-[#030914]/85 border border-[#20BFE8]/20 text-[11px] text-[#A5B8CC] leading-relaxed font-mono mt-4">
+              <Info className="w-3.5 h-3.5 text-[#20BFE8] inline mr-1.5" />
               Academic demo mode is available for faculty evaluation and project presentation without credentials.
             </div>
           </div>
 
           {/* Right Column: Authentication / Demo Access Panel */}
-          <div className="lg:col-span-7 p-8 md:p-12 flex flex-col justify-center space-y-8 bg-[#080B1B]/80 backdrop-blur-xl">
+          <div className="lg:col-span-7 p-8 md:p-12 flex flex-col justify-center space-y-8 bg-[#061426]/85 backdrop-blur-xl">
             <div>
-              <span className="text-[11px] font-mono text-cyan-400 uppercase tracking-widest block mb-1">
+              <span className="text-[11px] font-mono text-[#20BFE8] uppercase tracking-widest block mb-1 font-semibold">
                 RESEARCH ACCESS PORTAL
               </span>
-              <h2 className="text-2xl md:text-3xl font-bold font-heading text-white">
+              <AuraBounceHeading as="h2" className="text-2xl md:text-3xl font-bold font-heading text-[#F3F8FF] tracking-tight">
                 Welcome to the Neural Lab
-              </h2>
-              <p className="text-xs md:text-sm text-slate-400 font-sans mt-1">
+              </AuraBounceHeading>
+              <p className="text-xs md:text-sm text-[#A5B8CC] font-sans mt-1">
                 Sign in to access your EEG analysis workspace or proceed via research demo.
               </p>
             </div>
@@ -203,7 +213,7 @@ export const LoginPage: React.FC = () => {
 
               {/* Email */}
               <div className="space-y-1">
-                <label className="text-xs font-mono text-slate-300 block">Researcher Email</label>
+                <label className="text-xs font-mono text-[#A5B8CC] block">Researcher Email</label>
                 <div className="relative">
                   <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input
@@ -211,14 +221,14 @@ export const LoginPage: React.FC = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="researcher@university.edu"
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-900/80 border border-slate-700/80 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 text-sm text-white placeholder-slate-500 outline-none transition-all font-mono"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#030914]/80 border border-slate-700/80 focus:border-[#20BFE8] focus:ring-1 focus:ring-[#20BFE8] text-sm text-[#F3F8FF] placeholder-slate-500 outline-none transition-all font-mono shadow-inner"
                   />
                 </div>
               </div>
 
               {/* Password */}
               <div className="space-y-1">
-                <label className="text-xs font-mono text-slate-300 block">Workspace Password</label>
+                <label className="text-xs font-mono text-[#A5B8CC] block">Workspace Password</label>
                 <div className="relative">
                   <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input
@@ -226,12 +236,12 @@ export const LoginPage: React.FC = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••••••"
-                    className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-slate-900/80 border border-slate-700/80 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 text-sm text-white placeholder-slate-500 outline-none transition-all font-mono"
+                    className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-[#030914]/80 border border-slate-700/80 focus:border-[#20BFE8] focus:ring-1 focus:ring-[#20BFE8] text-sm text-[#F3F8FF] placeholder-slate-500 outline-none transition-all font-mono shadow-inner"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-[#20BFE8] transition-colors cursor-pointer"
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -240,46 +250,49 @@ export const LoginPage: React.FC = () => {
 
               {/* Submit Buttons */}
               <div className="pt-2 space-y-3">
-                <Button
+                <button
                   type="submit"
-                  variant="primary"
-                  size="md"
-                  className="w-full shadow-[0_0_20px_rgba(0,229,255,0.3)]"
-                  isLoading={isSubmitting}
+                  disabled={isSubmitting}
+                  className="w-full py-3 px-6 rounded-xl font-heading font-bold text-sm tracking-wide bg-gradient-to-r from-[#087CFF] to-[#20BFE8] text-[#030914] shadow-[0_0_25px_rgba(32,191,232,0.4)] hover:shadow-[0_0_35px_rgba(32,191,232,0.6)] hover:scale-[1.01] active:scale-[0.99] transition-all cursor-pointer flex items-center justify-center gap-2"
                 >
-                  Sign In to Workspace
-                </Button>
+                  {isSubmitting ? (
+                    <div className="w-5 h-5 border-2 border-[#030914] border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      <span>Sign In to Workspace</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </>
+                  )}
+                </button>
 
                 <div className="relative flex items-center justify-center my-4">
                   <div className="border-t border-slate-800 w-full" />
-                  <span className="bg-[#080B1B] px-3 text-[11px] font-mono text-slate-500 uppercase">
+                  <span className="bg-[#061426] px-3 text-[11px] font-mono text-slate-500 uppercase">
                     or
                   </span>
                 </div>
 
                 {/* Continue as Guest (Research Demo) */}
-                <Button
+                <button
                   type="button"
-                  variant="glow-cyan"
-                  size="md"
                   onClick={handleGuestAccess}
-                  className="w-full"
-                  leftIcon={<Sparkles className="w-4 h-4 text-cyan-400" />}
+                  className="w-full py-3 px-6 rounded-xl font-mono text-xs font-bold uppercase tracking-wider bg-[#030914]/80 border border-[#20BFE8]/40 hover:border-[#20BFE8] hover:bg-[#087CFF]/15 text-[#20BFE8] shadow-[0_0_15px_rgba(32,191,232,0.2)] hover:shadow-[0_0_25px_rgba(32,191,232,0.4)] transition-all cursor-pointer flex items-center justify-center gap-2"
                 >
-                  Continue as Guest (Research Demo Mode)
-                </Button>
+                  <Sparkles className="w-4 h-4 text-[#20BFE8]" />
+                  <span>Continue as Guest (Research Demo Mode)</span>
+                </button>
               </div>
             </form>
 
             {/* Architecture Transparency Requirement */}
-            <div className="p-3.5 rounded-xl bg-slate-900/50 border border-slate-800 text-[11px] text-slate-500 font-mono space-y-1">
-              <span className="text-slate-400 font-semibold block">Authentication Architecture Note:</span>
+            <div className="p-3.5 rounded-xl bg-[#030914]/80 border border-slate-800/80 text-[11px] text-slate-400 font-mono space-y-1">
+              <span className="text-[#20BFE8] font-semibold block">Authentication Architecture Note:</span>
               <p className="leading-relaxed">
-                The current backend provides universal stateless EEG inference and pipeline endpoints (<code>/api/predict</code>, <code>/api/validate</code>). Demo mode provides immediate access to all analysis capabilities for evaluation without mock credential storage.
+                The current backend provides universal stateless EEG inference and pipeline endpoints (<code className="text-[#79DFFF]">/api/predict</code>, <code className="text-[#79DFFF]">/api/validate</code>). Demo mode provides immediate access to all analysis capabilities for evaluation without mock credential storage.
               </p>
             </div>
           </div>
-        </div>
+        </AuraBounceBox>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import { AlertTriangle, ShieldCheck } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="mt-auto border-t border-slate-800/80 bg-[#050816]/90 px-6 py-6 text-xs text-slate-500">
+    <footer className="mt-auto border-t border-[#20BFE8]/15 bg-[#030914]/90 px-6 py-6 text-xs text-[#A5B8CC]">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
         {/* Research Disclaimer */}
         <div className="flex items-start md:items-center gap-2 max-w-2xl text-slate-400">

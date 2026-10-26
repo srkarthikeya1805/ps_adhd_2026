@@ -32,13 +32,13 @@ export const Header: React.FC<HeaderProps> = ({
   }, []);
 
   return (
-    <header className="h-20 px-6 md:px-8 border-b border-slate-800 bg-[#050816]/80 backdrop-blur-md flex items-center justify-between sticky top-0 z-20">
+    <header className="h-20 px-6 md:px-8 border-b border-[#20BFE8]/20 bg-[#030914]/70 backdrop-blur-xl flex items-center justify-between sticky top-0 z-20 shadow-[0_4px_20px_rgba(0,0,0,0.3)]">
       {/* Title & Subtitle */}
       <div>
-        <h1 className="text-xl md:text-2xl font-bold font-heading text-white tracking-tight flex items-center gap-2">
+        <h1 className="text-xl md:text-2xl font-extrabold font-heading text-white tracking-wide flex items-center gap-2">
           {title}
         </h1>
-        <p className="text-xs text-slate-400 font-mono tracking-tight hidden sm:block">
+        <p className="text-xs text-[#20BFE8] font-mono font-bold tracking-wider uppercase hidden sm:block">
           {subtitle}
         </p>
       </div>
@@ -48,21 +48,21 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Backend Status Pill */}
         <div
           onClick={checkConnection}
-          className="cursor-pointer group flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/90 border border-slate-800 hover:border-slate-700 transition-all text-xs font-mono select-none"
+          className="cursor-pointer group flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#061426]/90 border border-[#20BFE8]/30 hover:border-[#20BFE8]/70 transition-all text-xs font-mono select-none shadow-[0_0_15px_rgba(32,191,232,0.15)]"
           title="Click to re-ping backend API"
         >
           {health ? (
             <>
-              <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#10B981]" />
-              <span className="text-emerald-400 font-semibold">FastAPI Connected</span>
-              <span className="text-[10px] text-slate-500 hidden md:inline">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#10B981] animate-pulse" />
+              <span className="text-emerald-400 font-bold font-mono tracking-wide">FastAPI Online</span>
+              <span className="text-[10px] text-slate-400 font-bold hidden md:inline">
                 ({health.device} • {health.version})
               </span>
             </>
           ) : (
             <>
               <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
-              <span className="text-rose-400 font-semibold">Backend Offline</span>
+              <span className="text-rose-400 font-bold font-mono">Backend Offline</span>
             </>
           )}
 
@@ -76,9 +76,9 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Quick Upload CTA */}
         <Link
           to="/dashboard/upload"
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 text-xs font-heading font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-[#087CFF] to-[#20BFE8] text-[#030914] text-xs font-heading font-extrabold uppercase tracking-wider shadow-[0_0_20px_rgba(32,191,232,0.35)] hover:shadow-[0_0_30px_rgba(32,191,232,0.5)] transition-all hover:scale-[1.02] active:scale-[0.98]"
         >
-          <UploadCloud className="w-4 h-4" />
+          <UploadCloud className="w-4 h-4 stroke-[2.5]" />
           <span className="hidden sm:inline">New Analysis</span>
         </Link>
       </div>

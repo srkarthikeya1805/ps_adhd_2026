@@ -16,6 +16,7 @@ import {
 import { getHealth } from '../../services/api';
 import { HealthResponse } from '../../types';
 import { neuroAudio } from '../../utils/audio';
+import { useIntro } from '../../App';
 
 interface NavbarProps {
   activeSection?: string;
@@ -24,6 +25,7 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ activeSection = 'hero', onNavigateSection, onReplayIntro }) => {
+  const { replayIntro } = useIntro();
   const [health, setHealth] = useState<HealthResponse | null>(null);
   const [isChecking, setIsChecking] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
@@ -91,12 +93,12 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection = 'hero', onNaviga
 
         {/* Center Waypoint Navigator (When on Landing Page) */}
         {isLandingPage ? (
-          <nav className="hidden lg:flex items-center gap-1 p-1 rounded-full bg-slate-950/80 border border-slate-800/80 backdrop-blur-2xl shadow-[0_0_30px_rgba(0,0,0,0.9)] text-[11px] font-mono">
+          <nav className="hidden lg:flex items-center gap-1.5 p-1 rounded-full bg-[#061426]/90 border border-[#20BFE8]/25 backdrop-blur-2xl shadow-[0_0_30px_rgba(0,0,0,0.9)] text-[11px] font-heading font-extrabold tracking-wider">
             <button
               onClick={() => scrollTo('scene-hero')}
-              className={`px-3 py-1.5 rounded-full transition-all ${
+              className={`px-3.5 py-1.5 rounded-full transition-all cursor-pointer ${
                 activeSection === 'hero'
-                  ? 'bg-cyan-500/20 border border-cyan-400/60 text-cyan-300 shadow-[0_0_12px_rgba(0,240,255,0.25)] font-bold'
+                  ? 'bg-[#20BFE8]/25 border border-[#20BFE8]/70 text-[#79DFFF] shadow-[0_0_15px_rgba(32,191,232,0.3)] font-black'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
@@ -104,9 +106,9 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection = 'hero', onNaviga
             </button>
             <button
               onClick={() => scrollTo('scene-montage')}
-              className={`px-3 py-1.5 rounded-full transition-all ${
+              className={`px-3.5 py-1.5 rounded-full transition-all cursor-pointer ${
                 activeSection === 'montage'
-                  ? 'bg-violet-500/20 border border-violet-400/60 text-violet-300 shadow-[0_0_12px_rgba(139,92,246,0.25)] font-bold'
+                  ? 'bg-[#087CFF]/25 border border-[#087CFF]/70 text-[#79DFFF] shadow-[0_0_15px_rgba(8,124,255,0.3)] font-black'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
@@ -114,40 +116,40 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection = 'hero', onNaviga
             </button>
             <button
               onClick={() => scrollTo('scene-pipeline')}
-              className={`px-3 py-1.5 rounded-full transition-all ${
+              className={`px-3.5 py-1.5 rounded-full transition-all cursor-pointer ${
                 activeSection === 'pipeline'
-                  ? 'bg-pink-500/20 border border-pink-400/60 text-pink-300 shadow-[0_0_12px_rgba(240,43,213,0.25)] font-bold'
+                  ? 'bg-[#20BFE8]/25 border border-[#20BFE8]/70 text-[#79DFFF] shadow-[0_0_15px_rgba(32,191,232,0.3)] font-black'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
               03 AI PIPELINE
             </button>
-            <button
-              onClick={() => scrollTo('scene-lab')}
-              className={`px-3 py-1.5 rounded-full transition-all ${
+            <Link
+              to="/login"
+              className={`px-3.5 py-1.5 rounded-full transition-all cursor-pointer ${
                 activeSection === 'lab'
-                  ? 'bg-emerald-500/20 border border-emerald-400/60 text-emerald-300 shadow-[0_0_12px_rgba(16,185,129,0.25)] font-bold'
+                  ? 'bg-emerald-500/25 border border-emerald-400/70 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.3)] font-black'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
               04 NEURAL LAB
-            </button>
+            </Link>
           </nav>
         ) : (
-          <nav className="hidden lg:flex items-center gap-2 p-1 rounded-full bg-slate-950/80 border border-slate-800/80 backdrop-blur-2xl text-xs font-mono text-slate-300">
-            <Link to="/" className="px-3 py-1 rounded-full hover:text-cyan-400 transition-colors">
+          <nav className="hidden lg:flex items-center gap-2 p-1 rounded-full bg-[#061426]/90 border border-slate-800 backdrop-blur-2xl text-xs font-mono text-slate-300">
+            <Link to="/" className="px-3 py-1 rounded-full hover:text-[#20BFE8] transition-colors">
               Cinematic Home
             </Link>
-            <Link to="/dashboard" className="px-3 py-1 rounded-full hover:text-cyan-400 transition-colors">
+            <Link to="/dashboard" className="px-3 py-1 rounded-full hover:text-[#20BFE8] transition-colors">
               Overview
             </Link>
-            <Link to="/dashboard/upload" className="px-3 py-1 rounded-full hover:text-cyan-400 transition-colors">
+            <Link to="/dashboard/upload" className="px-3 py-1 rounded-full hover:text-[#20BFE8] transition-colors">
               Upload
             </Link>
-            <Link to="/dashboard/results" className="px-3 py-1 rounded-full hover:text-cyan-400 transition-colors">
+            <Link to="/dashboard/results" className="px-3 py-1 rounded-full hover:text-[#20BFE8] transition-colors">
               Results
             </Link>
-            <Link to="/dashboard/models" className="px-3 py-1 rounded-full hover:text-cyan-400 transition-colors">
+            <Link to="/dashboard/models" className="px-3 py-1 rounded-full hover:text-[#20BFE8] transition-colors">
               Models
             </Link>
           </nav>
@@ -159,29 +161,27 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection = 'hero', onNaviga
           <button
             onClick={handleToggleAudio}
             title={isMuted ? 'Enable Neuro-Soundscape' : 'Mute Soundscape'}
-            className={`p-2 rounded-full border backdrop-blur-2xl transition-all ${
+            className={`p-2 rounded-full border backdrop-blur-2xl transition-all cursor-pointer ${
               !isMuted
-                ? 'bg-cyan-500/20 border-cyan-400 text-cyan-300 shadow-[0_0_15px_rgba(0,240,255,0.4)]'
-                : 'bg-slate-950/80 border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
+                ? 'bg-[#20BFE8]/20 border-[#20BFE8] text-[#20BFE8] shadow-[0_0_15px_rgba(32,191,232,0.4)]'
+                : 'bg-[#030914]/90 border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
             }`}
           >
             {!isMuted ? <Volume2 className="w-4 h-4 animate-pulse" /> : <VolumeX className="w-4 h-4" />}
           </button>
 
           {/* Replay 3D Brain Intro Button */}
-          {onReplayIntro && (
-            <button
-              onClick={onReplayIntro}
-              title="Replay 3D Brain Intro"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-400/40 text-cyan-300 hover:bg-cyan-500/20 hover:border-cyan-300 text-xs font-mono font-medium transition-all shadow-[0_0_15px_rgba(0,240,255,0.2)]"
-            >
-              <RotateCcw className="w-3.5 h-3.5 text-cyan-400" />
-              <span className="hidden sm:inline">3D Intro</span>
-            </button>
-          )}
+          <button
+            onClick={() => (onReplayIntro ? onReplayIntro() : replayIntro())}
+            title="Replay 3D Brain Intro"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#087CFF]/15 border border-[#20BFE8]/40 text-[#20BFE8] hover:bg-[#20BFE8]/25 hover:border-[#20BFE8] text-xs font-mono font-medium transition-all shadow-[0_0_15px_rgba(32,191,232,0.2)] cursor-pointer"
+          >
+            <RotateCcw className="w-3.5 h-3.5 text-[#20BFE8]" />
+            <span className="hidden sm:inline">3D Intro</span>
+          </button>
 
           {/* Backend API Health Status Indicator */}
-          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-950/80 border border-slate-800/80 text-[11px] font-mono backdrop-blur-2xl shadow-lg">
+          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#030914]/90 border border-slate-800 text-[11px] font-mono backdrop-blur-2xl shadow-lg">
             {isChecking ? (
               <>
                 <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
@@ -203,20 +203,20 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection = 'hero', onNaviga
 
           {/* Launch Lab Action Pill */}
           {isLandingPage ? (
-            <button
-              onClick={() => scrollTo('scene-lab')}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs font-mono font-bold bg-gradient-to-r from-cyan-500/20 to-violet-600/20 border border-cyan-400/60 text-white shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:border-cyan-300 hover:shadow-[0_0_25px_rgba(0,240,255,0.5)] hover:scale-105 transition-all"
+            <Link
+              to="/login"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-heading font-extrabold uppercase tracking-wider bg-gradient-to-r from-[#087CFF] to-[#20BFE8] text-[#030914] shadow-[0_0_20px_rgba(32,191,232,0.35)] hover:shadow-[0_0_30px_rgba(32,191,232,0.55)] hover:scale-105 transition-all cursor-pointer"
             >
               <span>Launch Lab</span>
-              <ArrowRight className="w-3.5 h-3.5 text-cyan-400" />
-            </button>
+              <ArrowRight className="w-3.5 h-3.5 text-[#030914] stroke-[2.5]" />
+            </Link>
           ) : (
             <Link
               to="/dashboard/upload"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-mono font-bold bg-cyan-500/20 border border-cyan-400/60 text-white shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:border-cyan-300 hover:scale-105 transition-all"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-heading font-extrabold uppercase tracking-wider bg-[#087CFF]/25 border border-[#20BFE8]/70 text-white shadow-[0_0_20px_rgba(32,191,232,0.35)] hover:border-[#20BFE8] hover:scale-105 transition-all"
             >
               <span>Upload EEG</span>
-              <ArrowRight className="w-3.5 h-3.5 text-cyan-400" />
+              <ArrowRight className="w-3.5 h-3.5 text-[#20BFE8] stroke-[2.5]" />
             </Link>
           )}
         </div>

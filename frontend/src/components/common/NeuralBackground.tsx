@@ -1,32 +1,19 @@
 import React, { useEffect, useRef } from 'react';
 
-interface Particle {
+interface SynapseSpark {
   x: number;
   y: number;
-  z: number;
-  vx: number;
-  vy: number;
-  baseRadius: number;
-  color: string;
-  glowColor: string;
-  pulseSpeed: number;
-  pulsePhase: number;
-  isSynapse: boolean;
-  flash: number; // 0 to 1 flash intensity
-}
-
-interface Pulse {
-  fromIdx: number;
-  toIdx: number;
-  progress: number;
+  angle: number;
   speed: number;
+  distance: number;
+  maxDistance: number;
+  radius: number;
   color: string;
-  size: number;
 }
 
 export const NeuralBackground: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const mouseRef = useRef({ x: 0, y: 0, targetX: 0, targetY: 0, active: false });
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -38,42 +25,9 @@ export const NeuralBackground: React.FC = () => {
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
-    const isMobile = width < 768;
-    const particleCount = isMobile ? 90 : 210;
-    const maxDistance = isMobile ? 120 : 170;
-
-    // Vibrant neon palette matching user reference image
-    const palette = [
-      { color: '#00E5FF', glow: 'rgba(0, 229, 255, 0.85)' },    // Electric Cyan
-      { color: '#287BFF', glow: 'rgba(40, 123, 255, 0.85)' },   // Deep Royal Blue
-      { color: '#8B5CF6', glow: 'rgba(139, 92, 246, 0.85)' },  // Electric Violet
-      { color: '#F02BD5', glow: 'rgba(240, 43, 213, 0.85)' },  // Neon Magenta
-      { color: '#FF65D4', glow: 'rgba(255, 101, 212, 0.85)' },  // Hot Pink
-      { color: '#35F5C8', glow: 'rgba(53, 245, 200, 0.85)' },   // Mint / Bio-Teal
-    ];
-
-    const particles: Particle[] = [];
-    for (let i = 0; i < particleCount; i++) {
-      const z = 0.6 + Math.random() * 1.5;
-      const theme = palette[Math.floor(Math.random() * palette.length)];
-      particles.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        z,
-        vx: (Math.random() - 0.5) * 0.65 * z,
-        vy: (Math.random() - 0.5) * 0.65 * z,
-        baseRadius: (2.0 + Math.random() * 3.5) * z,
-        color: theme.color,
-        glowColor: theme.glow,
-        pulseSpeed: 1.5 + Math.random() * 2.8,
-        pulsePhase: Math.random() * Math.PI * 2,
-        isSynapse: Math.random() < 0.35, // 35% are prominent firing synapses
-        flash: 0,
-      });
-    }
-
-    const pulses: Pulse[] = [];
-    const maxPulses = isMobile ? 18 : 48;
+    // Dynamic sparks radiating along the neural tendrils in the user's image
+    const sparks: SynapseSpark[] = [];
+    const colors = ['#71BBFD', '#20BFE8', '#0087FF', '#FFFFFF', '#A9D7FF'];
 
     const handleResize = () => {
       if (!canvas) return;
@@ -82,200 +36,60 @@ export const NeuralBackground: React.FC = () => {
     };
 
     const handleMouseMove = (e: MouseEvent) => {
-      mouseRef.current.targetX = (e.clientX / width - 0.5) * 50;
-      mouseRef.current.targetY = (e.clientY / height - 0.5) * 50;
-      mouseRef.current.active = true;
+      if (!containerRef.current) return;
+      const moveX = (e.clientX / width - 0.5) * 12;
+      const moveY = (e.clientY / height - 0.5) * 12;
+      containerRef.current.style.transform = `scale(1.04) translate(${moveX}px, ${moveY}px)`;
     };
 
     window.addEventListener('resize', handleResize);
     window.addEventListener('mousemove', handleMouseMove);
 
-    let time = 0;
-
     const render = () => {
-      time += 0.016;
       ctx.clearRect(0, 0, width, height);
 
-      // Mouse parallax smoothing
-      mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.05;
-      mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.05;
-      const mx = mouseRef.current.x;
-      const my = mouseRef.current.y;
-
-      // -------------------------------------------------------------
-      // 1. Cosmic Colorful Nebula Clouds in Deep Background
-      // -------------------------------------------------------------
-      const n1 = ctx.createRadialGradient(width * 0.2, height * 0.3, 20, width * 0.2, height * 0.3, 420);
-      n1.addColorStop(0, 'rgba(0, 229, 255, 0.08)');
-      n1.addColorStop(0.6, 'rgba(40, 123, 255, 0.03)');
-      n1.addColorStop(1, 'transparent');
-      ctx.fillStyle = n1;
-      ctx.fillRect(0, 0, width, height);
-
-      const n2 = ctx.createRadialGradient(width * 0.8, height * 0.65, 20, width * 0.8, height * 0.65, 450);
-      n2.addColorStop(0, 'rgba(240, 43, 213, 0.08)');
-      n2.addColorStop(0.6, 'rgba(139, 92, 246, 0.03)');
-      n2.addColorStop(1, 'transparent');
-      ctx.fillStyle = n2;
-      ctx.fillRect(0, 0, width, height);
-
-      const n3 = ctx.createRadialGradient(width * 0.5, height * 0.15, 20, width * 0.5, height * 0.15, 360);
-      n3.addColorStop(0, 'rgba(139, 92, 246, 0.06)');
-      n3.addColorStop(1, 'transparent');
-      ctx.fillStyle = n3;
-      ctx.fillRect(0, 0, width, height);
-
-      // -------------------------------------------------------------
-      // 2. Update and Draw Interconnected Axon / Dendrite Filaments
-      // -------------------------------------------------------------
-      const activePairs: [number, number, number][] = [];
-      for (let i = 0; i < particleCount; i++) {
-        const pi = particles[i];
-        const xi = pi.x + mx * pi.z;
-        const yi = pi.y + my * pi.z;
-
-        for (let j = i + 1; j < particleCount; j++) {
-          const pj = particles[j];
-          const xj = pj.x + mx * pj.z;
-          const yj = pj.y + my * pj.z;
-
-          const dx = xi - xj;
-          const dy = yi - yj;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist < maxDistance) {
-            const norm = 1 - dist / maxDistance;
-            const alpha = norm * norm * 0.55;
-
-            // Two-color glowing gradient filament between connected neurons
-            const lineGrad = ctx.createLinearGradient(xi, yi, xj, yj);
-            lineGrad.addColorStop(0, pi.color);
-            lineGrad.addColorStop(1, pj.color);
-
-            ctx.strokeStyle = lineGrad;
-            ctx.globalAlpha = alpha;
-            ctx.lineWidth = norm * 2.2;
-            ctx.beginPath();
-            ctx.moveTo(xi, yi);
-            ctx.lineTo(xj, yj);
-            ctx.stroke();
-            ctx.globalAlpha = 1.0;
-
-            activePairs.push([i, j, dist]);
-          }
-        }
-      }
-
-      // -------------------------------------------------------------
-      // 3. Update and Draw Moving Neuron Somas & Firing Synapses
-      // -------------------------------------------------------------
-      for (let i = 0; i < particleCount; i++) {
-        const p = particles[i];
-        p.x += p.vx;
-        p.y += p.vy;
-
-        // Wrap around viewport edges smoothly
-        if (p.x < -40) p.x = width + 40;
-        else if (p.x > width + 40) p.x = -40;
-        if (p.y < -40) p.y = height + 40;
-        else if (p.y > height + 40) p.y = -40;
-
-        const posX = p.x + mx * p.z;
-        const posY = p.y + my * p.z;
-
-        // Random synaptic firing flare
-        if (p.isSynapse && Math.random() < 0.012) {
-          p.flash = 1.0;
-        } else {
-          p.flash *= 0.92;
-        }
-
-        const pulse = Math.sin(time * p.pulseSpeed + p.pulsePhase);
-        const radius = p.baseRadius * (1 + 0.35 * pulse + 0.6 * p.flash);
-
-        // Radiant Outer Corona Glow
-        const glowRad = radius * (p.isSynapse ? 5.5 : 3.8);
-        const grad = ctx.createRadialGradient(posX, posY, 0, posX, posY, glowRad);
-        grad.addColorStop(0, p.glowColor);
-        grad.addColorStop(0.4, p.glowColor.replace('0.85', '0.35'));
-        grad.addColorStop(1, 'transparent');
-        ctx.fillStyle = grad;
-        ctx.beginPath();
-        ctx.arc(posX, posY, glowRad, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Neuron Body
-        ctx.fillStyle = p.color;
-        ctx.shadowColor = p.color;
-        ctx.shadowBlur = p.isSynapse ? 16 : 8;
-        ctx.beginPath();
-        ctx.arc(posX, posY, radius, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Hot White Synaptic Core
-        ctx.fillStyle = '#FFFFFF';
-        ctx.beginPath();
-        ctx.arc(posX, posY, radius * 0.45, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.shadowBlur = 0;
-      }
-
-      // -------------------------------------------------------------
-      // 4. Randomly Spawn Fast Electrical Action Potentials (Sparks)
-      // -------------------------------------------------------------
-      if (pulses.length < maxPulses && activePairs.length > 0 && Math.random() < 0.32) {
-        const pair = activePairs[Math.floor(Math.random() * activePairs.length)];
-        const p1 = particles[pair[0]];
-        const p2 = particles[pair[1]];
-        pulses.push({
-          fromIdx: pair[0],
-          toIdx: pair[1],
-          progress: 0,
-          speed: 0.025 + Math.random() * 0.045, // fast electric speed
-          color: Math.random() > 0.5 ? p1.color : p2.color,
-          size: 3.0 + Math.random() * 3.0,
+      // Spawn action potential pulses from center outwards along the user's neural paths
+      if (sparks.length < 28 && Math.random() < 0.28) {
+        const angle = Math.random() * Math.PI * 2;
+        sparks.push({
+          x: width * 0.5 + Math.cos(angle) * 30,
+          y: height * 0.5 + Math.sin(angle) * 30,
+          angle,
+          speed: 1.2 + Math.random() * 2.2,
+          distance: 30,
+          maxDistance: Math.max(width, height) * (0.35 + Math.random() * 0.35),
+          radius: 1.2 + Math.random() * 2.0,
+          color: colors[Math.floor(Math.random() * colors.length)],
         });
       }
 
-      // -------------------------------------------------------------
-      // 5. Update and Draw Travelling Electrical Pulses
-      // -------------------------------------------------------------
-      for (let k = pulses.length - 1; k >= 0; k--) {
-        const pulse = pulses[k];
-        pulse.progress += pulse.speed;
+      // Update and draw traveling pulses
+      for (let i = sparks.length - 1; i >= 0; i--) {
+        const s = sparks[i];
+        s.distance += s.speed;
+        s.x = width * 0.5 + Math.cos(s.angle) * s.distance;
+        s.y = height * 0.5 + Math.sin(s.angle) * s.distance;
 
-        if (pulse.progress >= 1) {
-          pulses.splice(k, 1);
+        const progress = s.distance / s.maxDistance;
+        if (progress >= 1) {
+          sparks.splice(i, 1);
           continue;
         }
 
-        const pA = particles[pulse.fromIdx];
-        const pB = particles[pulse.toIdx];
-        if (!pA || !pB) {
-          pulses.splice(k, 1);
-          continue;
-        }
+        const alpha = Math.sin(progress * Math.PI);
 
-        const ax = pA.x + mx * pA.z;
-        const ay = pA.y + my * pA.z;
-        const bx = pB.x + mx * pB.z;
-        const by = pB.y + my * pB.z;
-
-        const px = ax + (bx - ax) * pulse.progress;
-        const py = ay + (by - ay) * pulse.progress;
-
-        // Bright white-hot spark center
-        ctx.fillStyle = '#FFFFFF';
-        ctx.shadowColor = pulse.color;
-        ctx.shadowBlur = 14;
+        // Outer glow
+        ctx.fillStyle = s.color;
+        ctx.shadowColor = s.color;
+        ctx.shadowBlur = 10;
         ctx.beginPath();
-        ctx.arc(px, py, pulse.size, 0, Math.PI * 2);
+        ctx.arc(s.x, s.y, s.radius * 1.5, 0, Math.PI * 2);
         ctx.fill();
 
-        // Radiant electric corona
-        ctx.fillStyle = pulse.color;
+        // Bright nucleus
+        ctx.fillStyle = '#FFFFFF';
         ctx.beginPath();
-        ctx.arc(px, py, pulse.size * 2.0, 0, Math.PI * 2);
+        ctx.arc(s.x, s.y, s.radius * 0.6, 0, Math.PI * 2);
         ctx.fill();
         ctx.shadowBlur = 0;
       }
@@ -293,10 +107,46 @@ export const NeuralBackground: React.FC = () => {
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-0"
-      style={{ width: '100vw', height: '100vh', opacity: 1.0 }}
-    />
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none bg-[#000214]">
+      {/* 1. User Uploaded Neural Synapses Artwork as Global Background Theme (Balanced Sci-Fi Luminescence) */}
+      <div
+        ref={containerRef}
+        className="absolute -inset-4 w-[calc(100%+32px)] h-[calc(100%+32px)] transition-transform duration-700 ease-out will-change-transform"
+        style={{
+          backgroundImage: 'url(/images/neural_synapse_bg.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center center',
+          backgroundRepeat: 'no-repeat',
+          opacity: 0.45,
+          mixBlendMode: 'screen',
+          filter: 'brightness(1.0) contrast(1.15) saturate(1.15)',
+        }}
+      />
+
+      {/* 2. Soft Ambient Vignette for Optimal Readability & Depth */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            'radial-gradient(circle at 50% 50%, rgba(0, 4, 30, 0.35) 0%, rgba(0, 4, 25, 0.65) 55%, rgba(0, 2, 20, 0.90) 100%)',
+        }}
+      />
+
+      {/* 3. Subtle Cybernetic Grid Pattern */}
+      <div
+        className="absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage:
+            'linear-gradient(to right, #71BBFD 1px, transparent 1px), linear-gradient(to bottom, #71BBFD 1px, transparent 1px)',
+          backgroundSize: '48px 48px',
+        }}
+      />
+
+      {/* 4. Bioluminescent Sparks Canvas Layer */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full pointer-events-none"
+      />
+    </div>
   );
 };

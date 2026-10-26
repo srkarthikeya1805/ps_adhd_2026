@@ -13,7 +13,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ title, subtitl
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#050816] text-slate-100 flex flex-col font-sans">
+    <div className="min-h-screen bg-transparent text-[#F3F8FF] flex flex-col font-sans relative z-10">
       {/* Sidebar */}
       <Sidebar
         isCollapsed={isSidebarCollapsed}
