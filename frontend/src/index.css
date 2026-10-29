@@ -1,0 +1,350 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Pure Dark Navy, Cobalt & AURA Cyan Scientific AI Palette */
+    --bg-primary: #000425;
+    --bg-secondary: #030720;
+    --bg-tertiary: #061426;
+    --neural-blue: #0087FF;
+    --cyan: #20BFE8;
+    --cyan-light: #71BBFD;
+    --cyan-glow: #A9D7FF;
+    --text-primary: #FFFFFF;
+    --text-secondary: #C9E5FF;
+    --text-muted: rgba(255, 255, 255, 0.72);
+
+    /* Exact AURA EEG Typography: Poppins */
+    --font-heading: 'Poppins', sans-serif;
+    --font-sans: 'Poppins', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-family: 'Poppins', sans-serif !important;
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Poppins', sans-serif !important;
+    font-weight: 400;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Universal Poppins Font Family matching https://auraeeg.com/ */
+  *, html, body, button, input, select, textarea, div, p, span, h1, h2, h3, h4, h5, h6, a, label {
+    font-family: 'Poppins', sans-serif;
+  }
+
+  /* Clear, confident AURA style bold headings */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  h1 {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  h3 {
+    font-weight: 600;
+  }
+
+  h4, h5, h6 {
+    font-weight: 600;
+  }
+
+  /* High-legibility body paragraphs (AURA style: 400 weight, 1.7 line-height) */
+  p {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    line-height: 1.75;
+    color: var(--text-muted);
+  }
+
+  /* Bold navigation labels & buttons (Poppins 600-700) */
+  nav a, nav button, button {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+
+  /* Form labels */
+  label {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--text-secondary);
+    letter-spacing: 0.02em;
+  }
+
+  /* High-tech metric values and titles in Poppins */
+  .font-metric {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .font-tech-label {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  #root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+  }
+}
+
+/* Custom Scientific Dark Glass Panels */
+.glass-panel {
+  background: rgba(4, 15, 30, 0.52);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(32, 191, 232, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+}
+
+.glass-panel-interactive {
+  background: rgba(4, 15, 30, 0.52);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(32, 191, 232, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel-interactive:hover {
+  border-color: rgba(32, 191, 232, 0.45);
+  box-shadow: 0 0 25px rgba(32, 191, 232, 0.2), 0 8px 32px 0 rgba(0, 0, 0, 0.6);
+  transform: translateY(-2px);
+}
+
+/* Subtle Cyan and Neural Blue Glows */
+.glow-cyan {
+  box-shadow: 0 0 25px rgba(32, 191, 232, 0.35);
+}
+
+.glow-blue {
+  box-shadow: 0 0 25px rgba(8, 124, 255, 0.35);
+}
+
+.text-glow-cyan {
+  text-shadow: 0 0 16px rgba(32, 191, 232, 0.55);
+}
+
+.text-glow-blue {
+  text-shadow: 0 0 16px rgba(8, 124, 255, 0.55);
+}
+
+/* Subtle Grid Texture */
+.neural-grid {
+  background-image: 
+    linear-gradient(to right, rgba(32, 191, 232, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(32, 191, 232, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.radial-glow-cyan {
+  background: radial-gradient(circle at 50% 50%, rgba(32, 191, 232, 0.10) 0%, transparent 70%);
+}
+
+/* Sleek Scientific Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #030914;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0d2238;
+  border-radius: 4px;
+  border: 1px solid rgba(32, 191, 232, 0.15);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #15375c;
+  border-color: rgba(32, 191, 232, 0.4);
+}
+
+/* Font helpers */
+.font-heading {
+  font-family: var(--font-heading);
+}
+
+.font-sans {
+  font-family: var(--font-sans);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* ==========================================================================
+   AURA EEG Style Scroll Bouncing & Floating Font Animations
+   ========================================================================== */
+
+/* Word-by-word inline container matching AURA's .desc-word */
+.desc-word {
+  display: inline-block;
+  will-change: transform, opacity;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
+}
+
+/* Bouncing spring entrance keyframes */
+@keyframes auraBounceUp {
+  0% {
+    opacity: 0;
+    transform: translateY(32px) scale(0.96);
+  }
+  60% {
+    opacity: 0.9;
+    transform: translateY(-5px) scale(1.01);
+  }
+  80% {
+    transform: translateY(2px) scale(0.995);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Floating ambient oscillation for cards, model boxes, and pills */
+@keyframes auraFloatSlow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes auraFloatMedium {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes auraFloatDelicate {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes auraFloatReverse {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+/* Subtle glowing pulse */
+@keyframes auraPulseGlow {
+  0%, 100% {
+    text-shadow: 0 0 16px rgba(113, 187, 253, 0.4);
+  }
+  50% {
+    text-shadow: 0 0 28px rgba(113, 187, 253, 0.8), 0 0 40px rgba(0, 135, 255, 0.4);
+  }
+}
+
+.animate-aura-bounce {
+  animation: auraBounceUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-aura-float {
+  animation: auraFloatMedium 4.5s ease-in-out infinite;
+}
+
+.animate-aura-float-slow {
+  animation: auraFloatSlow 6.5s ease-in-out infinite;
+}
+
+.animate-aura-float-delicate {
+  animation: auraFloatDelicate 3.5s ease-in-out infinite;
+}
+
+.animate-aura-float-reverse {
+  animation: auraFloatReverse 5.5s ease-in-out infinite;
+}
+
+/* AURA Gradient Headings */
+.aura-gradient-title {
+  background: linear-gradient(135deg, #FFFFFF 15%, #C9E5FF 55%, #71BBFD 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.aura-gradient-cyan {
+  background: linear-gradient(135deg, #71BBFD 0%, #20BFE8 50%, #0087FF 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* AURA Style Pill Badge */
+.aura-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 9999px;
+  background: rgba(0, 135, 255, 0.1);
+  border: 1px solid rgba(113, 187, 253, 0.3);
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #C9E5FF;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 15px rgba(0, 135, 255, 0.15);
+}
+
+/* AURA EEG Deep Glass Card */
+.aura-glass-card {
+  background: rgba(0, 4, 37, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(113, 187, 253, 0.2);
+  border-radius: 1rem;
+  box-shadow: 0 20px 40px rgba(0, 3, 25, 0.4);
+  transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.aura-glass-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(113, 187, 253, 0.45);
+  box-shadow: 0 24px 50px rgba(0, 3, 25, 0.6), 0 0 25px rgba(0, 135, 255, 0.25);
+}
+
