@@ -140,11 +140,80 @@ Hot-reloading is supported: editing `models/ensemble_config.json` updates infere
 The frontend is a clinical-grade neuroscience interface built with **React 19**, **Vite**, **TypeScript**, **Three.js / React Three Fiber**, and **Tailwind CSS v4**.
 
 * **Direct UI Presentation (`LandingPage.tsx`)**:
-  - The preliminary multi-stage cinematic intro sequence (idle landing, exploded anatomical layer disassembly, and 3D head cap resolution) has been bypassed.
+  - The preliminary multi-stage cinematic intro sequence (idle landing, exploded anatomical layer disassembly, and 3D head cap resolution) has been streamlined with smooth ~10s video playback and sequential scroll stagger cascades.
   - When accessing the application URL (`http://localhost:5173/`), the complete scientific interface is rendered immediately.
 * **Integrated 4-Phase Landing Workflow**:
   1. **Fixed 3D Cortical Stage (`scene-hero`)**: Interactive Three.js cortical mesh with real-time lobe spotlighting (Frontal, Parietal, Temporal, Occipital) and 8-channel live 10-20 waveform microvolt stream telemetry.
-  2. **10-20 Montage Explorer (`scene-montage`)**: Complete 19-channel electrode array visualization, frequency band selector (Delta, Theta, Alpha, Beta, Gamma), and ADHD TBR biomarker context.
-  3. **Ensemble Architecture Deep Dive (`scene-pipeline`)**: Interactive 3D tilt cards detailing CNN-Transformer, Welch PSD + XGBoost, and EEGNet with mathematical fusion equations.
+  2. **10-20 Montage Explorer (`scene-montage`)**: Complete 19-channel electrode array visualization, frequency band selector (Delta, Theta, Alpha, Beta, Gamma), and ADHD TBR biomarker context with staggered reveal animations.
+  3. **Ensemble Architecture Deep Dive (`scene-pipeline`)**: Interactive 3D `AuraTiltCard` cards detailing CNN-Transformer, Welch PSD + XGBoost, and EEGNet with one-click architecture image zoom inspection and mathematical fusion equations.
   4. **Neural Lab Diagnostic Workspace (`scene-lab`)**: Polymorphic drag-and-drop file upload, 7-tier pre-validation modal, 1-click clinical benchmark loaders, and instant batch/single file prediction telemetry.
 
+---
+
+## 7. Clinical Brain Recovery & Neuro-Care Hub (`/dashboard/neuro-care`)
+
+The platform integrates a clinical recovery and neuroplasticity care system ([BrainRecoveryPage.tsx](file:///d:/srkarthikeya1805%20ps_adhd_2026%20main%20adhd_backend/frontend/src/pages/BrainRecoveryPage.tsx)) addressing the neuro-biological foundations of ADHD:
+
+1. **Interactive 19-Channel Neuro-Pathology Inspection Modal**:
+   * Live simulated multichannel EEG wave visualizer rendering real-time oscillating potentials across **Delta (1–4 Hz)**, **Theta (4–8 Hz)**, **Alpha (8–12 Hz)**, **SMR (12–15 Hz)**, and **Fast Beta (13–30 Hz)** bands.
+   * Scalp hotspot mapping linking 10-20 electrodes to cortical dysregulation:
+     * **Prefrontal Executive Network (DLPFC - Fp1, Fp2, Fz, F3, F4)**: Highlights high theta excess, dopamine transporter (DAT1) clearance, and working memory fatigue.
+     * **Fronto-Striatal Dopaminergic Circuit (F3, F4, C3, C4)**: Reward deficiency encoding and delayed executive task engagement.
+     * **Sensorimotor Strip (C3, Cz, C4)**: Somatic motor gating, tactile restlessness, and depleted 12–15 Hz Sensorimotor Rhythm (SMR).
+2. **4-Tier Clinical Intervention Protocols**:
+   * **Tier 1: SMR Neurofeedback & Cortical Training**: Clinical Operant conditioning protocol targeting 12–15 Hz rhythm enhancement over the central strip ($Cz, C3, C4$) to reduce involuntary motor fidgeting.
+   * **Tier 2: Dopaminergic Prefrontal Rest & Cognitive Pacing**: Non-Sleep Deep Rest (NSDR 15–20 min), structured 25/5 Pomodoro cycles to prevent prefrontal glycogen depletion, and dopamine baseline stabilization.
+   * **Tier 3: Circadian Sleep Architecture & Glymphatic Cleansing**: Optimizing slow-wave sleep (Stage 3 NREM) and glymphatic metabolic waste clearance to lower morning theta excess and executive brain fog.
+   * **Tier 4: Multi-Modal Nutritional & Lifestyle Support**: Precursor nutrition (L-Tyrosine, Magnesium L-Threonate), morning high-lux sunlight retinal exposure, and high-intensity aerobic exercise promoting Brain-Derived Neurotrophic Factor (BDNF).
+3. **Interactive Audio Biofeedback & Visual Diagnostic Imagery**:
+   * Real-time audio frequency synthesis via Web Audio API (`neuroAudio`) for auditory cueing during neural training.
+   * High-resolution medical diagnostic imagery illustrating synaptic vesicle dopamine release, SMR electrode placement, deep-sleep EEG delta waves, and ADHD vs. Control spectral contrasts.
+
+---
+
+## 8. Enhanced 3D Scalp Topography & Signal Explorer (`/dashboard/signal-explorer`)
+
+The Signal Explorer ([SignalExplorerPage.tsx](file:///d:/srkarthikeya1805%20ps_adhd_2026%20main%20adhd_backend/frontend/src/pages/SignalExplorerPage.tsx)) provides real-time 10-20 inspection:
+* **3D Scalp Electrode Topography Showcase**: Integrated `AuraTiltCard` rendering 3D scalp montage geometry with live ±50 μV potential telemetry and corner status monitors.
+* **Continuous Real-Time Waveform Monitors**: Three dedicated wave monitors for Slow Potentials (1–4 Hz Delta), Theta/Alpha (4–12 Hz Sensory Rhythms & TBR), and Fast Beta (13–30 Hz Active Focus).
+* **Interactive 19-Channel Electrode Selector**: Quick selection across all 19 standard electrodes (Fp1, Fp2, F7, F3, Fz, F4, F8, T3, C3, Cz, C4, T4, T5, P3, Pz, P4, T6, O1, O2) displaying specific cortical lobe mapping, microvolt amplitude range, ADHD biomarker impact, and clinical significance.
+* **Adjustable Telemetry Controls**: Multichannel trace zoom ($0.5\times$ to $5\times$), timebase scroll speeds, individual channel soloing, and live frequency bandpower calculations.
+
+
+---
+
+## 9. BCI Competition / Motor Imagery Gating & Dataset Compatibility Standards
+
+### 9.1 Why BCI Competition Datasets (BCICIV_1, BCICIV_2a, BCICIV_2b) Are Formally Rejected
+The platform is calibrated specifically for **clinical EEG ADHD detection** and enforces strict biological and montage prerequisites:
+
+1. **Experimental Paradigm Mismatch**:
+   - **BCI Competition IV (e.g. `BCICIV_2a_gdf.zip`)**: Records brain activity during cued **motor imagery** (mental simulation of left hand, right hand, foot, and tongue movements).
+   - **Clinical ADHD Protocol**: Evaluates resting-state (Eyes-Open / Eyes-Closed) or continuous performance attention tasks (CPT) to quantify sustained cognitive focus, tonic arousal, and prefrontal dopamine gating.
+
+2. **Severe Electrode Montage Incompatibility**:
+   - **BCICIV 2a**: Contains 22 EEG electrodes focused tightly around the sensorimotor cortex ($C3, Cz, C4$) + 3 monopolar EOG channels.
+   - **Montage Deficit**: Completely lacks **13 of the 19 standard clinical 10-20 channels**, including all prefrontal and frontal leads ($Fp1, Fp2, F7, F3, Fz, F4, F8$) and temporal leads ($T3, T4, T5, T6$).
+   - **Clinical Consequence**: ADHD biomarkers fundamentally reside in prefrontal cortex dysregulation (elevated frontal Theta, depleted Beta, fronto-striatal Theta/Beta Ratio exceeding 3.0). Attempting ADHD classification on motor cortex channels without frontal leads generates medically spurious, invalid diagnostics.
+
+3. **Subagent Multi-Tier Interception**:
+   - `BioAuthenticator` (Tier 0B): Detects BCI motor imagery signatures, `.gdf` archive structures, and channel deficits.
+   - `Dispatcher`: Halts prediction pipeline, marks status as `Prediction Withheld`, and generates transparent clinical research protocol advisories.
+
+---
+
+## 10. Frontend Architecture, Custom Neuroscience Typography & Interactive Bulging Engine
+
+### 10.1 Typography Suite
+- **Navigation & Telemetry Font (`Oxanium` / `Orbitron`)**: Distinctive, angular high-tech writing style font providing an aerospace/neuro-clinical command center aesthetic.
+- **Headings & Brand Title (`Space Grotesk` / `Syne`)**: Clean, authoritative neo-grotesque display typography.
+- **Body & Explanatory Prose (`Plus Jakarta Sans`)**: High-legibility geometric sans-serif for clinical readability.
+- **Telemetry & Data Tables (`JetBrains Mono`)**: Fixed-width clarity for numerical arrays, frequency ranges, and coordinates.
+
+### 10.2 Universal Interactive Bulging Hover Engine
+- Configured across `src/index.css`, `Button.tsx`, and `LandingPage.tsx` using spring physics (`cubic-bezier(0.34, 1.56, 0.64, 1)`):
+  - **Buttons & Pills**: Expand by $+6\%$ to $+10\%$ (`scale(1.06) - scale(1.10)`) with ambient cyan drop-shadow on cursor hover.
+  - **10-20 Scalp Electrode Grid**: Individual channel nodes expand by $+22\%$ (`scale(1.22) translateY(-3px)`) with glowing cyan saturation.
+  - **Feature Cards & Table Containers**: Expand by $+3.5\%$ with deep glass shadow elevation.
+  - **Tactile Active Press**: Smooth spring compression to `scale(0.96)` on mouse click.
+- **Enhanced Contrast Notice Boxes**: High-opacity solid dark glass backing (`bg-[#070e1e]/95` with `backdrop-blur-2xl`) and enlarged 16px–20px typography preventing background particle bleed-through.

@@ -1,0 +1,314 @@
+@import "tailwindcss";
+
+@theme {
+  --font-heading: 'Space Grotesk', 'Syne', sans-serif;
+  --font-sans: 'Plus Jakarta Sans', sans-serif;
+  --font-nav: 'Oxanium', 'Orbitron', 'Chakra Petch', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-tech: 'Oxanium', 'Orbitron', monospace;
+}
+
+@layer base {
+  :root {
+    /* Pure Dark Navy, Cobalt & AURA Cyan Scientific AI Palette */
+    --bg-primary: #000425;
+    --bg-secondary: #030720;
+    --bg-tertiary: #061426;
+    --neural-blue: #0087FF;
+    --cyan: #20BFE8;
+    --cyan-light: #71BBFD;
+    --cyan-glow: #A9D7FF;
+    --text-primary: #FFFFFF;
+    --text-secondary: #C9E5FF;
+    --text-muted: rgba(255, 255, 255, 0.76);
+
+    /* Cohesive, distinctive neuroscience typography */
+    --font-heading: 'Space Grotesk', 'Syne', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-nav: 'Oxanium', 'Orbitron', 'Chakra Petch', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-tech: 'Oxanium', 'Orbitron', sans-serif;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-sans);
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Clear, confident neuroscience style headings */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    color: var(--text-primary);
+    letter-spacing: -0.015em;
+    line-height: 1.25;
+  }
+
+  h1 {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  h3 {
+    font-weight: 600;
+  }
+
+  h4, h5, h6 {
+    font-weight: 600;
+  }
+
+  /* High-legibility body paragraphs */
+  p {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    line-height: 1.75;
+    color: var(--text-muted);
+  }
+
+  /* Navigation labels & buttons */
+  nav a, nav button, button {
+    font-family: var(--font-nav);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+
+  /* Form labels */
+  label {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--text-secondary);
+    letter-spacing: 0.02em;
+  }
+
+  /* High-tech metric values and titles */
+  .font-metric {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .font-tech-label {
+    font-family: var(--font-nav);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  #root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+  }
+}
+
+/* ==========================================================================
+   Universal Bulge & Smooth Spring Hover Animations for All Buttons & Elements
+   ========================================================================== */
+
+/* Universal bulging transition for buttons, links, pills, badges, cards, tables */
+button,
+a,
+[role="button"],
+input[type="button"],
+input[type="submit"],
+.bulge-hover,
+.telemetry-pill,
+.aura-pill,
+.sidebar-nav-item,
+.glass-panel,
+.glass-panel-interactive,
+.aura-glass-card,
+[class*="rounded-full"][class*="border"],
+[class*="rounded-xl"][class*="border"],
+[class*="rounded-2xl"][class*="border"],
+[class*="rounded-3xl"][class*="border"] {
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), 
+              box-shadow 0.28s ease, 
+              border-color 0.28s ease,
+              filter 0.28s ease !important;
+  will-change: transform;
+}
+
+/* Bulging effect on hover for buttons, pills, tags, links */
+button:hover:not(:disabled),
+a:hover,
+[role="button"]:hover,
+input[type="button"]:hover:not(:disabled),
+input[type="submit"]:hover:not(:disabled),
+.bulge-hover:hover,
+.telemetry-pill:hover,
+.aura-pill:hover,
+.sidebar-nav-item:hover,
+[class*="rounded-full"][class*="border"]:hover {
+  transform: scale(1.08) translateY(-2px) !important;
+  filter: drop-shadow(0 0 16px rgba(32, 191, 232, 0.55)) !important;
+  border-color: rgba(32, 191, 232, 0.75) !important;
+  cursor: pointer;
+  z-index: 20;
+}
+
+/* Tactile press on click */
+button:active:not(:disabled),
+a:active,
+[role="button"]:active {
+  transform: scale(0.96) translateY(0) !important;
+  transition-duration: 0.1s !important;
+}
+
+/* Feature cards, table containers, and panels bulge smoothly */
+.glass-panel:hover,
+.glass-panel-interactive:hover,
+.aura-glass-card:hover,
+[class*="rounded-2xl"][class*="border"]:hover,
+[class*="rounded-3xl"][class*="border"]:hover {
+  transform: scale(1.03) translateY(-4px) !important;
+  border-color: rgba(32, 191, 232, 0.6) !important;
+  box-shadow: 0 20px 50px rgba(0, 4, 37, 0.8), 0 0 30px rgba(32, 191, 232, 0.3) !important;
+}
+
+/* 10-20 Scalp Electrode Buttons bulge prominently */
+.electrode-btn:hover,
+[class*="grid"] button:hover {
+  transform: scale(1.22) translateY(-3px) !important;
+  filter: drop-shadow(0 0 18px rgba(0, 240, 255, 0.85)) !important;
+  border-color: #20BFE8 !important;
+  z-index: 30;
+}
+
+/* Custom Scientific Dark Glass Panels */
+.glass-panel {
+  background: rgba(4, 15, 30, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(32, 191, 232, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+}
+
+.glass-panel-interactive {
+  background: rgba(4, 15, 30, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(32, 191, 232, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* Subtle Cyan and Neural Blue Glows */
+.glow-cyan {
+  box-shadow: 0 0 25px rgba(32, 191, 232, 0.35);
+}
+
+.glow-blue {
+  box-shadow: 0 0 25px rgba(8, 124, 255, 0.35);
+}
+
+.text-glow-cyan {
+  text-shadow: 0 0 16px rgba(32, 191, 232, 0.55);
+}
+
+.text-glow-blue {
+  text-shadow: 0 0 16px rgba(8, 124, 255, 0.55);
+}
+
+/* Subtle Grid Texture */
+.neural-grid {
+  background-image: 
+    linear-gradient(to right, rgba(32, 191, 232, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(32, 191, 232, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.radial-glow-cyan {
+  background: radial-gradient(circle at 50% 50%, rgba(32, 191, 232, 0.10) 0%, transparent 70%);
+}
+
+/* Sleek Scientific Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #030914;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0d2238;
+  border-radius: 4px;
+  border: 1px solid rgba(32, 191, 232, 0.15);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #15375c;
+  border-color: rgba(32, 191, 232, 0.4);
+}
+
+/* Explicit Font helper classes */
+.font-heading {
+  font-family: var(--font-heading) !important;
+}
+
+.font-sans {
+  font-family: var(--font-sans) !important;
+}
+
+.font-nav {
+  font-family: var(--font-nav) !important;
+  letter-spacing: 0.06em;
+}
+
+.font-mono {
+  font-family: var(--font-mono) !important;
+}
+
+.font-tech {
+  font-family: var(--font-tech) !important;
+}
+
+/* Word-by-word inline container */
+.desc-word {
+  display: inline-block;
+  will-change: transform, opacity;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
+}
+
+/* AURA Gradient Headings */
+.aura-gradient-title {
+  background: linear-gradient(135deg, #FFFFFF 15%, #C9E5FF 55%, #71BBFD 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.aura-gradient-cyan {
+  background: linear-gradient(135deg, #71BBFD 0%, #20BFE8 50%, #0087FF 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Deep Glass Card */
+.aura-glass-card {
+  background: rgba(0, 4, 37, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(113, 187, 253, 0.2);
+  border-radius: 1rem;
+  box-shadow: 0 20px 40px rgba(0, 3, 25, 0.4);
+}

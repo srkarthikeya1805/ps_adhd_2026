@@ -107,6 +107,33 @@ Clinical Ground-Truth Telemetry & Reporting (app/subagents/reporter.py):
 6. **Automated Verification Suite (`tests/`)**:
    * Expanded test suite to **41 comprehensive unit and integration tests** covering API routes, preprocessing, model loading, and subagent authentication with a 100% pass rate.
 
+7. **Clinical Brain Recovery & Care Dashboard (`/dashboard/neuro-care`, `frontend/src/pages/BrainRecoveryPage.tsx`)**:
+   * **4-Tier Clinical Care Hub**: Actionable neuroplasticity and recovery protocols spanning SMR Neurofeedback (12–15 Hz), Dopamine & Prefrontal Synaptic Rest (NSDR, Pomodoro 25/5), Circadian Sleep Architecture & Glymphatic Cleansing (Stage 3 NREM), and Multi-Modal Lifestyle/Nutritional Interventions (L-Tyrosine, Magnesium L-Threonate, BDNF aerobic exercise).
+   * **Interactive 19-Channel Neuro-Pathology Inspection Modal**: Real-time simulated EEG waveforms across 5 physiological bands with scalp hotspot mapping for the Prefrontal DLPFC, Fronto-Striatal circuit, and Sensorimotor strip.
+   * **Clinical Diagnostic Visuals & Web Audio Synthesis**: High-resolution clinical imagery and auditory biofeedback tone generation via Web Audio API.
+
+8. **Enhanced 3D Scalp Topography & Waveform Telemetry (`/dashboard/signal-explorer`)**:
+   * **3D Scalp Electrode Showcase**: Realistic 3D scalp montage embedded in an interactive `AuraTiltCard` with live ±50 μV potentials.
+   * **Continuous Real-Time Monitors**: 3 waveform monitors for Slow Potential (1–4 Hz Delta), Theta/Alpha (4–12 Hz Sensory Rhythms & TBR), and Fast Beta (13–30 Hz Active Focus).
+   * **19-Channel Electrode Selector**: Instant telemetry drill-down across Frontal, Central, Temporal, Parietal, and Occipital lobes with voltage ranges, ADHD biomarker impact, and clinical significance.
+
+9. **Interactive 3D AuraTiltCard Models & Sequential Scroll Cascades**:
+   * Physics-based 3D tilt cards with specular light tracking on deep learning model architecture cards (`EnsembleCard.tsx`).
+   * One-click modal image lightbox zoom for inspecting architecture diagrams.
+   * Framer Motion sequential scroll stagger cascades across pipeline stages and ensemble components.
+   * Video compression optimization (~10s-13s) for smooth instant playback.
+
+10. **BCI Competition & Motor Imagery Rejection Gating (`BCICIV_2a_gdf.zip`, `BCICIV_1_mat.zip`, `BCICIV_2b.zip`)**:
+    * **Clinical Incompatibility Rejection**: Specifically detects and rejects BCI Competition motor imagery datasets (e.g. `BCICIV_2a_gdf.zip`).
+    * **Physiological Root Cause**: BCI Competition 2a contains 22 electrodes centered exclusively over the sensorimotor cortex ($C3, Cz, C4$) recorded during 4-class cued motor imagery tasks (left hand, right hand, feet, tongue). It completely lacks 13 of the 19 clinical 10-20 channels—specifically missing the entire prefrontal and temporal montages ($Fp1, Fp2, F7, F3, Fz, F4, F8, T3, T4, T5, T6$).
+    * **Clinical Gating**: Because ADHD pathophysiology is rooted in fronto-striatal dopaminergic networks and elevated frontal Theta/Beta Ratios (TBR), predicting on motor imagery leads produces invalid, spurious diagnostic classifications. Predictions are explicitly withheld with clear clinical explanatory notices.
+
+11. **Modern High-Tech Typography & Universal Bulging Hover Physics**:
+    * **Modern Neuroscience Typography**: Integrated Google Fonts (`Space Grotesk`, `Plus Jakarta Sans`, `Oxanium`, `Orbitron`, `Chakra Petch`, and `JetBrains Mono`), replacing generic font stacks with distinctive clinical and aerospace UI styling.
+    * **High-Tech Diagnostic Sidebar**: Uses `Oxanium` & `Orbitron` writing styles for the diagnostic suite navigation (`Overview`, `New EEG Analysis`, `Results`, `Brain Recovery & Care`, `Model Ensemble`, `Signal Explorer`, `Batch Analysis`, `History`, `Settings`) and user badges.
+    * **Universal Interactive Bulging Physics Engine**: Smooth cursor-driven scale expansions (`scale(1.06) - scale(1.22)` with `cubic-bezier(0.34, 1.56, 0.64, 1)` spring curves) across all buttons, navigation pills, top telemetry strips, Section 02 Cortical Architecture, the 10-20 scalp electrode matrix, frequency band selectors, and cards.
+    * **Enhanced Notice Box Legibility**: Upgraded `ResultsPage.tsx` disclaimer and model-withheld banners to high-contrast opaque dark glass backing (`bg-[#070e1e]/95` with `backdrop-blur-2xl`) and enlarged 16px–20px typography, eliminating canvas particle bleed-through.
+
 ---
 
 ## Clinical Ground-Truth Validation & Empirical Benchmark Results
@@ -362,12 +389,25 @@ A state-of-the-art, cinematic neuroscience web application built with **React 19
    - Synchronized **Neural Activity Timeline** rendering each 10s analyzed window with per-window classification.
    - Interactive Recharts probability graph comparing model components across windows.
 
-7. **Signal Explorer (`SignalExplorerPage.tsx`)**:
-   - 19-channel 10-20 montage waveform viewer with channel toggles, amplitude zoom ($0.5\times$ to $5\times$), timebase scaling, and play/pause animation.
-   - Frequency band energy telemetry for Delta (0.5–4 Hz), Theta (4–8 Hz), Alpha (8–13 Hz), Beta (13–30 Hz), and Gamma (30–45 Hz).
+7. **Enhanced 3D Scalp Topography & Signal Explorer (`SignalExplorerPage.tsx`)**:
+   - 3D electrode montage integrated into a physics-based `AuraTiltCard` with live ±50 μV potentials and corner telemetry indicators.
+   - 3 continuous real-time waveform monitors (Slow Potential 1–4 Hz Delta, Theta/Alpha 4–12 Hz Sensory Rhythms & TBR, Fast Beta 13–30 Hz Active Focus).
+   - Interactive 19-channel electrode selector with real-time lobe telemetry (Frontal, Central, Temporal, Parietal, Occipital), voltage ranges, ADHD biomarker impact, and clinical significance.
+   - Full 19-channel 10-20 montage continuous viewer with channel toggles, amplitude zoom ($0.5\times$ to $5\times$), timebase scaling, and play/pause animation.
 
-8. **10-Stage Pipeline Architecture Graph (`PipelineDiagram.tsx`)**:
-   - Interactive architecture diagram verifying each actual preprocessing and model stage from ingestion to clinical report generation.
+8. **Clinical Brain Recovery & Care Dashboard (`BrainRecoveryPage.tsx`, `/dashboard/neuro-care`)**:
+   - **4-Tier Clinical Care Hub**: Actionable neuroplasticity and recovery protocols spanning SMR Neurofeedback (12–15 Hz), Dopamine & Prefrontal Synaptic Rest (NSDR, Pomodoro 25/5), Circadian Sleep Architecture & Glymphatic Cleansing (Stage 3 NREM), and Multi-Modal Lifestyle/Nutritional Interventions.
+   - **Interactive 19-Channel Neuro-Pathology Inspection Modal**: Real-time animated multi-band EEG wave visualizer with cortical hotspot mapping (Prefrontal DLPFC, Fronto-Striatal circuit, Sensorimotor strip) and high-resolution clinical imaging.
+   - **Auditory Biofeedback**: Integrated Web Audio API tone synthesis for auditory neuro-training.
+
+9. **Interactive 3D AuraTiltCard Models & Sequential Scroll Cascades (`EnsembleCard.tsx`, `LandingPage.tsx`)**:
+   - Physics-based mouse tilt with specular highlights on deep learning architecture cards.
+   - One-click modal image lightbox zoom for inspecting architecture diagrams.
+   - Sequential Framer Motion scroll stagger cascades across pipeline stages and ensemble components.
+   - Optimized video playback (~10s-13s) for smooth performance.
+
+10. **10-Stage Pipeline Architecture Graph (`PipelineDiagram.tsx`)**:
+    - Interactive architecture diagram verifying each actual preprocessing and model stage from ingestion to clinical report generation.
 
 ---
 

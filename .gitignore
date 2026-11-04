@@ -1,27 +1,39 @@
-# Datasets (large benchmark archives)
+# Large benchmark archives & dataset dumps
+DataSets/
 Datasets/
-
-# Python caches
-__pycache__/
-*.py[cod]
-*.pyo
-.pytest_cache/
-.venv/
-venv/
-env/
-
-# Node & Frontend build
-node_modules/
-frontend/node_modules/
-frontend/dist/
-frontend/dist-ssr/
-
-# Archives & Temporary Zips
+IMP_ITEMS/
+Reseach_Papers/
+Reseach_Papers.zip
 *.zip
 *.tar.gz
 *.rar
 
-# System / IDE
+# Temporary scratch & root video files
+main_project/backend/*.mp4
+*.mp4
+!main_project/frontend/public/videos/*.mp4
+scratch/
+**/scratch/
+scratch_frames/
+**/scratch_frames/
+
+# Python virtual environments & caches
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+
+# Node & Frontend dependencies/build
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+.oxlintrc.json
+
+# IDE / System
 .vscode/
 .idea/
 .DS_Store
@@ -31,3 +43,5 @@ Thumbs.db
 !models/
 !models/**
 !tests/fixtures/**
+!main_project/backend/models/**
+!main_project/backend/tests/fixtures/**

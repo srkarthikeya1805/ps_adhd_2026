@@ -1,0 +1,19 @@
+{
+  "models": [
+    "CNN + Transformer",
+    "EEGNet",
+    "PSD + XGBoost"
+  ],
+  "weights": {
+    "cnn_transformer": 0.0,
+    "eegnet": 0.5,
+    "xgboost": 0.5
+  },
+  "threshold": 0.39,
+  "target_fs": 128.0,
+  "max_channels": 19,
+  "class_names": {
+    "0": "Control",
+    "1": "ADHD"
+  }
+}
