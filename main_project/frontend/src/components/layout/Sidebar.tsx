@@ -48,7 +48,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggleCollapse 
     <aside
       style={{ fontFamily: "'Oxanium', 'Orbitron', 'Chakra Petch', sans-serif" }}
       className={`fixed top-0 left-0 bottom-0 z-30 bg-[#030914]/92 backdrop-blur-2xl border-r border-[#20BFE8]/25 transition-all duration-300 flex flex-col justify-between select-none shadow-[4px_0_30px_rgba(0,0,0,0.6)] ${
-        isCollapsed ? 'w-20' : 'w-64'
+        isCollapsed ? 'w-20' : 'w-72'
       }`}
     >
       {/* Top Brand Header */}
@@ -127,9 +127,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggleCollapse 
                       />
                     </div>
 
-                    {/* Bold High-Tech Label in Unique Writing Style */}
+                    {/* Bold High-Tech Label in Unique Writing Style - Full Width No Truncation */}
                     {!isCollapsed && (
-                      <span className="font-bold text-sm tracking-wider uppercase flex-1 truncate">
+                      <span className="font-bold text-xs tracking-wider uppercase flex-1 whitespace-nowrap overflow-visible">
                         {item.label}
                       </span>
                     )}

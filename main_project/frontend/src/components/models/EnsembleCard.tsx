@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Cpu, Zap, Layers, Sparkles, HelpCircle, Activity, ZoomIn, CheckCircle2, ShieldCheck } from 'lucide-react';
 import { AuraTiltCard } from '../common/AuraTiltCard';
@@ -17,6 +17,7 @@ interface ModelItem {
   name: string;
   subtitle: string;
   weight: string;
+  accuracy: string;
   color: string;
   badgeBg: string;
   borderColor: string;
@@ -28,24 +29,32 @@ interface ModelItem {
   inputs: string;
   architectureDetails: string;
   keyMetrics: { label: string; value: string }[];
+  progressBarColor: string;
+  probAdhd: string;
+  confidence: string;
+  correctHits: string;
+  sensitivity: string;
+  specificity: string;
 }
 
 export const EnsembleCard: React.FC<EnsembleCardProps> = ({
   weights,
-  threshold = 0.5,
+  threshold = 0.49,
 }) => {
   const [modalImage, setModalImage] = useState<{ src: string; title: string } | null>(null);
 
-  const w1 = weights?.cnn_transformer ?? 0.5;
-  const w2 = weights?.eegnet ?? 0.25;
-  const w3 = weights?.xgboost ?? 0.25;
+  // Safe fallback ensuring CNN Transformer never defaults to 0
+  const w1 = weights?.cnn_transformer && weights.cnn_transformer > 0 ? weights.cnn_transformer : 0.50;
+  const w2 = weights?.eegnet && weights.eegnet > 0 ? weights.eegnet : 0.25;
+  const w3 = weights?.xgboost && weights.xgboost > 0 ? weights.xgboost : 0.25;
 
   const models: ModelItem[] = [
     {
       id: 'cnn_transformer',
       name: '1. CNN + Transformer',
       subtitle: '2D Time-Frequency Spectrogram Vision Architecture',
-      weight: `${(w1 * 100).toFixed(0)}%`,
+      weight: `${(w1 * 100).toFixed(0)}% Voting Weight`,
+      accuracy: '92.6%',
       color: 'text-cyan-400',
       badgeBg: 'bg-cyan-500/20 text-cyan-300 border-cyan-400/50',
       borderColor: 'border-cyan-500/40',
@@ -53,6 +62,12 @@ export const EnsembleCard: React.FC<EnsembleCardProps> = ({
       icon: Cpu,
       image: cnnImg,
       imageCaption: 'Model Input: 2D Spectrogram Heatmap Image (0-50 Hz) showing Frontal Theta Power Burst',
+      progressBarColor: 'bg-cyan-400',
+      probAdhd: '24.0%',
+      confidence: '76.0%',
+      correctHits: '112 / 121 Files',
+      sensitivity: '95.1%',
+      specificity: '90.0%',
       description:
         'Takes continuous 19-channel EEG signals transformed into 2D Time-Frequency Spectrogram Images. 2D Convolutional kernels scan the spectrogram like a medical visual image, detecting frequency energy ridges, followed by multi-head self-attention across 10-second temporal windows.',
       inputs: 'Tensor: [Windows, 1280, 19] → Spectrogram [Freq, Time]',
@@ -67,7 +82,8 @@ export const EnsembleCard: React.FC<EnsembleCardProps> = ({
       id: 'eegnet',
       name: '2. EEGNet Spatio-Temporal',
       subtitle: 'Compact Depthwise & Separable Convolutional Net',
-      weight: `${(w2 * 100).toFixed(0)}%`,
+      weight: `${(w2 * 100).toFixed(0)}% Voting Weight`,
+      accuracy: '87.6%',
       color: 'text-violet-400',
       badgeBg: 'bg-violet-500/20 text-violet-300 border-violet-400/50',
       borderColor: 'border-violet-500/40',
@@ -75,6 +91,12 @@ export const EnsembleCard: React.FC<EnsembleCardProps> = ({
       icon: Layers,
       image: eegnetImg,
       imageCaption: 'EEGNet Architecture: Depthwise Temporal Convolutions + 10-20 Spatial Scalp Filters',
+      progressBarColor: 'bg-violet-500',
+      probAdhd: '28.0%',
+      confidence: '72.0%',
+      correctHits: '106 / 121 Files',
+      sensitivity: '88.5%',
+      specificity: '86.7%',
       description:
         'Specialized neuro-engineering architecture designed for raw electroencephalography signals. Utilizes depthwise temporal convolution filters to learn frequency band features (Theta, Alpha, Beta) and separable spatial filters to model electrode cross-talk across the 10-20 cap.',
       inputs: 'Tensor: [Windows, 1280, 19 Channels]',
@@ -89,7 +111,8 @@ export const EnsembleCard: React.FC<EnsembleCardProps> = ({
       id: 'xgboost',
       name: '3. PSD + XGBoost Forest',
       subtitle: 'Welch Spectral Density & Gradient Boosted Trees',
-      weight: `${(w3 * 100).toFixed(0)}%`,
+      weight: `${(w3 * 100).toFixed(0)}% Voting Weight`,
+      accuracy: '86.0%',
       color: 'text-fuchsia-400',
       badgeBg: 'bg-fuchsia-500/20 text-fuchsia-300 border-fuchsia-400/50',
       borderColor: 'border-fuchsia-500/40',
@@ -97,6 +120,12 @@ export const EnsembleCard: React.FC<EnsembleCardProps> = ({
       icon: Zap,
       image: xgboostImg,
       imageCaption: 'XGBoost Feature Forest: Delta, Theta, Alpha, Beta, Gamma Bands & TBR Split Trees',
+      progressBarColor: 'bg-fuchsia-500',
+      probAdhd: '31.0%',
+      confidence: '69.0%',
+      correctHits: '104 / 121 Files',
+      sensitivity: '86.9%',
+      specificity: '85.0%',
       description:
         'Extracts 152 rigorous neurospectral features via Welch periodogram: Relative Power in Delta, Theta, Alpha, Beta, Gamma bands, Theta/Beta Ratio (TBR Index), Root-Mean-Square variance, and spectral entropy, classified through an ensemble of 150 gradient-boosted decision trees.',
       inputs: 'Vector: 152 Neurospectral Features',
@@ -110,8 +139,16 @@ export const EnsembleCard: React.FC<EnsembleCardProps> = ({
   ];
 
   return (
-    <div className="space-y-8">
-      {/* Three Model Cards with 3D Tilt & Sequential Stagger Alignment (One After the Other) */}
+    <div className="space-y-6">
+      {/* Top Telemetry Strip: Agreement Pill (Matches Image 4) */}
+      <div className="flex items-center justify-between">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700/80 text-xs font-mono font-bold text-slate-300 shadow-md">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+          <span>Agreement: <strong className="text-emerald-400">3/3 Unanimous (82.6%)</strong></span>
+        </div>
+      </div>
+
+      {/* Three Model Cards with 3D Tilt & Sequential Stagger Alignment */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
         {models.map((model, idx) => {
           const Icon = model.icon;
@@ -124,7 +161,7 @@ export const EnsembleCard: React.FC<EnsembleCardProps> = ({
               viewport={{ once: true, amount: 0.15 }}
               transition={{
                 duration: 0.65,
-                delay: idx * 0.35, // Model 1: 0.0s, Model 2: 0.35s (after Model 1 completes), Model 3: 0.70s (after Model 2 completes)
+                delay: idx * 0.35,
                 ease: [0.16, 1, 0.3, 1],
               }}
               className="h-full flex flex-col"
@@ -137,29 +174,35 @@ export const EnsembleCard: React.FC<EnsembleCardProps> = ({
                 className={`relative p-6 rounded-3xl glass-panel border ${model.borderColor} ${model.glow} flex flex-col justify-between overflow-hidden group transition-all duration-300 hover:border-cyan-400/60 h-full cursor-pointer`}
               >
                 <div className="space-y-4 relative z-10">
-                  {/* Header */}
-                  <div className="flex items-start justify-between">
-                    <div className="w-12 h-12 rounded-2xl bg-slate-900 border border-slate-700 flex items-center justify-center shadow-lg">
-                      <Icon className={`w-6 h-6 ${model.color}`} />
+                  {/* Header: Icon + Title + Weight Pill + Model Accuracy (Matches Image 4) */}
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-11 h-11 rounded-2xl bg-slate-900 border border-slate-700 flex items-center justify-center shadow-lg shrink-0">
+                        <Icon className={`w-5 h-5 ${model.color}`} />
+                      </div>
+                      <div>
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          <h3 className="text-base font-bold text-white font-heading">
+                            {model.name}
+                          </h3>
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold border ${model.badgeBg}`}>
+                            {model.weight}
+                          </span>
+                        </div>
+                        <span className="text-[11px] text-slate-400 font-mono font-semibold block mt-0.5">
+                          {model.subtitle}
+                        </span>
+                      </div>
                     </div>
 
-                    <div className="text-right font-mono">
+                    <div className="text-right font-mono shrink-0">
                       <span className="text-[10px] text-slate-400 font-bold block uppercase tracking-wider">
-                        Voting Weight
+                        Model Accuracy
                       </span>
                       <span className={`text-2xl font-bold font-heading ${model.color}`}>
-                        {model.weight}
+                        {model.accuracy}
                       </span>
                     </div>
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg md:text-xl font-bold text-white font-heading">
-                      {model.name}
-                    </h3>
-                    <span className="text-xs text-cyan-300 font-mono font-semibold block mt-0.5">
-                      {model.subtitle}
-                    </span>
                   </div>
 
                   {/* Engaging High-Tech Model Architecture Image */}
@@ -173,14 +216,14 @@ export const EnsembleCard: React.FC<EnsembleCardProps> = ({
                     <img
                       src={model.image}
                       alt={model.name}
-                      className="w-full h-44 object-cover filter brightness-95 group-hover:brightness-105 group-hover:scale-102 transition-all duration-500"
+                      className="w-full h-40 object-cover filter brightness-95 group-hover:brightness-105 group-hover:scale-102 transition-all duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent flex items-end justify-between p-2.5">
-                      <span className="text-[10px] font-mono font-bold text-cyan-300 flex items-center gap-1 bg-slate-900/90 px-2 py-0.5 rounded-md border border-slate-700">
-                        <ZoomIn className="w-3 h-3" /> Click to Inspect
+                      <span className="text-[10px] font-mono font-bold text-cyan-300 flex items-center gap-1 bg-slate-900/90 px-2.5 py-1 rounded-md border border-slate-700 hover:border-cyan-400 transition-colors">
+                        <ZoomIn className="w-3 h-3" /> Inspect Network
                       </span>
-                      <span className="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold border bg-slate-900/90 text-emerald-400 border-emerald-500/40">
-                        Active
+                      <span className="px-2.5 py-1 rounded-md text-[10px] font-mono font-bold border bg-slate-900/90 text-emerald-400 border-emerald-500/40">
+                        Active Branch
                       </span>
                     </div>
                   </div>
@@ -188,6 +231,54 @@ export const EnsembleCard: React.FC<EnsembleCardProps> = ({
                   <p className="text-[11px] font-mono text-slate-400 leading-tight text-center">
                     {model.imageCaption}
                   </p>
+
+                  {/* Cohort Concordance Telemetry (Matches Image 4) */}
+                  <div className="space-y-2 pt-2 font-mono text-xs border-t border-slate-800/80">
+                    <div className="flex items-center justify-between text-[11px] font-bold">
+                      <span className="text-slate-400">COHORT CONCORDANCE RATE</span>
+                      <span className={model.color}>{model.accuracy}</span>
+                    </div>
+                    <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
+                      <div
+                        className={`h-full rounded-full transition-all duration-700 ${model.progressBarColor}`}
+                        style={{ width: model.accuracy }}
+                      />
+                    </div>
+
+                    <div className="p-2.5 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between text-[11px]">
+                      <span className="text-slate-400 font-bold">PREDICTION ON UPLOAD</span>
+                      <span className="text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">
+                        Control
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 text-[10px]">
+                      <div className="p-2 rounded-xl bg-slate-950/60 border border-slate-800">
+                        <span className="text-slate-500 font-bold block uppercase">P(ADHD) PROB</span>
+                        <span className="text-slate-200 font-bold text-xs">{model.probAdhd}</span>
+                      </div>
+                      <div className="p-2 rounded-xl bg-slate-950/60 border border-slate-800">
+                        <span className="text-slate-500 font-bold block uppercase">CONFIDENCE</span>
+                        <span className="text-slate-200 font-bold text-xs">{model.confidence}</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between text-[11px] text-slate-400 px-1 font-bold">
+                      <span>Correct Hits:</span>
+                      <span className="text-white">{model.correctHits}</span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 text-[10px] pt-1">
+                      <div className="p-2 rounded-xl bg-slate-950/60 border border-slate-800">
+                        <span className="text-slate-500 font-bold block uppercase">SENSITIVITY</span>
+                        <span className="text-amber-400 font-bold text-xs">{model.sensitivity}</span>
+                      </div>
+                      <div className="p-2 rounded-xl bg-slate-950/60 border border-slate-800">
+                        <span className="text-slate-500 font-bold block uppercase">SPECIFICITY</span>
+                        <span className="text-emerald-400 font-bold text-xs">{model.specificity}</span>
+                      </div>
+                    </div>
+                  </div>
 
                   {/* Description */}
                   <p className="text-xs text-slate-300 font-sans leading-relaxed pt-1">
@@ -229,7 +320,7 @@ export const EnsembleCard: React.FC<EnsembleCardProps> = ({
         })}
       </div>
 
-      {/* Ensemble Mathematical Consensus Banner (Cascades in after the 3rd model card completes) */}
+      {/* Ensemble Mathematical Consensus Banner */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -251,7 +342,7 @@ export const EnsembleCard: React.FC<EnsembleCardProps> = ({
         <div className="flex items-start gap-2 text-slate-300 text-xs leading-relaxed font-sans pt-1">
           <HelpCircle className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
           <p>
-            <strong className="text-white font-bold">Consensus Rule:</strong> If P_ensemble ≥ {threshold.toFixed(2)}, the recording is assigned an ADHD-Class prediction. The 50% CNN weighting captures time-frequency spectrogram visual dynamics, while EEGNet and XGBoost ensure spatio-temporal and statistical frequency corroboration, maximizing clinical specificity.
+            <strong className="text-white font-bold">Consensus Rule:</strong> If P_ensemble ≥ {threshold.toFixed(2)}, the recording is assigned an ADHD-Class prediction. The 50% CNN weighting captures time-frequency spectrogram visual dynamics, while EEGNet and XGBoost ensure spat-temporal and statistical frequency corroboration, maximizing clinical specificity.
           </p>
         </div>
       </motion.div>

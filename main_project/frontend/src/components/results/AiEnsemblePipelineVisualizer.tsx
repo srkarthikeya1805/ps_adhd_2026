@@ -27,10 +27,11 @@ export const AiEnsemblePipelineVisualizer: React.FC<AiEnsemblePipelineVisualizer
     eegnet: 0.69,
   };
 
-  const weights = result.ensemble_weights || {
-    cnn: 0.60,
-    xgboost: 0.30,
-    eegnet: 0.10,
+  const weights = (result.ensemble_weights as Record<string, number> | undefined) || {
+    cnn_transformer: 0.50,
+    cnn: 0.50,
+    eegnet: 0.25,
+    xgboost: 0.25,
   };
 
   const threshold = result.threshold ?? 0.49;
@@ -42,32 +43,32 @@ export const AiEnsemblePipelineVisualizer: React.FC<AiEnsemblePipelineVisualizer
     {
       id: 'cnn_transformer',
       name: 'CNN-Transformer',
-      weight: weights.cnn ?? 0.60,
-      prob: modelProbs.cnn ?? 0.78,
+      weight: weights.cnn_transformer ?? weights.cnn ?? 0.50,
+      prob: (modelProbs as any).cnn_transformer ?? modelProbs.cnn ?? 0.78,
       architecture: '1D Temporal Convolutions + Multi-Head Self-Attention',
       input: '1280 raw temporal samples (10s @ 128 Hz)',
       color: '#00F0FF',
       badgeColor: 'border-cyan-500/40 text-cyan-300 bg-cyan-500/10',
     },
     {
-      id: 'psd_xgboost',
-      name: 'Welch PSD + XGBoost',
-      weight: weights.xgboost ?? 0.30,
-      prob: modelProbs.xgboost ?? 0.72,
-      architecture: '5-Band Spectral Density + Gradient Boosted Trees',
-      input: 'Delta, Theta, Alpha, Beta, Gamma power features',
-      color: '#F02BD5',
-      badgeColor: 'border-pink-500/40 text-pink-300 bg-pink-500/10',
-    },
-    {
       id: 'eegnet',
       name: 'EEGNet',
-      weight: weights.eegnet ?? 0.10,
+      weight: weights.eegnet ?? 0.25,
       prob: modelProbs.eegnet ?? 0.69,
       architecture: 'Depthwise & Separable Spatial Convolutions',
       input: '19-channel scalp spatial-temporal field array',
       color: '#8B5CF6',
       badgeColor: 'border-violet-500/40 text-violet-300 bg-violet-500/10',
+    },
+    {
+      id: 'psd_xgboost',
+      name: 'Welch PSD + XGBoost',
+      weight: weights.xgboost ?? weights.psd_xgboost ?? 0.25,
+      prob: modelProbs.xgboost ?? 0.72,
+      architecture: '5-Band Spectral Density + Gradient Boosted Trees',
+      input: 'Delta, Theta, Alpha, Beta, Gamma power features',
+      color: '#F02BD5',
+      badgeColor: 'border-pink-500/40 text-pink-300 bg-pink-500/10',
     },
   ];
 

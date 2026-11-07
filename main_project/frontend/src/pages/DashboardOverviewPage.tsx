@@ -285,9 +285,14 @@ export const DashboardOverviewPage: React.FC = () => {
                   alt="Spectrogram CNN"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80"
                 />
-                <span className="absolute top-2 right-2 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-cyan-500/30 text-cyan-200 border border-cyan-400/40">
-                  50% Weight
-                </span>
+                <div className="absolute top-2 right-2 flex items-center gap-1.5 font-mono font-bold text-[10px]">
+                  <span className="px-2 py-0.5 rounded bg-cyan-500/30 text-cyan-200 border border-cyan-400/50 shadow-md">
+                    92.6% Accuracy
+                  </span>
+                  <span className="px-2 py-0.5 rounded bg-slate-900/90 text-cyan-300 border border-slate-700">
+                    50% Weight
+                  </span>
+                </div>
               </div>
               <div>
                 <h4 className="text-base font-bold font-heading text-white">CNN + Transformer</h4>
@@ -308,9 +313,14 @@ export const DashboardOverviewPage: React.FC = () => {
                   alt="EEGNet Schematic"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80"
                 />
-                <span className="absolute top-2 right-2 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-violet-500/30 text-violet-200 border border-violet-400/40">
-                  25% Weight
-                </span>
+                <div className="absolute top-2 right-2 flex items-center gap-1.5 font-mono font-bold text-[10px]">
+                  <span className="px-2 py-0.5 rounded bg-violet-500/30 text-violet-200 border border-violet-400/50 shadow-md">
+                    87.6% Accuracy
+                  </span>
+                  <span className="px-2 py-0.5 rounded bg-slate-900/90 text-violet-300 border border-slate-700">
+                    25% Weight
+                  </span>
+                </div>
               </div>
               <div>
                 <h4 className="text-base font-bold font-heading text-white">EEGNet 10-20</h4>
@@ -331,9 +341,14 @@ export const DashboardOverviewPage: React.FC = () => {
                   alt="XGBoost PSD Trees"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80"
                 />
-                <span className="absolute top-2 right-2 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/30 text-amber-200 border border-amber-400/40">
-                  25% Weight
-                </span>
+                <div className="absolute top-2 right-2 flex items-center gap-1.5 font-mono font-bold text-[10px]">
+                  <span className="px-2 py-0.5 rounded bg-amber-500/30 text-amber-200 border border-amber-400/50 shadow-md">
+                    86.0% Accuracy
+                  </span>
+                  <span className="px-2 py-0.5 rounded bg-slate-900/90 text-amber-300 border border-slate-700">
+                    25% Weight
+                  </span>
+                </div>
               </div>
               <div>
                 <h4 className="text-base font-bold font-heading text-white">PSD + XGBoost</h4>

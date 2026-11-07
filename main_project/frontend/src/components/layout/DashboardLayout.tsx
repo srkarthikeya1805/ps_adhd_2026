@@ -23,7 +23,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ title, subtitl
       {/* Main Content Area */}
       <div
         className={`flex-1 flex flex-col transition-all duration-300 ${
-          isSidebarCollapsed ? 'ml-20' : 'ml-64'
+          isSidebarCollapsed ? 'ml-20' : 'ml-72'
         }`}
       >
         <Header title={title} subtitle={subtitle} />
