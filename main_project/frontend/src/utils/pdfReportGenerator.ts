@@ -482,3 +482,4 @@ export function generateClinicalPdfReport(
   const safeFilename = filename.replace(/[^a-zA-Z0-9_-]/g, '_');
   doc.save(`Clinical_Diagnostic_Report_${safeFilename}.pdf`);
 }
+
